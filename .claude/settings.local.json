@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.interlink.or.jp)",
+      "WebFetch(domain:www.risutouch.com)"
+    ]
+  }
+}
