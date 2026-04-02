@@ -147,21 +147,37 @@ function animateChapter3(ch, p) {
   }
 }
 
-// Chapter 4: 受賞 — シンプルフェード + 横スライン
+// Chapter 4: 受賞 — Chapter 1 と同形式（画像左スライド + テキスト）
 function animateChapter4(ch, p) {
-  const badge = ch.querySelector('.award');
-  const line  = ch.querySelector('.award-line');
+  const img   = ch.querySelector('.ch4-img-wrap');
+  const texts = ch.querySelectorAll('.ch4-animate');
 
-  if (badge) {
-    const t = clamp(p / 0.5, 0, 1);
-    badge.style.opacity   = t;
-    badge.style.transform = `translateY(${lerp(32, 0, t)}px)`;
+  if (img) {
+    const x = clamp(lerp(-80, 0, p / 0.25), -80, 0);
+    const o = clamp(p / 0.25, 0, 1);
+    img.style.transform = `translateX(${x}px)`;
+    img.style.opacity   = o;
   }
-  if (line) {
-    const t = clamp(p / 0.6, 0, 1);
-    line.style.transform = `scaleX(${t})`;
-    line.style.opacity   = t;
-  }
+
+  texts.forEach((el, i) => {
+    const delay = i * 0.08;
+    const inStart  = 0.05 + delay;
+    const inEnd    = 0.35 + delay;
+    const outStart = 0.75;
+    const outEnd   = 0.95;
+
+    let o = 0, y = 30;
+    if (p >= inStart && p <= outStart) {
+      const t = clamp((p - inStart) / (inEnd - inStart), 0, 1);
+      o = t; y = lerp(30, 0, t);
+    }
+    if (p > outStart) {
+      const t = clamp((p - outStart) / (outEnd - outStart), 0, 1);
+      o = 1 - t; y = lerp(0, -30, t);
+    }
+    el.style.opacity   = o;
+    el.style.transform = `translateY(${y}px)`;
+  });
 }
 
 // ── Shops / Contact: 通常のIntersectionObserver ──

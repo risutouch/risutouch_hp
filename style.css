@@ -508,37 +508,46 @@ nav a:hover { background: var(--bg2); color: var(--brown); }
   pointer-events: none;
 }
 
-/* ── Chapter 4: 受賞 ── */
-#ch4 { height: 200vh; background: var(--bg2); }
+/* ── Chapter 4: 受賞・ひと ── */
+#ch4 { height: 300vh; background: var(--bg); }
 .ch4-inner {
-  text-align: center;
-  padding: 60px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  height: 100%;
+  align-items: center;
 }
-.award-line {
-  width: 120px; height: 1px;
-  background: var(--caramel2);
-  margin: 0 auto 40px;
-  transform: scaleX(0);
-  transform-origin: left;
+.ch4-img-side {
+  height: 100%;
+  overflow: hidden;
+}
+.ch4-img-wrap {
+  height: 100%;
+  will-change: transform, opacity;
   opacity: 0;
+  transform: translateX(-80px);
+}
+.ch4-img-wrap img { height: 100%; object-fit: cover; }
+.ch4-text {
+  padding: 80px;
+}
+.ch4-animate {
   will-change: transform, opacity;
 }
-.award {
+.award-badge {
   display: inline-flex;
   align-items: flex-start;
-  gap: 16px;
-  background: var(--white);
+  gap: 14px;
+  margin-top: 32px;
+  padding: 20px 24px;
+  background: var(--bg2);
+  border-radius: 12px;
   border-left: 3px solid var(--caramel);
-  padding: 24px 32px;
-  border-radius: 0 12px 12px 0;
-  box-shadow: 0 8px 32px rgba(196,149,106,0.14);
-  text-align: left;
-  opacity: 0;
-  will-change: transform, opacity;
 }
-.award-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
-.award-text { font-size: 0.84rem; color: var(--text-lt); line-height: 1.7; }
-.award-text strong { display: block; color: var(--text); font-size: 0.9rem; margin-bottom: 4px; }
+.award-badge-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+.award-badge div { font-size: 0.84rem; color: var(--text-lt); line-height: 1.7; }
+.award-badge strong { display: block; color: var(--text); font-size: 0.9rem; margin-bottom: 4px; }
+.award-badge span { font-size: 0.82rem; }
 
 /* ═══════════════════════════════════════════════
    SHOPS
@@ -672,9 +681,11 @@ footer {
 
   /* Chapter 4 */
   #ch4 { height: auto; }
-  .ch4-inner { padding: 80px 28px; }
-  .award-line { opacity: 1 !important; transform: scaleX(1) !important; }
-  .award { opacity: 1 !important; transform: none !important; }
+  .ch4-inner { grid-template-columns: 1fr; }
+  .ch4-img-side { height: 55vw; min-height: 220px; }
+  .ch4-img-wrap { opacity: 1 !important; transform: none !important; }
+  .ch4-text { padding: 48px 28px; }
+  .ch4-animate { opacity: 1 !important; transform: none !important; }
 
   #shops { padding: 80px 24px; }
   .shops-list { grid-template-columns: 1fr; }
