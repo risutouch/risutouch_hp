@@ -465,8 +465,15 @@ nav a:hover { background: var(--bg2); color: var(--brown); }
   margin-bottom: 32px;
 }
 
-/* ── Chapter 2: 素材との対話 ── */
+/* 左右反転レイアウト */
+.ch-reversed { direction: rtl; }
+.ch-reversed > * { direction: ltr; }
+
+/* 各チャプターの背景色 */
+#ch1 { background: var(--bg2); }
 #ch2 { height: 280vh; background: var(--bg3); }
+#ch3 { background: var(--bg2); }
+#ch4 { background: var(--bg); }
 .ch2-inner {
   text-align: center;
   padding: 60px 48px;

@@ -58,8 +58,8 @@ function updateChapters() {
     const id = ch.dataset.chapter;
 
     if (id === '1') animateChapter1(ch, p);
-    if (id === '2') animateChapter2(ch, p);
-    if (id === '3') animateChapter3(ch, p);
+    if (id === '2') animateChapter1(ch, p); // ch2 uses same animation as ch1
+    if (id === '3') animateChapter1(ch, p); // ch3 uses same animation as ch1
     if (id === '4') animateChapter4(ch, p);
   });
 }
