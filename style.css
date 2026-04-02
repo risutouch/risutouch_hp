@@ -562,11 +562,28 @@ footer .footer-logo {
 
 /* ===== Mobile ===== */
 @media (max-width: 860px) {
-  header { width: calc(100% - 32px); padding: 0 20px; top: 12px; }
+  /* ヘッダーをピルなし・透明に */
+  header {
+    width: 100%;
+    left: 0;
+    transform: none;
+    top: 0;
+    border-radius: 0;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+    padding: 20px 24px;
+    height: auto;
+  }
+  header.scrolled {
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 2px 16px rgba(139,111,94,0.1);
+  }
   nav { display: none; }
   .hamburger { display: flex; }
-  .hero-content { padding: 100px 32px 60px; }
-  .scroll-indicator { left: 32px; }
+  .hero-content { padding: 100px 28px 60px; }
+  .scroll-indicator { left: 28px; }
   #hero .hero-shape { opacity: 0.6; }
 }
 @media (max-width: 768px) {
