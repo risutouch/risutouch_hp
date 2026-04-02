@@ -93,10 +93,19 @@ header.scrolled {
   box-shadow: 0 8px 40px rgba(122,96,80,0.18), 0 0 0 1px rgba(122,96,80,0.1);
 }
 .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-family: 'Noto Serif JP', serif;
   font-size: 0.98rem;
   letter-spacing: 0.08em;
   color: var(--brown);
+}
+.logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  display: block;
 }
 nav { display: flex; align-items: center; gap: 6px; }
 nav a {
