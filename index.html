@@ -19,14 +19,27 @@
   <!-- ===== Floating Pill Header ===== -->
   <header id="site-header">
     <div class="logo">焼き菓子.りすたっち</div>
-    <nav>
-      <a href="#about">about</a>
-      <a href="#products">products</a>
-      <a href="#shops">販売店</a>
-      <a href="#contact">contact</a>
+    <nav id="main-nav">
+      <a href="#about" onclick="closeMenu()">about</a>
+      <a href="#products" onclick="closeMenu()">products</a>
+      <a href="#shops" onclick="closeMenu()">販売店</a>
+      <a href="#contact" onclick="closeMenu()">contact</a>
       <a href="https://lin.ee/75Gqk1m" class="nav-cta" target="_blank" rel="noopener">LINE で注文</a>
     </nav>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </button>
   </header>
+
+  <!-- Mobile nav overlay -->
+  <div class="mobile-overlay" id="mobile-overlay" onclick="closeMenu()"></div>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="#about" onclick="closeMenu()">about</a>
+    <a href="#products" onclick="closeMenu()">products</a>
+    <a href="#shops" onclick="closeMenu()">販売店</a>
+    <a href="#contact" onclick="closeMenu()">contact</a>
+    <a href="https://lin.ee/75Gqk1m" class="mobile-cta" target="_blank" rel="noopener">💬 LINE で注文</a>
+  </div>
 
   <!-- ===== Hero ===== -->
   <section id="hero">
