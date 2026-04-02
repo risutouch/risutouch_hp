@@ -310,116 +310,97 @@ section { padding: 110px 40px; }
   letter-spacing: 0.04em;
 }
 
-/* ===== About ===== */
-#about { background: var(--bg2); position: relative; overflow: hidden; }
-#about::before {
-  content: '';
-  position: absolute;
-  width: 600px; height: 600px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(196,149,106,0.08) 0%, transparent 70%);
-  top: -200px; right: -200px;
-  pointer-events: none;
+/* ===== About: Story Scroll ===== */
+#about { background: var(--bg2); }
+
+.container-narrow { max-width: 680px; margin: 0 auto; }
+
+.story-block { padding: 100px 40px; }
+
+.story-text-center { text-align: center; }
+
+.story-catch {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.9rem, 3.5vw, 3rem);
+  line-height: 1.7;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  margin-bottom: 28px;
 }
-.about-grid {
+.story-sub {
+  font-size: 0.92rem;
+  color: var(--text-light);
+  line-height: 2;
+}
+
+.story-image-full {
+  padding: 0;
+  height: 60vw;
+  max-height: 600px;
+  min-height: 300px;
+  overflow: hidden;
+}
+.story-image-full img { width: 100%; height: 100%; object-fit: cover; }
+.placeholder-full {
+  width: 100%; height: 100%;
+  background: linear-gradient(160deg, #E8D9CC 0%, #C4956A 100%);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.75); font-size: 0.88rem;
+}
+
+.story-split { background: var(--bg); }
+.story-split-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
   align-items: center;
 }
-.about-image {
-  border-radius: 8px;
-  overflow: hidden;
-  aspect-ratio: 4/5;
-  position: relative;
-  box-shadow: 0 24px 60px rgba(139,111,94,0.18);
-}
-.about-image img { height: 100%; object-fit: cover; }
-.about-image .placeholder {
-  height: 100%;
-  background: linear-gradient(160deg, #E8D9CC 0%, #C4956A 100%);
-  display: flex; align-items: center; justify-content: center;
-  color: rgba(255,255,255,0.7); font-size: 0.88rem;
-}
-.about-image::after {
-  content: '';
-  position: absolute;
-  inset: -8px -8px auto auto;
-  width: 80px; height: 80px;
-  border-top: 2px solid var(--caramel-light);
-  border-right: 2px solid var(--caramel-light);
-  border-radius: 0 4px 0 0;
-  pointer-events: none;
-}
-.about-text .lead {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.08rem;
-  color: var(--text);
-  line-height: 1.9;
-  margin-bottom: 24px;
-}
-.about-text p { font-size: 0.92rem; color: var(--text-light); margin-bottom: 16px; }
-.award {
+.story-split-text .story-catch { font-size: clamp(2.2rem, 4vw, 3.4rem); margin-bottom: 0; }
+.story-split-desc p { font-size: 0.95rem; color: var(--text-light); line-height: 2.2; }
+
+.story-photo-aside { background: var(--bg2); }
+.story-photo-aside-inner {
   display: flex;
+  align-items: center;
+  gap: 64px;
+}
+.story-photo {
+  flex: 0 0 420px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 48px rgba(139,111,94,0.16);
+}
+.story-photo img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+.placeholder-sq {
+  aspect-ratio: 4/3;
+  background: linear-gradient(135deg, #EDD9C8 0%, #D4B896 100%);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--brown); font-size: 0.85rem;
+}
+.story-photo-caption {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  line-height: 1.9;
+  letter-spacing: 0.06em;
+  color: var(--text-mid);
+}
+
+.award {
+  display: inline-flex;
   align-items: flex-start;
   gap: 14px;
   background: var(--white);
   border-left: 3px solid var(--caramel);
-  padding: 18px 20px;
+  padding: 20px 28px;
   border-radius: 0 8px 8px 0;
-  margin-top: 28px;
   box-shadow: 0 4px 16px rgba(196,149,106,0.12);
+  text-align: left;
 }
 .award-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
 .award-text { font-size: 0.82rem; color: var(--text-light); line-height: 1.6; }
 .award-text strong { display: block; color: var(--text); font-size: 0.88rem; margin-bottom: 4px; }
 
-/* ===== Products ===== */
-#products { background: var(--bg); }
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
-}
-.product-card {
-  border-radius: 12px;
-  overflow: hidden;
-  background: var(--white);
-  box-shadow: 0 2px 16px rgba(139,111,94,0.08);
-  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s;
-}
-.product-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 48px rgba(139,111,94,0.16);
-}
-.product-card .card-image {
-  aspect-ratio: 1;
-  overflow: hidden;
-}
-.product-card .card-image img {
-  height: 100%; object-fit: cover;
-  transition: transform 0.5s;
-}
-.product-card:hover .card-image img { transform: scale(1.05); }
-.product-card .card-image .placeholder {
-  height: 100%;
-  background: linear-gradient(135deg, #EDD9C8 0%, #D4B896 100%);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--brown); font-size: 0.85rem;
-}
-.product-card .card-body { padding: 22px; }
-.product-card h3 { font-size: 1rem; margin-bottom: 8px; color: var(--text); }
-.product-card p { font-size: 0.82rem; color: var(--text-light); line-height: 1.65; }
-.seasonal-tag {
-  display: inline-block;
-  background: rgba(196,149,106,0.12);
-  color: var(--caramel);
-  font-size: 0.7rem;
-  padding: 3px 12px;
-  border-radius: 20px;
-  margin-bottom: 8px;
-  letter-spacing: 0.04em;
-  border: 1px solid rgba(196,149,106,0.25);
+/* (deleted products section)
 }
 
 /* ===== Shops ===== */
@@ -587,8 +568,11 @@ footer .footer-logo {
   #hero .hero-shape { opacity: 0.6; }
 }
 @media (max-width: 768px) {
-  .about-grid { grid-template-columns: 1fr; gap: 40px; }
-  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .story-split-inner { grid-template-columns: 1fr; gap: 32px; }
+  .story-photo-aside-inner { flex-direction: column; gap: 32px; }
+  .story-photo { flex: none; width: 100%; }
+  .story-photo-caption { font-size: 1.4rem; }
+  .story-block { padding: 72px 24px; }
   .shops-list { grid-template-columns: 1fr; }
   section { padding: 80px 24px; }
   .contact-links { flex-direction: column; align-items: center; }
