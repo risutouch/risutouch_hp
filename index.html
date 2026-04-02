@@ -16,12 +16,12 @@
 </head>
 <body>
 
-  <!-- ===== Floating Pill Header ===== -->
+  <!-- ══ Floating Pill Header ══ -->
   <header id="site-header">
     <div class="logo">焼き菓子.りすたっち</div>
     <nav id="main-nav">
-      <a href="#about" onclick="closeMenu()">about</a>
-      <a href="#products" onclick="closeMenu()">products</a>
+      <a href="#ch1" onclick="closeMenu()">about</a>
+      <a href="#ch3" onclick="closeMenu()">お菓子</a>
       <a href="#shops" onclick="closeMenu()">販売店</a>
       <a href="#contact" onclick="closeMenu()">contact</a>
       <a href="https://lin.ee/75Gqk1m" class="nav-cta" target="_blank" rel="noopener">LINE で注文</a>
@@ -31,53 +31,49 @@
     </button>
   </header>
 
-  <!-- Mobile nav overlay -->
   <div class="mobile-overlay" id="mobile-overlay" onclick="closeMenu()"></div>
   <div class="mobile-nav" id="mobile-nav">
-    <a href="#about" onclick="closeMenu()">about</a>
-    <a href="#products" onclick="closeMenu()">products</a>
+    <a href="#ch1" onclick="closeMenu()">about</a>
+    <a href="#ch3" onclick="closeMenu()">お菓子</a>
     <a href="#shops" onclick="closeMenu()">販売店</a>
     <a href="#contact" onclick="closeMenu()">contact</a>
     <a href="https://lin.ee/75Gqk1m" class="mobile-cta" target="_blank" rel="noopener">💬 LINE で注文</a>
   </div>
 
-  <!-- ===== Hero ===== -->
+  <!-- ══════════════════════════════════════════
+       HERO — 絵本の表紙
+  ══════════════════════════════════════════ -->
   <section id="hero">
 
-    <!-- 装飾曲線 -->
     <div class="hero-deco">
       <svg viewBox="0 0 800 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <path d="M800,50 Q600,200 750,350 Q900,500 650,650"/>
-        <path d="M800,0   Q550,180 700,320 Q850,460 600,620"/>
-        <path d="M800,100 Q650,220 780,380 Q920,540 680,680"/>
-        <path d="M800,150 Q700,250 820,420 Q940,590 720,700"/>
-        <path d="M800,200 Q750,280 860,460 Q970,640 760,720"/>
+        <path d="M800,30  Q580,200 740,370 Q900,520 640,670"/>
+        <path d="M800,-10 Q540,190 700,340 Q860,480 600,640"/>
+        <path d="M800,90  Q640,230 770,400 Q920,560 670,700"/>
+        <path d="M800,160 Q700,260 820,440 Q930,610 720,720"/>
+        <path d="M800,220 Q760,290 860,480 Q960,650 770,740"/>
       </svg>
     </div>
 
-    <!-- 浮遊する楕円 -->
     <div class="hero-shape hero-shape-1"></div>
     <div class="hero-shape hero-shape-2"></div>
     <div class="hero-shape hero-shape-3"></div>
 
-    <!-- コンテンツ -->
     <div class="hero-content">
       <p class="hero-eyebrow">Yamaguchi / Nagato</p>
       <h1 class="hero-title">
-        旬 の 素 材 と 、<br>
-        て い ね い な<br>
-        <span class="accent">時 間 。</span>
+        <!-- 文字ごとにアニメーション: JS が .hero-char を付与 -->
+        <span class="hero-line">旬の素材と、</span><br>
+        <span class="hero-line">ていねいな</span><br>
+        <span class="hero-line accent">時間。</span>
       </h1>
       <p class="hero-sub">"Seasonal ingredients, crafted with care."</p>
       <div class="hero-actions">
-        <a href="https://lin.ee/75Gqk1m" class="btn btn-primary" target="_blank" rel="noopener">
-          LINEでお問い合わせ
-        </a>
-        <a href="#products" class="btn btn-outline">お菓子を見る</a>
+        <a href="https://lin.ee/75Gqk1m" class="btn btn-primary" target="_blank" rel="noopener">LINEでお問い合わせ</a>
+        <a href="#ch1" class="btn btn-outline">もっと見る</a>
       </div>
     </div>
 
-    <!-- スクロールインジケーター -->
     <div class="scroll-indicator">
       <div class="scroll-line"></div>
       <span>scroll</span>
@@ -85,55 +81,88 @@
 
   </section>
 
-  <!-- ===== About: Story Scroll ===== -->
-  <section id="about">
+  <!-- ══════════════════════════════════════════
+       CHAPTER 1 — 場所とはじまり
+  ══════════════════════════════════════════ -->
+  <div class="chapter" id="ch1" data-chapter="1">
+    <div class="chapter-sticky">
+      <div class="ch1-inner">
 
-    <!-- Chapter 1: 場所とはじまり -->
-    <div class="story-block story-text-center">
-      <div class="container-narrow">
-        <p class="section-label reveal">about</p>
-        <h2 class="story-catch reveal reveal-d1">山口県長門市から、<br>季節のお菓子を。</h2>
-        <p class="story-sub reveal reveal-d2">元豆腐店を改装した工房で、2021年春にスタート。<br>直販はせず、地元のお店に届けています。</p>
-      </div>
-    </div>
+        <div class="ch1-text">
+          <p class="ch-label ch-animate">place</p>
+          <h2 class="ch-catch ch-animate">
+            山口県長門市から、<br>季節のお菓子を。
+          </h2>
+          <p class="ch-body-text ch-animate">
+            元豆腐店を改装した工房で、<br>
+            2021年春にスタート。<br>
+            直販はせず、地元のお店に届けています。
+          </p>
+        </div>
 
-    <!-- Chapter 2: 写真（工房・雰囲気） -->
-    <div class="story-block story-image-full reveal">
-      <!-- <img src="images/about.jpg" alt="工房の様子"> -->
-      <div class="placeholder-full">about 写真 (images/about.jpg)</div>
-    </div>
-
-    <!-- Chapter 3: こだわり -->
-    <div class="story-block story-split">
-      <div class="container">
-        <div class="story-split-inner">
-          <div class="story-split-text">
-            <h2 class="story-catch reveal">季節が、<br>素材を<br>教えてくれる。</h2>
-          </div>
-          <div class="story-split-desc reveal reveal-d1">
-            <p>直感的に。旬のものを。<br>毎年同じようで、毎年ちがう。<br>そのときにしかないおいしさを、<br>焼き菓子に閉じ込めています。</p>
+        <div class="ch1-img-side">
+          <div class="ch-img-wrap">
+            <!-- <img src="images/about.jpg" alt="工房"> -->
+            <div class="placeholder-full">about 写真 (images/about.jpg)</div>
           </div>
         </div>
+
       </div>
     </div>
+  </div>
 
-    <!-- Chapter 4: お菓子の写真（さらっと1枚） -->
-    <div class="story-block story-photo-aside">
-      <div class="container">
-        <div class="story-photo-aside-inner">
-          <div class="story-photo reveal">
-            <!-- <img src="images/sweets.jpg" alt="焼き菓子"> -->
-            <div class="placeholder-sq">sweets 写真 (images/sweets.jpg)</div>
-          </div>
-          <p class="story-photo-caption reveal reveal-d1">ギフトにも、<br>日常のおやつにも。</p>
+  <!-- ══════════════════════════════════════════
+       CHAPTER 2 — 哲学・こだわり
+  ══════════════════════════════════════════ -->
+  <div class="chapter" id="ch2" data-chapter="2">
+    <div class="chapter-sticky">
+      <div class="ch2-inner">
+
+        <h2 class="ch2-title">
+          <span class="word">季節が、</span><span class="word-br"></span>
+          <span class="word">素材を</span>
+          <span class="word">教えて</span><span class="word-br"></span>
+          <span class="word">くれる。</span>
+        </h2>
+
+        <p class="ch-sub">
+          直感的に。旬のものを。<br>
+          毎年同じようで、毎年ちがう。<br>
+          そのときにしかないおいしさを、<br>
+          焼き菓子に閉じ込めています。
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       CHAPTER 3 — お菓子の写真
+  ══════════════════════════════════════════ -->
+  <div class="chapter" id="ch3" data-chapter="3">
+    <div class="chapter-sticky">
+      <div class="ch3-inner">
+
+        <div class="ch-photo">
+          <!-- <img src="images/sweets.jpg" alt="焼き菓子"> -->
+          <div class="placeholder-sq">sweets 写真 (images/sweets.jpg)</div>
         </div>
+
+        <p class="ch-caption">ギフトにも、<br>日常のおやつにも。</p>
+
+        <div class="ch-overlay"></div>
       </div>
     </div>
+  </div>
 
-    <!-- Chapter 5: 受賞 -->
-    <div class="story-block story-text-center">
-      <div class="container-narrow">
-        <div class="award reveal">
+  <!-- ══════════════════════════════════════════
+       CHAPTER 4 — 受賞
+  ══════════════════════════════════════════ -->
+  <div class="chapter" id="ch4" data-chapter="4">
+    <div class="chapter-sticky">
+      <div class="ch4-inner">
+        <div class="award-line"></div>
+        <div class="award">
           <span class="award-icon">🏆</span>
           <div class="award-text">
             <strong>ジャパンケーキショー東京 連合会会長賞（最高ランク）</strong>
@@ -142,10 +171,11 @@
         </div>
       </div>
     </div>
+  </div>
 
-  </section>
-
-  <!-- ===== Shops ===== -->
+  <!-- ══════════════════════════════════════════
+       SHOPS
+  ══════════════════════════════════════════ -->
   <section id="shops">
     <div class="container">
       <p class="section-label reveal">where to buy</p>
@@ -171,12 +201,14 @@
     </div>
   </section>
 
-  <!-- ===== Contact ===== -->
+  <!-- ══════════════════════════════════════════
+       CONTACT
+  ══════════════════════════════════════════ -->
   <section id="contact">
     <div class="container">
       <p class="section-label reveal">contact</p>
       <h2 class="section-title reveal reveal-d1">お問い合わせ</h2>
-      <p class="lead reveal reveal-d2">ギフトのご相談・ご注文はLINEまたはInstagramからどうぞ。</p>
+      <p class="contact-lead reveal reveal-d2">ギフトのご相談・ご注文はLINEまたはInstagramからどうぞ。</p>
       <div class="contact-links reveal reveal-d3">
         <a href="https://lin.ee/75Gqk1m" class="contact-link" target="_blank" rel="noopener">
           <span class="icon">💬</span><span>LINE</span>
@@ -194,7 +226,9 @@
     </div>
   </section>
 
-  <!-- ===== Footer ===== -->
+  <!-- ══════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════ -->
   <footer>
     <div class="footer-logo">焼き菓子.りすたっち</div>
     <p>山口県長門市油谷新別名1009</p>
@@ -202,5 +236,16 @@
   </footer>
 
   <script src="script.js"></script>
+
+  <!-- ヒーロータイトル: 文字ごとにspan分割 -->
+  <script>
+    document.querySelectorAll('.hero-line').forEach(line => {
+      const text = line.textContent;
+      line.innerHTML = [...text].map((c, i) =>
+        `<span class="hero-char">${c === ' ' ? '&nbsp;' : c}</span>`
+      ).join('');
+    });
+  </script>
+
 </body>
 </html>
