@@ -623,18 +623,45 @@ nav a:hover { background: var(--bg2); color: var(--brown); }
 .shop-bubble:hover {
   box-shadow: 0 28px 70px rgba(196,149,106,0.22), 0 6px 20px rgba(122,96,80,0.1);
 }
+.shop-bubble-logo {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 14px;
+  background: var(--bg2);
+  flex-shrink: 0;
+}
+.shop-bubble-logo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
 .shop-bubble h3 {
   font-family: 'Noto Serif JP', serif;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: var(--text);
-  margin-bottom: 12px;
-  line-height: 1.5;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.shop-hours {
+  font-size: 0.76rem;
+  color: var(--caramel);
+  margin-bottom: 4px;
 }
 .shop-bubble p {
-  font-size: 0.84rem;
+  font-size: 0.78rem;
   color: var(--text-lt);
-  line-height: 1.8;
+  line-height: 1.6;
+  margin-bottom: 8px;
 }
+.shop-ig {
+  font-size: 0.72rem;
+  color: var(--text-lt);
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(154,122,110,0.3);
+  transition: color 0.2s;
+}
+.shop-ig:hover { color: var(--caramel); }
 
 /* ═══════════════════════════════════════════════
    CONTACT
