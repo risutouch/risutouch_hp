@@ -465,16 +465,151 @@ nav a:hover { background: var(--bg2); color: var(--brown); }
   margin-bottom: 32px;
 }
 
-/* 左右反転レイアウト */
-.ch-reversed { direction: rtl; }
-.ch-reversed > * { direction: ltr; }
+/* ══════════════════════════════════════════
+   各チャプター固有レイアウト
+   ══════════════════════════════════════════ */
 
-/* 各チャプターの背景色 */
-#ch1 { background: var(--bg2); }
+/* ── Ch1: 全画面イラスト + 下部テキストオーバーレイ ── */
+#ch1 { height: 300vh; background: var(--bg2); }
+.ch1-fullbg {
+  width: 100%; height: 100%;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+}
+.ch1-bg-img {
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity;
+  opacity: 0;
+}
+.ch1-bg-img img { width: 100%; height: 100%; object-fit: cover; }
+.ch1-bg-img .illust-placeholder { height: 100%; }
+.ch1-overlay-text {
+  position: relative;
+  z-index: 2;
+  padding: 60px 80px;
+  width: 100%;
+  background: linear-gradient(to top, rgba(250,247,242,0.95) 0%, rgba(250,247,242,0.6) 60%, transparent 100%);
+}
+.ch1-big-catch {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  letter-spacing: 0.06em;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+/* ── Ch2: テキスト大きく左、画像小さく右 ── */
 #ch2 { height: 280vh; background: var(--bg3); }
-#ch3 { background: var(--bg2); }
+.ch2-wide {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 80px;
+  gap: 40px;
+}
+.ch2-big-text { flex: 1; }
+.ch2-massive {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  margin-bottom: 24px;
+  will-change: transform, opacity;
+}
+.ch2-small-img {
+  flex: 0 0 280px;
+  align-self: flex-end;
+  margin-bottom: 60px;
+}
+.ch2-small-img .ch-img-wrap {
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  will-change: transform, opacity;
+  opacity: 0;
+  transform: translateY(60px) scale(0.7);
+}
+.ch2-small-img .ch-img-wrap img { height: 100%; object-fit: cover; }
+.ch2-small-img .illust-placeholder { height: 100%; }
+
+/* ── Ch3: イラスト背景 + 中央テキスト ── */
+#ch3 { height: 280vh; background: var(--bg2); }
 #ch3 .chapter-sticky { transition: background 0.1s; }
-#ch4 { background: var(--bg); }
+.ch3-spotlight {
+  width: 100%; height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ch3-bg-img {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+.ch3-bg-img img { width: 100%; height: 100%; object-fit: cover; }
+.ch3-bg-img .illust-placeholder { height: 100%; }
+.ch3-center-text {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 48px 64px;
+  background: rgba(250,247,242,0.82);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(122,96,80,0.15);
+  max-width: 520px;
+}
+.ch3-award-catch {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1.65;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+/* ── Ch4: 上下分割 ── */
+#ch4 { height: 280vh; background: var(--bg); }
+.ch4-split-v {
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.ch4-top-img {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+.ch4-img-wrap {
+  height: 100%;
+  will-change: transform, opacity;
+  opacity: 0;
+  transform: translateX(-100px);
+}
+.ch4-img-wrap img { height: 100%; object-fit: cover; }
+.ch4-img-wrap .illust-placeholder { height: 100%; }
+.ch4-bottom-text {
+  flex: 0 0 auto;
+  padding: 52px 80px;
+  background: var(--bg);
+  display: flex;
+  align-items: baseline;
+  gap: 48px;
+  border-top: 1px solid rgba(196,149,106,0.2);
+}
+.ch4-open-catch {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  letter-spacing: 0.06em;
+  color: var(--text);
+  line-height: 1.5;
+  flex-shrink: 0;
+}
 .ch2-inner {
   text-align: center;
   padding: 60px 48px;
@@ -777,35 +912,30 @@ footer {
   .scroll-indicator { left: 28px; bottom: 36px; }
   .hero-deco svg { width: 80%; opacity: 0.5; }
 
-  /* Chapter 1: 縦積みに */
-  #ch1 { height: auto; }
-  .chapter-sticky { position: relative; height: auto; min-height: 100vh; flex-direction: column; }
-  .ch1-inner { grid-template-columns: 1fr; }
-  .ch1-img-side { height: 55vw; min-height: 220px; }
-  .ch-img-wrap { opacity: 1 !important; transform: none !important; }
-  .ch1-text { padding: 48px 28px; }
-  .ch-animate { opacity: 1 !important; transform: none !important; }
+  /* 全チャプター共通: sticky解除、アニメ無効 */
+  .chapter { height: auto !important; }
+  .chapter-sticky { position: relative !important; height: auto !important; min-height: auto; }
+  .ch-animate, .ch4-animate, .ch2-massive { opacity: 1 !important; transform: none !important; }
+  .ch-img-wrap, .ch1-bg-img, .ch3-bg-img, .ch4-img-wrap { opacity: 1 !important; transform: none !important; }
 
-  /* Chapter 2 */
-  #ch2 { height: auto; }
-  .ch2-inner { padding: 80px 28px; }
-  .ch2-title { font-size: clamp(1.8rem, 6vw, 2.8rem); }
-  .word { opacity: 1 !important; transform: none !important; }
-  .ch-sub { opacity: 1 !important; transform: none !important; }
+  /* Ch1 */
+  .ch1-fullbg { flex-direction: column; }
+  .ch1-bg-img { position: relative; height: 60vw; min-height: 200px; }
+  .ch1-overlay-text { padding: 36px 24px; }
 
-  /* Chapter 3 */
-  #ch3 { height: auto; }
-  .ch3-inner { flex-direction: column; gap: 32px; padding: 80px 28px; height: auto; }
-  .ch-photo { opacity: 1 !important; transform: none !important; width: 100%; }
-  .ch-caption { position: static; opacity: 1 !important; transform: none !important; text-align: center; }
+  /* Ch2 */
+  .ch2-wide { flex-direction: column; padding: 56px 24px; gap: 20px; }
+  .ch2-small-img { flex: none; width: 140px; align-self: flex-end; margin-bottom: 0; }
+  .ch2-massive { font-size: clamp(2rem, 8vw, 3rem); }
 
-  /* Chapter 4 */
-  #ch4 { height: auto; }
-  .ch4-inner { grid-template-columns: 1fr; }
-  .ch4-img-side { height: 55vw; min-height: 220px; }
-  .ch4-img-wrap { opacity: 1 !important; transform: none !important; }
-  .ch4-text { padding: 48px 28px; }
-  .ch4-animate { opacity: 1 !important; transform: none !important; }
+  /* Ch3 */
+  .ch3-spotlight { flex-direction: column; }
+  .ch3-bg-img { position: relative; height: 50vw; min-height: 180px; opacity: 1 !important; transform: none !important; }
+  .ch3-center-text { position: relative; margin: 24px 20px; opacity: 1 !important; transform: none !important; }
+
+  /* Ch4 */
+  .ch4-bottom-text { flex-direction: column; gap: 8px; padding: 36px 24px; }
+  .ch4-open-catch { font-size: clamp(1.6rem, 6vw, 2.4rem); }
 
   #shops { padding: 80px 24px; }
   .shops-bubbles { grid-template-columns: repeat(2, 1fr); gap: 24px; }
