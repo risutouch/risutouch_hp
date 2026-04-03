@@ -58,8 +58,8 @@ function updateChapters() {
     const id = ch.dataset.chapter;
 
     if (id === '1') animateChapter1(ch, p);
-    if (id === '2') animateChapter1(ch, p); // ch2 uses same animation as ch1
-    if (id === '3') animateChapter1(ch, p); // ch3 uses same animation as ch1
+    if (id === '2') animateChapter2(ch, p);
+    if (id === '3') animateChapter3(ch, p);
     if (id === '4') animateChapter4(ch, p);
   });
 }
@@ -100,83 +100,113 @@ function animateChapter1(ch, p) {
   });
 }
 
-// Chapter 2: 哲学 — 単語ごとにスクロールで出現
+// Chapter 2: 洋菓子店 — 画像が下からズームアップ、テキストが上から落ちてくる
 function animateChapter2(ch, p) {
-  const words = ch.querySelectorAll('.word');
-  const sub   = ch.querySelector('.ch-sub');
-
-  words.forEach((w, i) => {
-    const total = words.length;
-    const start = (i / total) * 0.6;
-    const end   = start + 0.2;
-    const t = clamp((p - start) / (end - start), 0, 1);
-    w.style.opacity   = t;
-    w.style.transform = `translateY(${lerp(24, 0, t)}px)`;
-  });
-
-  if (sub) {
-    const t = clamp((p - 0.55) / 0.25, 0, 1);
-    sub.style.opacity   = t;
-    sub.style.transform = `translateY(${lerp(20, 0, t)}px)`;
-  }
-}
-
-// Chapter 3: お菓子写真 — スケールアップ + キャプション
-function animateChapter3(ch, p) {
-  const photo   = ch.querySelector('.ch-photo');
-  const caption = ch.querySelector('.ch-caption');
-  const overlay = ch.querySelector('.ch-overlay');
-
-  if (photo) {
-    const scale = lerp(0.82, 1, clamp(p / 0.5, 0, 1));
-    const o     = clamp(p / 0.3, 0, 1);
-    photo.style.transform = `scale(${scale})`;
-    photo.style.opacity   = o;
-  }
-
-  if (caption) {
-    const t = clamp((p - 0.35) / 0.3, 0, 1);
-    caption.style.opacity   = t;
-    caption.style.transform = `translateX(${lerp(40, 0, t)}px)`;
-  }
-
-  if (overlay) {
-    // 最後に薄くオーバーレイ
-    const t = clamp((p - 0.8) / 0.2, 0, 1);
-    overlay.style.opacity = t * 0.3;
-  }
-}
-
-// Chapter 4: 受賞 — Chapter 1 と同形式（画像左スライド + テキスト）
-function animateChapter4(ch, p) {
-  const img   = ch.querySelector('.ch4-img-wrap');
-  const texts = ch.querySelectorAll('.ch4-animate');
+  const img   = ch.querySelector('.ch-img-wrap');
+  const texts = ch.querySelectorAll('.ch-animate');
 
   if (img) {
-    const x = clamp(lerp(-80, 0, p / 0.25), -80, 0);
-    const o = clamp(p / 0.25, 0, 1);
-    img.style.transform = `translateX(${x}px)`;
+    const scale = lerp(0.7, 1, clamp(p / 0.3, 0, 1));
+    const o     = clamp(p / 0.25, 0, 1);
+    const y     = lerp(60, 0, clamp(p / 0.3, 0, 1));
+    img.style.transform = `translateY(${y}px) scale(${scale})`;
     img.style.opacity   = o;
   }
 
   texts.forEach((el, i) => {
-    const delay = i * 0.08;
-    const inStart  = 0.05 + delay;
-    const inEnd    = 0.35 + delay;
-    const outStart = 0.75;
-    const outEnd   = 0.95;
+    const delay   = i * 0.1;
+    const inStart = 0.1 + delay;
+    const inEnd   = 0.35 + delay;
+    const outStart = 0.75, outEnd = 0.92;
 
-    let o = 0, y = 30;
+    let o = 0, y = -40; // 上から落ちてくる
     if (p >= inStart && p <= outStart) {
       const t = clamp((p - inStart) / (inEnd - inStart), 0, 1);
-      o = t; y = lerp(30, 0, t);
+      o = t; y = lerp(-40, 0, t);
     }
     if (p > outStart) {
       const t = clamp((p - outStart) / (outEnd - outStart), 0, 1);
-      o = 1 - t; y = lerp(0, -30, t);
+      o = 1 - t; y = lerp(0, 20, t);
     }
     el.style.opacity   = o;
     el.style.transform = `translateY(${y}px)`;
+  });
+}
+
+// Chapter 3: 受賞 — 背景が締まりスポットライト、テキストがスケールイン
+function animateChapter3(ch, p) {
+  const sticky  = ch.querySelector('.chapter-sticky');
+  const img     = ch.querySelector('.ch-img-wrap');
+  const texts   = ch.querySelectorAll('.ch-animate');
+
+  // 背景をだんだん暗くして受賞を際立たせる
+  if (sticky) {
+    const darkness = clamp(p / 0.4, 0, 0.18);
+    sticky.style.background = `rgba(58,42,32,${darkness})`;
+  }
+
+  // 画像: 回転しながらフェードイン（表彰式っぽく）
+  if (img) {
+    const t     = clamp(p / 0.3, 0, 1);
+    const scale = lerp(1.15, 1, t);
+    const o     = t;
+    img.style.transform = `scale(${scale})`;
+    img.style.opacity   = o;
+  }
+
+  // テキスト: 中央からスケールアップ
+  texts.forEach((el, i) => {
+    const delay    = i * 0.12;
+    const inStart  = 0.08 + delay;
+    const inEnd    = 0.38 + delay;
+    const outStart = 0.78, outEnd = 0.94;
+
+    let o = 0, scale = 0.85;
+    if (p >= inStart && p <= outStart) {
+      const t = clamp((p - inStart) / (inEnd - inStart), 0, 1);
+      o = t; scale = lerp(0.85, 1, t);
+    }
+    if (p > outStart) {
+      const t = clamp((p - outStart) / (outEnd - outStart), 0, 1);
+      o = 1 - t; scale = lerp(1, 1.05, t);
+    }
+    el.style.opacity   = o;
+    el.style.transform = `scale(${scale})`;
+  });
+}
+
+// Chapter 4: オープン — 左右から両方同時にスライドイン（扉が開く感じ）
+function animateChapter4(ch, p) {
+  const img   = ch.querySelector('.ch4-img-wrap');
+  const texts = ch.querySelectorAll('.ch4-animate');
+
+  // 画像: 左から
+  if (img) {
+    const t = clamp(p / 0.3, 0, 1);
+    const x = lerp(-100, 0, t);
+    const o = t;
+    img.style.transform = `translateX(${x}px)`;
+    img.style.opacity   = o;
+  }
+
+  // テキスト: 右から（逆方向）
+  texts.forEach((el, i) => {
+    const delay    = i * 0.1;
+    const inStart  = 0.05 + delay;
+    const inEnd    = 0.32 + delay;
+    const outStart = 0.76, outEnd = 0.93;
+
+    let o = 0, x = 100;
+    if (p >= inStart && p <= outStart) {
+      const t = clamp((p - inStart) / (inEnd - inStart), 0, 1);
+      o = t; x = lerp(100, 0, t);
+    }
+    if (p > outStart) {
+      const t = clamp((p - outStart) / (outEnd - outStart), 0, 1);
+      o = 1 - t; x = lerp(0, -30, t);
+    }
+    el.style.opacity   = o;
+    el.style.transform = `translateX(${x}px)`;
   });
 }
 
