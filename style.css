@@ -18,14 +18,15 @@
   --white:    #FFFFFF;
 }
 
-html { scroll-behavior: smooth; }
+html, body { height: 100%; }
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'Noto Sans JP', sans-serif;
   font-size: 16px;
   line-height: 1.8;
-  overflow-x: hidden;
+  overflow: hidden;
+  height: 100vh;
 }
 h1, h2, h3 { font-family: 'Noto Serif JP', serif; font-weight: 400; }
 img { display: block; width: 100%; }
@@ -193,16 +194,99 @@ nav a:hover { background: var(--bg2); color: var(--brown); }
 }
 
 /* ═══════════════════════════════════════════════
-   HERO — 絵本の表紙
+   FULL-PAGE PANEL SYSTEM
    ═══════════════════════════════════════════════ */
-#hero {
-  min-height: 100vh;
-  position: relative;
-  display: flex;
-  align-items: center;
+.panel {
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  z-index: 0;
+  transition: opacity 0.7s ease;
+  pointer-events: none;
   overflow: hidden;
-  background: var(--bg);
 }
+.panel.active {
+  opacity: 1;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+/* Chapter panel backgrounds */
+#panel-0  { background: var(--bg); }
+.panel-ch1 { background: linear-gradient(135deg, #F5EDE3 0%, #E8D9CC 100%); }
+.panel-ch2 { background: linear-gradient(135deg, #EDE4D8 0%, #DDD0C4 100%); }
+.panel-ch3 { background: linear-gradient(160deg, #FAF5EE 0%, #D4A880 100%); }
+.panel-ch4 { background: linear-gradient(135deg, #FAF7F2 0%, #EEE4D8 100%); }
+
+/* Content position variants (position: absolute inside panel) */
+.sp-bottom {
+  position: absolute;
+  bottom: 10%;
+  left: 0; right: 0;
+  padding: 0 88px;
+}
+.sp-left {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
+  max-width: 520px;
+}
+.sp-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  max-width: 560px;
+  width: 90%;
+}
+.sp-right {
+  position: absolute;
+  top: 50%;
+  right: 10%;
+  transform: translateY(-50%);
+  text-align: right;
+  max-width: 520px;
+}
+
+/* Entry animation: inner text elements fade up on panel activation */
+.sp-label, .sp-catch, .sp-body, .sp-award {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.panel.active .sp-label { opacity: 1; transform: none; transition-delay: 0.2s; }
+.panel.active .sp-catch  { opacity: 1; transform: none; transition-delay: 0.32s; }
+.panel.active .sp-body   { opacity: 1; transform: none; transition-delay: 0.44s; }
+.panel.active .sp-award  { opacity: 1; transform: none; transition-delay: 0.56s; }
+
+/* Panel progress dots */
+.panel-dots {
+  position: fixed;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 100;
+}
+.pdot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(196,149,106,0.3);
+  cursor: pointer;
+  transition: background 0.4s, transform 0.4s;
+}
+.pdot.active {
+  background: var(--caramel);
+  transform: scale(1.5);
+}
+
+/* ═══════════════════════════════════════════════
+   HERO PANEL
+   ═══════════════════════════════════════════════ */
+/* #panel-0 uses .panel + hero children below */
 
 /* 装飾曲線SVG */
 .hero-deco {
@@ -523,12 +607,24 @@ nav a:hover { background: var(--bg2); color: var(--brown); }
   transform: scale(1.5);
 }
 
-/* ── Dummy anchor for nav ── */
-#ch1 { position: absolute; top: 0; }
+/* ═══════════════════════════════════════════════
+   SINGLE-PAGE LAYOUT (shops.html / contact.html)
+   ═══════════════════════════════════════════════ */
+.full-panel {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 40px 60px;
+  overflow: hidden;
+}
+
 /* ═══════════════════════════════════════════════
    SHOPS
    ═══════════════════════════════════════════════ */
-#shops { padding: 110px 40px; background: var(--bg3); overflow: hidden; }
+#shops { background: var(--bg3); }
 .container { max-width: 1100px; margin: 0 auto; }
 .section-label {
   display: inline-block;
@@ -623,7 +719,7 @@ nav a:hover { background: var(--bg2); color: var(--brown); }
 /* ═══════════════════════════════════════════════
    CONTACT
    ═══════════════════════════════════════════════ */
-#contact { padding: 110px 40px; background: var(--bg); text-align: center; }
+#contact { background: var(--bg); text-align: center; }
 #contact .section-title { margin-bottom: 12px; }
 .contact-lead { color: var(--text-lt); font-size: 0.95rem; margin-bottom: 56px; }
 .contact-links {
@@ -692,40 +788,34 @@ footer {
   .scroll-indicator { left: 28px; bottom: 36px; }
   .hero-deco svg { width: 80%; opacity: 0.5; }
 
-  /* Story Theater: sticky解除、全章表示 */
-  #story-theater { height: auto; }
-  .story-sticky { position: relative; height: auto; overflow: visible; background: transparent; }
-  .sp-bg { display: none; }
-  .story-dots { display: none; }
-  .story-panel {
-    position: relative;
-    inset: auto;
-    display: block;
-    opacity: 1 !important;
-    transform: none !important;
-    pointer-events: auto;
-    padding: 60px 24px;
+  /* Panel positioning on mobile */
+  .sp-bottom {
+    bottom: 8%;
+    padding: 0 28px;
   }
-  #sp1 { background: #F5EDE3; }
-  #sp2 { background: #EDE4D8; }
-  #sp3 { background: #F0E8D8; }
-  #sp4 { background: #FAF7F2; }
-  .sp-bottom, .sp-left, .sp-center, .sp-right {
-    align-items: flex-start;
-    justify-content: flex-start;
-    text-align: left;
-    padding: 0;
-    position: static;
+  .sp-left {
+    left: 6%; right: 6%;
     max-width: 100%;
-    transform: none;
+  }
+  .sp-center {
+    left: 50%; right: auto;
+    width: calc(100% - 48px);
+    max-width: 100%;
+  }
+  .sp-right {
+    right: 6%; left: 6%;
+    max-width: 100%;
+    text-align: left;
   }
   .sp-catch--xl { font-size: clamp(2.2rem, 9vw, 3.2rem); }
 
-  #shops { padding: 80px 24px; }
-  .shops-bubbles { grid-template-columns: repeat(2, 1fr); gap: 24px; }
-  .shop-bubble:nth-child(n) { width: 160px; height: 160px; padding: 20px; }
+  .panel-dots { right: 12px; }
+
+  /* Single-page sections (shops / contact) */
+  .full-panel { padding: 100px 28px 60px; }
+  .shops-bubbles { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .shop-bubble { width: 155px; height: 155px; padding: 18px; }
   .shop-bubble h3 { font-size: 0.85rem; margin-bottom: 6px; }
   .shop-bubble p  { font-size: 0.72rem; }
-  #contact { padding: 80px 24px; }
   .contact-links { flex-direction: column; align-items: center; }
 }

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>販売店 | 焼き菓子.りすたっち</title>
+  <meta name="description" content="焼き菓子.りすたっちの委託販売店一覧。山口県長門市内で販売中。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body id="shops">
+
+  <!-- ══ Header ══ -->
+  <header id="site-header" class="scrolled">
+    <div class="logo">
+      <img src="images/logo.png" alt="りすたっち" class="logo-img">
+      <span>焼き菓子.りすたっち</span>
+    </div>
+    <nav id="main-nav">
+      <a href="index.html">about</a>
+      <a href="shops.html" style="color:var(--caramel)">販売店</a>
+      <a href="contact.html">contact</a>
+      <a href="https://lin.ee/75Gqk1m" class="nav-cta" target="_blank" rel="noopener">LINE で注文</a>
+    </nav>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="mobile-overlay" id="mobile-overlay" onclick="closeMenu()"></div>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="index.html" onclick="closeMenu()">about</a>
+    <a href="shops.html" onclick="closeMenu()">販売店</a>
+    <a href="contact.html" onclick="closeMenu()">contact</a>
+    <a href="https://lin.ee/75Gqk1m" class="mobile-cta" target="_blank" rel="noopener">💬 LINE で注文</a>
+  </div>
+
+  <!-- ══ Full panel: Shops ══ -->
+  <main class="full-panel">
+    <p class="section-label">where to buy</p>
+    <h2 class="section-title">販売店</h2>
+    <div class="shops-bubbles">
+
+      <div class="shop-bubble">
+        <div class="shop-bubble-logo">
+          <img src="images/shops/suzuyatch-1.jpg" alt="すずやっち" onerror="this.style.display='none'">
+        </div>
+        <h3>すずやっち</h3>
+        <p class="shop-hours">水曜日 10:00–17:00</p>
+        <p>山口県長門市</p>
+        <a href="https://www.instagram.com/suzuyatti" class="shop-ig" target="_blank" rel="noopener">@suzuyatti</a>
+      </div>
+
+      <div class="shop-bubble">
+        <div class="shop-bubble-logo">
+          <img src="images/shops/engawa-1.jpg" alt="engawa YUMOTO" onerror="this.style.display='none'">
+        </div>
+        <h3>engawa YUMOTO</h3>
+        <p class="shop-hours">火・土・日 10:00–16:00</p>
+        <p>山口県長門市湯本</p>
+        <a href="https://www.instagram.com/engawayumoto" class="shop-ig" target="_blank" rel="noopener">@engawayumoto</a>
+      </div>
+
+      <div class="shop-bubble">
+        <div class="shop-bubble-logo">
+          <img src="images/shops/senzakitchen-1.jpg" alt="センザキッチン" onerror="this.style.display='none'">
+        </div>
+        <h3>センザキッチン</h3>
+        <p class="shop-hours">9:00–18:00（第2木曜定休）</p>
+        <p>山口県長門市仙崎</p>
+        <a href="https://www.instagram.com/senzakitchen" class="shop-ig" target="_blank" rel="noopener">@senzakitchen</a>
+      </div>
+
+      <div class="shop-bubble">
+        <div class="shop-bubble-logo">
+          <img src="images/shops/yuzuri-1.jpg" alt="yuzuri" onerror="this.style.display='none'">
+        </div>
+        <h3>yuzuri</h3>
+        <p class="shop-hours">11:00–17:00（不定休）</p>
+        <p>山口県長門市</p>
+        <a href="https://www.instagram.com/yuzuri_nagato_shop" class="shop-ig" target="_blank" rel="noopener">@yuzuri_nagato_shop</a>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('hamburger').classList.toggle('open');
+      document.getElementById('mobile-nav').classList.toggle('open');
+      document.getElementById('mobile-overlay').classList.toggle('open');
+    }
+    function closeMenu() {
+      ['hamburger', 'mobile-nav', 'mobile-overlay'].forEach(id =>
+        document.getElementById(id)?.classList.remove('open')
+      );
+    }
+  </script>
+</body>
+</html>

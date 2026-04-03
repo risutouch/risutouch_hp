@@ -17,17 +17,16 @@
 </head>
 <body>
 
-  <!-- ══ Floating Pill Header ══ -->
+  <!-- ══ Header ══ -->
   <header id="site-header">
     <div class="logo">
       <img src="images/logo.png" alt="りすたっち" class="logo-img">
       <span>焼き菓子.りすたっち</span>
     </div>
     <nav id="main-nav">
-      <a href="#story-theater" onclick="closeMenu()">about</a>
-      <a href="#ch3" onclick="closeMenu()">お菓子</a>
-      <a href="#shops" onclick="closeMenu()">販売店</a>
-      <a href="#contact" onclick="closeMenu()">contact</a>
+      <a href="#" onclick="goTo(1);return false;">about</a>
+      <a href="shops.html">販売店</a>
+      <a href="contact.html">contact</a>
       <a href="https://lin.ee/75Gqk1m" class="nav-cta" target="_blank" rel="noopener">LINE で注文</a>
     </nav>
     <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="メニュー">
@@ -37,18 +36,14 @@
 
   <div class="mobile-overlay" id="mobile-overlay" onclick="closeMenu()"></div>
   <div class="mobile-nav" id="mobile-nav">
-    <a href="#story-theater" onclick="closeMenu()">about</a>
-    <a href="#ch3" onclick="closeMenu()">お菓子</a>
-    <a href="#shops" onclick="closeMenu()">販売店</a>
-    <a href="#contact" onclick="closeMenu()">contact</a>
+    <a href="#" onclick="goTo(1);closeMenu();return false;">about</a>
+    <a href="shops.html" onclick="closeMenu()">販売店</a>
+    <a href="contact.html" onclick="closeMenu()">contact</a>
     <a href="https://lin.ee/75Gqk1m" class="mobile-cta" target="_blank" rel="noopener">💬 LINE で注文</a>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       HERO — 絵本の表紙
-  ══════════════════════════════════════════ -->
-  <section id="hero">
-
+  <!-- ══ Panel 0: Hero ══ -->
+  <section class="panel active" id="panel-0">
     <div class="hero-deco">
       <svg viewBox="0 0 800 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
         <path d="M800,30  Q580,200 740,370 Q900,520 640,670"/>
@@ -58,15 +53,12 @@
         <path d="M800,220 Q760,290 860,480 Q960,650 770,740"/>
       </svg>
     </div>
-
     <div class="hero-shape hero-shape-1"></div>
     <div class="hero-shape hero-shape-2"></div>
     <div class="hero-shape hero-shape-3"></div>
-
     <div class="hero-content">
       <p class="hero-eyebrow">Yamaguchi / Nagato</p>
       <h1 class="hero-title">
-        <!-- 文字ごとにアニメーション: JS が .hero-char を付与 -->
         <span class="hero-line">旬の素材と、</span><br>
         <span class="hero-line">ていねいな</span><br>
         <span class="hero-line accent">時間。</span>
@@ -74,188 +66,69 @@
       <p class="hero-sub">"Seasonal ingredients, crafted with care."</p>
       <div class="hero-actions">
         <a href="https://lin.ee/75Gqk1m" class="btn btn-primary" target="_blank" rel="noopener">LINEでお問い合わせ</a>
-        <a href="#story-theater" class="btn btn-outline">もっと見る</a>
+        <a href="#" class="btn btn-outline" onclick="goTo(1);return false;">もっと見る</a>
       </div>
     </div>
-
     <div class="scroll-indicator">
       <div class="scroll-line"></div>
       <span>scroll</span>
     </div>
-
   </section>
 
-  <!-- ══════════════════════════════════════════
-       STORY THEATER
-       スクロール量でアニメーションが進む1パネル劇場
-  ══════════════════════════════════════════ -->
-  <div id="story-theater">
-    <div class="story-sticky">
-
-      <!-- イラスト背景（章ごと） -->
-      <div class="sp-bg" id="sp-bg-1">
-        <!-- <img src="images/illust-01.png" alt=""> -->
-        <div class="illust-placeholder">イラスト①　学校で学ぶりす</div>
-      </div>
-      <div class="sp-bg" id="sp-bg-2">
-        <!-- <img src="images/illust-02.png" alt=""> -->
-        <div class="illust-placeholder">イラスト②　洋菓子店で働くりす</div>
-      </div>
-      <div class="sp-bg" id="sp-bg-3">
-        <!-- <img src="images/illust-03.png" alt=""> -->
-        <div class="illust-placeholder">イラスト③　受賞するりす</div>
-      </div>
-      <div class="sp-bg" id="sp-bg-4">
-        <!-- <img src="images/illust-04.png" alt=""> -->
-        <div class="illust-placeholder">イラスト④　お店をオープンするりす</div>
-      </div>
-
-      <!-- 章インジケーター（右端の点） -->
-      <div class="story-dots">
-        <span class="sp-dot" data-ch="0"></span>
-        <span class="sp-dot" data-ch="1"></span>
-        <span class="sp-dot" data-ch="2"></span>
-        <span class="sp-dot" data-ch="3"></span>
-      </div>
-
-      <!-- Chapter 1: テキスト 下部 -->
-      <div class="story-panel" id="sp1">
-        <div class="sp-bottom">
-          <p class="sp-label">Chapter 1</p>
-          <h2 class="sp-catch">製菓の基礎を学ぶ</h2>
-          <p class="sp-body">製菓専門学校で洋菓子づくりの基礎を学びました。</p>
-        </div>
-      </div>
-
-      <!-- Chapter 2: テキスト 左 大きめ -->
-      <div class="story-panel" id="sp2">
-        <div class="sp-left">
-          <p class="sp-label">Chapter 2</p>
-          <h2 class="sp-catch sp-catch--lg">洋菓子店<br>での<br>実務経験</h2>
-          <p class="sp-body">洋菓子店に勤務し、現場で技術を磨きました。</p>
-        </div>
-      </div>
-
-      <!-- Chapter 3: テキスト 中央 -->
-      <div class="story-panel" id="sp3">
-        <div class="sp-center">
-          <p class="sp-label">Chapter 3</p>
-          <h2 class="sp-catch">「ジャパンケーキショー東京」<br>で受賞</h2>
-          <p class="sp-body">小型工芸菓子部門にて</p>
-          <p class="sp-award">連合会会長賞<span>最高ランク</span></p>
-        </div>
-      </div>
-
-      <!-- Chapter 4: テキスト 右 -->
-      <div class="story-panel" id="sp4">
-        <div class="sp-right">
-          <p class="sp-label">Chapter 4</p>
-          <h2 class="sp-catch sp-catch--xl">「りすたっち」の<br>オープン</h2>
-          <p class="sp-body">2021年、豆腐店跡地を改装し開店。</p>
-        </div>
-      </div>
-
+  <!-- ══ Panel 1: Chapter 1 ══ -->
+  <section class="panel panel-ch1" id="panel-1">
+    <div class="sp-bottom">
+      <p class="sp-label">Chapter 1</p>
+      <h2 class="sp-catch">製菓の基礎を学ぶ</h2>
+      <p class="sp-body">製菓専門学校で洋菓子づくりの基礎を学びました。</p>
     </div>
+  </section>
+
+  <!-- ══ Panel 2: Chapter 2 ══ -->
+  <section class="panel panel-ch2" id="panel-2">
+    <div class="sp-left">
+      <p class="sp-label">Chapter 2</p>
+      <h2 class="sp-catch sp-catch--lg">洋菓子店<br>での<br>実務経験</h2>
+      <p class="sp-body">洋菓子店に勤務し、現場で技術を磨きました。</p>
+    </div>
+  </section>
+
+  <!-- ══ Panel 3: Chapter 3 ══ -->
+  <section class="panel panel-ch3" id="panel-3">
+    <div class="sp-center">
+      <p class="sp-label">Chapter 3</p>
+      <h2 class="sp-catch">「ジャパンケーキショー東京」<br>で受賞</h2>
+      <p class="sp-body">小型工芸菓子部門にて</p>
+      <p class="sp-award">連合会会長賞<span>最高ランク</span></p>
+    </div>
+  </section>
+
+  <!-- ══ Panel 4: Chapter 4 ══ -->
+  <section class="panel panel-ch4" id="panel-4">
+    <div class="sp-right">
+      <p class="sp-label">Chapter 4</p>
+      <h2 class="sp-catch sp-catch--xl">「りすたっち」の<br>オープン</h2>
+      <p class="sp-body">2021年、豆腐店跡地を改装し開店。</p>
+    </div>
+  </section>
+
+  <!-- ══ Panel dots ══ -->
+  <div class="panel-dots" id="panel-dots">
+    <span class="pdot active" data-panel="0"></span>
+    <span class="pdot" data-panel="1"></span>
+    <span class="pdot" data-panel="2"></span>
+    <span class="pdot" data-panel="3"></span>
+    <span class="pdot" data-panel="4"></span>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       SHOPS
-  ══════════════════════════════════════════ -->
-  <section id="shops">
-    <div class="container">
-      <p class="section-label reveal">where to buy</p>
-      <h2 class="section-title reveal reveal-d1">販売店</h2>
-      <div class="shops-bubbles">
-
-        <div class="shop-bubble reveal">
-          <div class="shop-bubble-logo">
-            <img src="images/shops/suzuyatch-1.jpg" alt="すずやっち" onerror="this.style.display='none'">
-          </div>
-          <h3>すずやっち</h3>
-          <p class="shop-hours">水曜日 10:00–17:00</p>
-          <p>山口県長門市</p>
-          <a href="https://www.instagram.com/suzuyatti" class="shop-ig" target="_blank" rel="noopener">@suzuyatti</a>
-        </div>
-
-        <div class="shop-bubble reveal reveal-d1">
-          <div class="shop-bubble-logo">
-            <img src="images/shops/engawa-1.jpg" alt="engawa YUMOTO" onerror="this.style.display='none'">
-          </div>
-          <h3>engawa YUMOTO</h3>
-          <p class="shop-hours">火・土・日 10:00–16:00</p>
-          <p>山口県長門市湯本</p>
-          <a href="https://www.instagram.com/engawayumoto" class="shop-ig" target="_blank" rel="noopener">@engawayumoto</a>
-        </div>
-
-        <div class="shop-bubble reveal reveal-d2">
-          <div class="shop-bubble-logo">
-            <img src="images/shops/senzakitchen-1.jpg" alt="センザキッチン" onerror="this.style.display='none'">
-          </div>
-          <h3>センザキッチン</h3>
-          <p class="shop-hours">9:00–18:00（第2木曜定休）</p>
-          <p>山口県長門市仙崎</p>
-          <a href="https://www.instagram.com/senzakitchen" class="shop-ig" target="_blank" rel="noopener">@senzakitchen</a>
-        </div>
-
-        <div class="shop-bubble reveal reveal-d3">
-          <div class="shop-bubble-logo">
-            <img src="images/shops/yuzuri-1.jpg" alt="yuzuri" onerror="this.style.display='none'">
-          </div>
-          <h3>yuzuri</h3>
-          <p class="shop-hours">11:00–17:00（不定休）</p>
-          <p>山口県長門市</p>
-          <a href="https://www.instagram.com/yuzuri_nagato_shop" class="shop-ig" target="_blank" rel="noopener">@yuzuri_nagato_shop</a>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════════
-       CONTACT
-  ══════════════════════════════════════════ -->
-  <section id="contact">
-    <div class="container">
-      <p class="section-label reveal">contact</p>
-      <h2 class="section-title reveal reveal-d1">お問い合わせ</h2>
-      <p class="contact-lead reveal reveal-d2">ギフトのご相談・ご注文はLINEまたはInstagramからどうぞ。</p>
-      <div class="contact-links reveal reveal-d3">
-        <a href="https://lin.ee/75Gqk1m" class="contact-link" target="_blank" rel="noopener">
-          <span class="icon">💬</span><span>LINE</span>
-        </a>
-        <a href="https://www.instagram.com/risutouch" class="contact-link" target="_blank" rel="noopener">
-          <span class="icon">📷</span><span>Instagram @risutouch</span>
-        </a>
-        <a href="mailto:risutouch@gmail.com" class="contact-link">
-          <span class="icon">✉️</span><span>risutouch@gmail.com</span>
-        </a>
-        <a href="tel:090-8370-2871" class="contact-link">
-          <span class="icon">📞</span><span>090-8370-2871</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════════
-       FOOTER
-  ══════════════════════════════════════════ -->
-  <footer>
-    <div class="footer-logo">焼き菓子.りすたっち</div>
-    <p>山口県長門市油谷新別名1009</p>
-    <p style="margin-top:16px">© 2024 焼き菓子.りすたっち</p>
-  </footer>
-
   <script src="script.js"></script>
-
-  <!-- ヒーロータイトル: 文字ごとにspan分割 -->
   <script>
     document.querySelectorAll('.hero-line').forEach(line => {
       const text = line.textContent;
-      line.innerHTML = [...text].map((c, i) =>
+      line.innerHTML = [...text].map(c =>
         `<span class="hero-char">${c === ' ' ? '&nbsp;' : c}</span>`
       ).join('');
     });
   </script>
-
 </body>
 </html>
