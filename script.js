@@ -49,149 +49,58 @@ function updateHero() {
   if (heroContent) heroContent.style.transform = `translateY(${y * 0.22}px)`;
 }
 
-// ── Chapter: スティッキーセクション ──────────────
-const chapters = document.querySelectorAll('.chapter');
+// ── Story Theater: スクロールで章が切り替わる ──
+const storyTheater = document.getElementById('story-theater');
+const spBgs    = document.querySelectorAll('.sp-bg');
+const spPanels = document.querySelectorAll('.story-panel');
+const spDots   = document.querySelectorAll('.sp-dot');
 
-function updateChapters() {
-  chapters.forEach(ch => {
-    const p = getProgress(ch);
-    const id = ch.dataset.chapter;
+function updateStoryTheater() {
+  if (!storyTheater) return;
+  const rect       = storyTheater.getBoundingClientRect();
+  const scrollable = storyTheater.offsetHeight - window.innerHeight;
+  const p          = clamp(-rect.top / scrollable, 0, 1);
 
-    if (id === '1') animateChapter1(ch, p);
-    if (id === '2') animateChapter2(ch, p);
-    if (id === '3') animateChapter3(ch, p);
-    if (id === '4') animateChapter4(ch, p);
-  });
-}
+  // 4章: 各章が全体の 0.25 を担当
+  const chCount = 4;
+  const chF     = p * chCount;
+  const chIndex = clamp(Math.floor(chF), 0, chCount - 1);
+  const chP     = chF - chIndex; // 0→1 within current chapter
 
-// Chapter 1: 全画面イラスト、テキストが下からせり上がる
-function animateChapter1(ch, p) {
-  const img   = ch.querySelector('.ch1-bg-img');
-  const texts = ch.querySelectorAll('.ch-animate');
-
-  // 背景: ゆっくりフェードイン + 微妙なズームアウト
-  if (img) {
-    const t = clamp(p / 0.2, 0, 1);
-    img.style.opacity   = t;
-    img.style.transform = `scale(${lerp(1.06, 1, clamp(p / 0.5, 0, 1))})`;
-  }
-
-  // テキスト: 下からせり上がる
-  texts.forEach((el, i) => {
-    const delay    = i * 0.1;
-    const inStart  = 0.1 + delay;
-    const inEnd    = 0.36 + delay;
-    const outStart = 0.78, outEnd = 0.94;
-    let o = 0, y = 50;
-    if (p >= inStart && p <= outStart) {
-      const t = clamp((p - inStart) / (inEnd - inStart), 0, 1);
-      o = t; y = lerp(50, 0, t);
+  // 背景フェード
+  spBgs.forEach((bg, i) => {
+    let o = 0;
+    if (i === chIndex) {
+      if      (chP < 0.12)               o = chP / 0.12;
+      else if (chP < 0.82)               o = 1;
+      else if (i < chCount - 1)          o = 1 - (chP - 0.82) / 0.18;
+      else                               o = 1;
     }
-    if (p > outStart) {
-      const t = clamp((p - outStart) / (outEnd - outStart), 0, 1);
-      o = 1 - t; y = lerp(0, -20, t);
+    bg.style.opacity = o;
+  });
+
+  // テキストパネル: 下からフェードイン → 上へフェードアウト
+  spPanels.forEach((panel, i) => {
+    let o = 0, ty = 0;
+    if (i === chIndex) {
+      if (chP < 0.18) {
+        const t = chP / 0.18;
+        o = t; ty = lerp(40, 0, t);
+      } else if (chP < 0.78) {
+        o = 1; ty = 0;
+      } else if (i < chCount - 1) {
+        const t = (chP - 0.78) / 0.22;
+        o = 1 - t; ty = lerp(0, -24, t);
+      } else {
+        o = 1; ty = 0;
+      }
     }
-    el.style.opacity   = o;
-    el.style.transform = `translateY(${y}px)`;
+    panel.style.opacity   = o;
+    panel.style.transform = `translateY(${ty}px)`;
   });
-}
 
-// Chapter 2: 大きなテキストが左から、小さい画像が下からズームアップ
-function animateChapter2(ch, p) {
-  const img     = ch.querySelector('.ch-img-wrap');
-  const massive = ch.querySelector('.ch2-massive');
-  const texts   = ch.querySelectorAll('.ch-animate:not(.ch2-massive)');
-
-  // 大見出し: 左からスライド
-  if (massive) {
-    const t = clamp(p / 0.28, 0, 1);
-    const outT = clamp((p - 0.76) / 0.18, 0, 1);
-    massive.style.opacity   = t * (1 - outT);
-    massive.style.transform = `translateX(${lerp(-80, 0, t)}px)`;
-  }
-
-  // 小画像: 下からズームアップ、回転少し
-  if (img) {
-    const t     = clamp((p - 0.1) / 0.3, 0, 1);
-    const scale = lerp(0.65, 1, t);
-    const y     = lerp(80, 0, t);
-    const rot   = lerp(-6, 0, t);
-    img.style.opacity   = t;
-    img.style.transform = `translateY(${y}px) scale(${scale}) rotate(${rot}deg)`;
-  }
-
-  // サブテキスト: 上から落ちてくる
-  texts.forEach((el, i) => {
-    const delay = i * 0.12;
-    const t     = clamp((p - 0.2 - delay) / 0.25, 0, 1);
-    const outT  = clamp((p - 0.78) / 0.16, 0, 1);
-    el.style.opacity   = t * (1 - outT);
-    el.style.transform = `translateY(${lerp(-30, 0, t)}px)`;
-  });
-}
-
-// Chapter 3: 背景イラストがフワッと現れ、カードが中央からスケールアップ
-function animateChapter3(ch, p) {
-  const bgImg  = ch.querySelector('.ch3-bg-img');
-  const card   = ch.querySelector('.ch3-center-text');
-  const texts  = ch.querySelectorAll('.ch-animate');
-
-  // 背景: ゆっくりフェードイン、少しズームアウト
-  if (bgImg) {
-    const t = clamp(p / 0.35, 0, 1);
-    bgImg.style.opacity   = t * 0.45; // 薄くして前面テキストを際立たせる
-    bgImg.style.transform = `scale(${lerp(1.1, 1, t)})`;
-  }
-
-  // カード全体: スケールアップ
-  if (card) {
-    const t    = clamp(p / 0.3, 0, 1);
-    const outT = clamp((p - 0.78) / 0.18, 0, 1);
-    const scale = lerp(0.8, 1, t);
-    card.style.opacity   = t * (1 - outT);
-    card.style.transform = `scale(${scale})`;
-  }
-
-  // テキスト内部: 時間差フェード
-  texts.forEach((el, i) => {
-    const delay = i * 0.14;
-    const t     = clamp((p - 0.08 - delay) / 0.28, 0, 1);
-    const outT  = clamp((p - 0.8) / 0.15, 0, 1);
-    el.style.opacity   = t * (1 - outT);
-    el.style.transform = `translateY(${lerp(16, 0, t)}px)`;
-  });
-}
-
-// Chapter 4: 画像が上から降りてくる、テキストが左右から同時イン
-function animateChapter4(ch, p) {
-  const img   = ch.querySelector('.ch4-img-wrap');
-  const texts = ch.querySelectorAll('.ch4-animate');
-
-  // 画像: 上からスライドダウン
-  if (img) {
-    const t = clamp(p / 0.28, 0, 1);
-    img.style.opacity   = t;
-    img.style.transform = `translateY(${lerp(-60, 0, t)}px)`;
-  }
-
-  // テキスト: 左から、時間差
-  texts.forEach((el, i) => {
-    const delay    = i * 0.12;
-    const inStart  = 0.1 + delay;
-    const inEnd    = 0.36 + delay;
-    const outStart = 0.78, outEnd = 0.93;
-    let o = 0, x = -60;
-    if (p >= inStart && p <= outStart) {
-      const t = clamp((p - inStart) / (inEnd - inStart), 0, 1);
-      o = t; x = lerp(-60, 0, t);
-    }
-    if (p > outStart) {
-      const t = clamp((p - outStart) / (outEnd - outStart), 0, 1);
-      o = 1 - t;
-    }
-    el.style.opacity   = o;
-    el.style.transform = `translateX(${x}px)`;
-  });
+  // ドット更新
+  spDots.forEach((dot, i) => dot.classList.toggle('active', i === chIndex));
 }
 
 // ── Shops / Contact: 通常のIntersectionObserver ──
@@ -206,7 +115,7 @@ function onScroll() {
     raf(() => {
       updateHeader();
       updateHero();
-      updateChapters();
+      updateStoryTheater();
       ticking = false;
     });
     ticking = true;

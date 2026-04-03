@@ -24,7 +24,7 @@
       <span>焼き菓子.りすたっち</span>
     </div>
     <nav id="main-nav">
-      <a href="#ch1" onclick="closeMenu()">about</a>
+      <a href="#story-theater" onclick="closeMenu()">about</a>
       <a href="#ch3" onclick="closeMenu()">お菓子</a>
       <a href="#shops" onclick="closeMenu()">販売店</a>
       <a href="#contact" onclick="closeMenu()">contact</a>
@@ -37,7 +37,7 @@
 
   <div class="mobile-overlay" id="mobile-overlay" onclick="closeMenu()"></div>
   <div class="mobile-nav" id="mobile-nav">
-    <a href="#ch1" onclick="closeMenu()">about</a>
+    <a href="#story-theater" onclick="closeMenu()">about</a>
     <a href="#ch3" onclick="closeMenu()">お菓子</a>
     <a href="#shops" onclick="closeMenu()">販売店</a>
     <a href="#contact" onclick="closeMenu()">contact</a>
@@ -74,7 +74,7 @@
       <p class="hero-sub">"Seasonal ingredients, crafted with care."</p>
       <div class="hero-actions">
         <a href="https://lin.ee/75Gqk1m" class="btn btn-primary" target="_blank" rel="noopener">LINEでお問い合わせ</a>
-        <a href="#ch1" class="btn btn-outline">もっと見る</a>
+        <a href="#story-theater" class="btn btn-outline">もっと見る</a>
       </div>
     </div>
 
@@ -86,87 +86,75 @@
   </section>
 
   <!-- ══════════════════════════════════════════
-       CHAPTER 1 — 製菓の基礎を学ぶ
-       レイアウト: 全画面イラスト + 下部テキストオーバーレイ
+       STORY THEATER
+       スクロール量でアニメーションが進む1パネル劇場
   ══════════════════════════════════════════ -->
-  <div class="chapter" id="ch1" data-chapter="1">
-    <div class="chapter-sticky">
-      <div class="ch1-fullbg">
-        <div class="ch1-bg-img">
-          <!-- <img src="images/illust-01.png" alt=""> -->
-          <div class="illust-placeholder">🐿️📚<br><small>イラスト①　学校で学ぶりす</small></div>
-        </div>
-        <div class="ch1-overlay-text">
-          <p class="ch-label ch-animate">Chapter 1</p>
-          <h2 class="ch1-big-catch ch-animate">製菓の基礎を学ぶ</h2>
-          <p class="ch-body-text ch-animate">製菓専門学校で洋菓子づくりの基礎を学びました。</p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div id="story-theater">
+    <div class="story-sticky">
 
-  <!-- ══════════════════════════════════════════
-       CHAPTER 2 — 洋菓子店での実務経験
-       レイアウト: テキスト大きく左、画像小さく右端
-  ══════════════════════════════════════════ -->
-  <div class="chapter" id="ch2" data-chapter="2">
-    <div class="chapter-sticky">
-      <div class="ch2-wide">
-        <div class="ch2-big-text">
-          <p class="ch-label ch-animate">Chapter 2</p>
-          <h2 class="ch2-massive ch-animate">洋菓子店<br>での<br>実務経験</h2>
-          <p class="ch-body-text ch-animate">洋菓子店に勤務し、現場で技術を磨きました。</p>
-        </div>
-        <div class="ch2-small-img">
-          <div class="ch-img-wrap">
-            <!-- <img src="images/illust-02.png" alt=""> -->
-            <div class="illust-placeholder">🐿️🎂<br><small>イラスト②</small></div>
-          </div>
-        </div>
+      <!-- イラスト背景（章ごと） -->
+      <div class="sp-bg" id="sp-bg-1">
+        <!-- <img src="images/illust-01.png" alt=""> -->
+        <div class="illust-placeholder">イラスト①　学校で学ぶりす</div>
       </div>
-    </div>
-  </div>
+      <div class="sp-bg" id="sp-bg-2">
+        <!-- <img src="images/illust-02.png" alt=""> -->
+        <div class="illust-placeholder">イラスト②　洋菓子店で働くりす</div>
+      </div>
+      <div class="sp-bg" id="sp-bg-3">
+        <!-- <img src="images/illust-03.png" alt=""> -->
+        <div class="illust-placeholder">イラスト③　受賞するりす</div>
+      </div>
+      <div class="sp-bg" id="sp-bg-4">
+        <!-- <img src="images/illust-04.png" alt=""> -->
+        <div class="illust-placeholder">イラスト④　お店をオープンするりす</div>
+      </div>
 
-  <!-- ══════════════════════════════════════════
-       CHAPTER 3 — ジャパンケーキショーで受賞
-       レイアウト: イラスト背景、中央にテキスト（スポットライト）
-  ══════════════════════════════════════════ -->
-  <div class="chapter" id="ch3" data-chapter="3">
-    <div class="chapter-sticky">
-      <div class="ch3-spotlight">
-        <div class="ch3-bg-img">
-          <!-- <img src="images/illust-03.png" alt=""> -->
-          <div class="illust-placeholder">🐿️🏆<br><small>イラスト③　受賞するりす</small></div>
-        </div>
-        <div class="ch3-center-text">
-          <p class="ch-label ch-animate">Chapter 3</p>
-          <h2 class="ch3-award-catch ch-animate">「ジャパンケーキ<br>ショー東京」<br>で受賞</h2>
-          <p class="ch-body-text ch-animate">小型工芸菓子部門にて</p>
-          <p class="ch4-award-rank ch-animate">連合会会長賞<span>最高ランク</span></p>
-        </div>
+      <!-- 章インジケーター（右端の点） -->
+      <div class="story-dots">
+        <span class="sp-dot" data-ch="0"></span>
+        <span class="sp-dot" data-ch="1"></span>
+        <span class="sp-dot" data-ch="2"></span>
+        <span class="sp-dot" data-ch="3"></span>
       </div>
-    </div>
-  </div>
 
-  <!-- ══════════════════════════════════════════
-       CHAPTER 4 — りすたっちのオープン
-       レイアウト: 上半分イラスト、下半分テキスト（上下分割）
-  ══════════════════════════════════════════ -->
-  <div class="chapter" id="ch4" data-chapter="4">
-    <div class="chapter-sticky">
-      <div class="ch4-split-v">
-        <div class="ch4-top-img">
-          <div class="ch4-img-wrap">
-            <!-- <img src="images/illust-04.png" alt=""> -->
-            <div class="illust-placeholder">🐿️🏠<br><small>イラスト④　お店をオープンするりす</small></div>
-          </div>
-        </div>
-        <div class="ch4-bottom-text">
-          <p class="ch-label ch4-animate">Chapter 4</p>
-          <h2 class="ch4-open-catch ch4-animate">「りすたっち」の<br>オープン</h2>
-          <p class="ch-body-text ch4-animate">2021年、豆腐店跡地を改装し開店。</p>
+      <!-- Chapter 1: テキスト 下部 -->
+      <div class="story-panel" id="sp1">
+        <div class="sp-bottom">
+          <p class="sp-label">Chapter 1</p>
+          <h2 class="sp-catch">製菓の基礎を学ぶ</h2>
+          <p class="sp-body">製菓専門学校で洋菓子づくりの基礎を学びました。</p>
         </div>
       </div>
+
+      <!-- Chapter 2: テキスト 左 大きめ -->
+      <div class="story-panel" id="sp2">
+        <div class="sp-left">
+          <p class="sp-label">Chapter 2</p>
+          <h2 class="sp-catch sp-catch--lg">洋菓子店<br>での<br>実務経験</h2>
+          <p class="sp-body">洋菓子店に勤務し、現場で技術を磨きました。</p>
+        </div>
+      </div>
+
+      <!-- Chapter 3: テキスト 中央 -->
+      <div class="story-panel" id="sp3">
+        <div class="sp-center">
+          <p class="sp-label">Chapter 3</p>
+          <h2 class="sp-catch">「ジャパンケーキショー東京」<br>で受賞</h2>
+          <p class="sp-body">小型工芸菓子部門にて</p>
+          <p class="sp-award">連合会会長賞<span>最高ランク</span></p>
+        </div>
+      </div>
+
+      <!-- Chapter 4: テキスト 右 -->
+      <div class="story-panel" id="sp4">
+        <div class="sp-right">
+          <p class="sp-label">Chapter 4</p>
+          <h2 class="sp-catch sp-catch--xl">「りすたっち」の<br>オープン</h2>
+          <p class="sp-body">2021年、豆腐店跡地を改装し開店。</p>
+        </div>
+      </div>
+
     </div>
   </div>
 
