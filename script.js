@@ -127,10 +127,11 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   setTimeout(startTimer, Math.random() * 4000);
 });
 
-// ── 商品ギャラリー（ランダム表示） ──────────────
+// ── 商品ギャラリー（ランダム表示 + 定期差し替え） ──
 (function () {
   const gallery = document.getElementById('products-gallery');
   if (!gallery) return;
+
   const all = [
     'images/products/products01.jpg',
     'images/products/products02.jpg',
@@ -140,11 +141,37 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     'images/products/products06.jpg',
     'images/products/products07.jpg',
   ];
-  const shuffled = all.sort(() => Math.random() - 0.5);
-  gallery.querySelectorAll('.gallery-img-wrap').forEach((wrap, i) => {
+
+  const wraps = Array.from(gallery.querySelectorAll('.gallery-img-wrap'));
+  const SLOTS = wraps.length;
+
+  // シャッフルして初期表示
+  const pool = [...all].sort(() => Math.random() - 0.5);
+  const shown = pool.slice(0, SLOTS);
+  const reserve = pool.slice(SLOTS);
+
+  wraps.forEach((wrap, i) => {
     const img = document.createElement('img');
-    img.src = shuffled[i % shuffled.length];
+    img.src = shown[i];
     img.alt = 'りすたっちの焼き菓子';
+    img.style.transition = 'opacity 0.8s ease';
     wrap.appendChild(img);
   });
+
+  // 画像が2枚以上あれば定期差し替え
+  if (all.length <= SLOTS) return;
+
+  setInterval(() => {
+    const slot  = Math.floor(Math.random() * SLOTS);
+    const next  = reserve.splice(0, 1)[0];
+    const img   = wraps[slot].querySelector('img');
+
+    img.style.opacity = '0';
+    setTimeout(() => {
+      reserve.push(shown[slot]);
+      shown[slot] = next;
+      img.src = next;
+      img.style.opacity = '1';
+    }, 800);
+  }, 5000);
 })();
