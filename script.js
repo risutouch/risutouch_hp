@@ -14,7 +14,7 @@ const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.intersectionRatio >= 0.15) {
       entry.target.classList.add('visible');
-    } else if (entry.intersectionRatio === 0) {
+    } else if (entry.intersectionRatio === 0 && entry.boundingClientRect.top > 0) {
       entry.target.classList.remove('visible');
     }
   });

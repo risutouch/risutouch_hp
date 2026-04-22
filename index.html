@@ -11,7 +11,7 @@
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;600&family=Yomogi&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -24,7 +24,7 @@
       <span>焼き菓子.りすたっち</span>
     </div>
     <nav id="main-nav">
-      <a href="#shops">お取扱店</a>
+      <a href="#shops">購入できるお店</a>
       <a href="#about">商品について</a>
       <a href="#contact">よくある質問</a>
       <a href="#contact-section">お問い合わせ</a>
@@ -36,7 +36,7 @@
 
   <div class="mobile-overlay" id="mobile-overlay" onclick="closeMenu()"></div>
   <div class="mobile-nav" id="mobile-nav">
-    <a href="#shops" onclick="closeMenu()">お取扱店</a>
+    <a href="#shops" onclick="closeMenu()">購入できるお店</a>
     <a href="#about" onclick="closeMenu()">商品について</a>
     <a href="#contact" onclick="closeMenu()">よくある質問</a>
     <a href="#contact-section" onclick="closeMenu()">お問い合わせ</a>
@@ -71,11 +71,12 @@
     </div>
   </section>
 
-  <!-- ══ 2. お取扱店 ══ -->
+  <!-- ══ 2. 購入できるお店 ══ -->
   <section id="shops">
     <div class="container">
       <p class="section-label reveal">where to buy</p>
-      <h2 class="section-title reveal reveal-d1">お取扱店</h2>
+      <h2 class="section-title reveal reveal-d1">購入できるお店</h2>
+      <p class="section-lead reveal reveal-d1" style="text-align:center">りすたっちの焼き菓子をお取り扱い・ご購入いただける店舗です。</p>
       <div class="shops-grid">
 
         <div class="shop-card reveal">
@@ -182,7 +183,7 @@
       <h2 class="section-title reveal reveal-d1">商品について</h2>
 
       <div class="about-products reveal reveal-d1">
-        <p class="about-products-lead" style="text-align:center">旬の素材を活かした手づくりの焼き菓子。クッキー・フィナンシェ・タルトなど、季節ごとに変わるラインナップをご用意しています。</p>
+        <p class="about-products-lead" style="text-align:center">旬の素材を活かした手づくりの焼き菓子。クッキー、パウンドケーキ、シフォンケーキ、季節ごとの商品などをご用意しています。</p>
       </div>
 
       <div class="gallery reveal reveal-d2" id="products-gallery">
@@ -202,20 +203,69 @@
         </a>
       </div>
 
-      <div class="about-brand reveal reveal-d3">
-        <div class="about-brand-card">
-          <div class="about-brand-photo">
-            <img src="images/maker.jpg" alt="作り手">
-          </div>
-          <p class="about-story-text">製菓専門学校で洋菓子づくりの基礎を学び、洋菓子店での実務経験を積んだのち、母校に戻り講師のアシスタントとして研鑽を重ねる。その活動の中で挑んだ「ジャパンケーキショー東京」小型工芸菓子部門にて、最高ランクにあたる<strong>連合会会長賞</strong>を受賞。その後、2021年に山口県長門市でりすたっちをオープン。元豆腐店を改装した小さな工房で、一つ一つ手作りで焼き菓子をつくっています。</p>
+      <div class="maker-profile reveal">
+        <div class="maker-message">
+          <p class="maker-role">店主よりメッセージ</p>
+          <p class="maker-quote">
+            食べて笑顔になってもらえたら、うれしい。<br>
+            幸せなおやつタイムを過ごしてほしい。
+          </p>
         </div>
-        <div class="about-brand-card">
-          <div class="about-award">
-            <p class="about-award-label">ジャパンケーキショー東京<br>小型工芸菓子部門<br><strong>連合会会長賞</strong> 受賞作品</p>
+        <div class="maker-photo">
+          <img src="images/maker.jpg" alt="店主 竹内沙有理">
+        </div>
+      </div>
+
+      <h3 class="sub-heading reveal reveal-d2">店主の経歴</h3>
+
+      <div class="career-wrap reveal reveal-d3">
+        <div class="career-images">
+          <div class="career-circle-img">
+            <img src="images/reki1.png" alt="">
           </div>
-          <div class="about-brand-photo">
-            <img src="images/syou.jpg" alt="連合会会長賞受賞作品">
+          <div class="career-circle-img">
+            <img src="images/reki2.png" alt="">
           </div>
+        </div>
+        <div class="career-timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <p class="timeline-title">製菓専門学校</p>
+            <p class="timeline-desc">洋菓子づくりの基礎を学ぶ。</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <p class="timeline-title">洋菓子店 勤務</p>
+            <p class="timeline-desc">就職し、現場の技術と感覚を身につける。</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <p class="timeline-title">講師アシスタント</p>
+            <p class="timeline-desc">製菓専門学校で講師のアシスタントを勤める。</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <p class="timeline-title">りすたっち 開業</p>
+            <p class="timeline-desc">元豆腐店を改装し、2021年4月にオープン。</p>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <div class="about-award-section reveal reveal-d3">
+        <div class="about-award-text">
+          <p class="award-photo-label">受賞作品</p>
+          <p class="about-award-label">講師アシスタントの時に挑戦した「ジャパンケーキショー東京」小型工芸菓子部門で<strong>連合会会長賞</strong>を受賞いたしました。</p>
+        </div>
+        <div class="award-photo">
+          <img src="images/syou.jpg" alt="連合会会長賞受賞作品">
         </div>
       </div>
 
@@ -306,7 +356,7 @@
     <div class="footer-inner">
       <div class="footer-left">
         <nav class="footer-nav">
-          <a href="#shops">お取扱店</a>
+          <a href="#shops">購入できるお店</a>
           <a href="#about">商品について</a>
           <a href="#contact">よくある質問</a>
           <a href="#contact-section">お問い合わせ</a>
