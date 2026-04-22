@@ -162,16 +162,30 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   if (all.length <= SLOTS) return;
 
   setInterval(() => {
-    const slot  = Math.floor(Math.random() * SLOTS);
-    const next  = reserve.splice(0, 1)[0];
-    const img   = wraps[slot].querySelector('img');
+    const slot = Math.floor(Math.random() * SLOTS);
+    const next = reserve.splice(0, 1)[0];
+    const wrap = wraps[slot];
+    const oldImg = wrap.querySelector('img');
 
-    img.style.opacity = '0';
+    // 新画像を下に敷いてフェードイン、古い画像はそのまま上に残す
+    const newImg = document.createElement('img');
+    newImg.src = next;
+    newImg.alt = 'りすたっちの焼き菓子';
+    newImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1s ease;';
+    oldImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';
+    wrap.style.position = 'relative';
+    wrap.insertBefore(newImg, oldImg);
+
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      newImg.style.opacity = '1';
+    }));
+
     setTimeout(() => {
+      wrap.removeChild(oldImg);
+      newImg.style.cssText = 'width:100%;height:100%;object-fit:cover;transition:opacity 1s ease;';
+      wrap.style.position = '';
       reserve.push(shown[slot]);
       shown[slot] = next;
-      img.src = next;
-      img.style.opacity = '1';
-    }, 800);
+    }, 1100);
   }, 5000);
 })();
