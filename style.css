@@ -1038,4 +1038,6 @@ footer {
   .shop-card-basic { border-left: none; border-top: 1px solid var(--bg3); }
 
   .about-brand { grid-template-columns: 1fr; }
+
+  .gallery { grid-template-columns: repeat(2, 1fr); gap: 8px; }
 }
