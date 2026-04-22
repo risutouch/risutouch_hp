@@ -248,14 +248,12 @@ nav a:hover { color: var(--caramel); }
   min-height: 100vh;
   background: var(--bg);
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.hero-content {
-  position: relative;
-  z-index: 2;
-  padding: 160px 88px 100px;
-  max-width: 660px;
-}
+.hero-content { display: none; }
 .hero-eyebrow {
   font-size: 0.72rem;
   letter-spacing: 0.32em;
@@ -300,7 +298,9 @@ nav a:hover { color: var(--caramel); }
 }
 .scroll-indicator {
   position: absolute;
-  bottom: 48px; left: 88px;
+  bottom: 48px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -328,22 +328,24 @@ nav a:hover { color: var(--caramel); }
 }
 .hero-wave svg { width: 100%; height: 100%; display: block; }
 
-/* ── ヒーロー 写真カード ── */
-.hero-photos {
-  position: absolute;
-  right: 7%;
-  top: 50%;
-  transform: translateY(-52%);
-  width: 38%;
-  max-width: 400px;
-  pointer-events: none;
-  z-index: 1;
+/* ── ヒーローステージ（中央フレックス） ── */
+.hero-stage {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 48px;
+  padding: 80px 40px 140px;
+  position: relative;
+  z-index: 2;
 }
+
+/* ── 写真カード ── */
 .hero-photo {
-  position: absolute;
+  flex-shrink: 0;
   border-radius: 22px;
   overflow: hidden;
   box-shadow: 0 16px 48px rgba(58,42,32,0.18);
+  margin-bottom: 64px;
 }
 .hero-photo img {
   width: 100%;
@@ -352,30 +354,21 @@ nav a:hover { color: var(--caramel); }
   display: block;
 }
 .hero-photo-1 {
-  width: 240px;
-  height: 190px;
-  top: -60px;
-  right: 0;
-  transform: rotate(3deg);
+  width: 260px;
+  height: 210px;
+  transform: rotate(-3deg);
   animation: floatA 6s ease-in-out infinite;
-  animation-delay: 0s;
 }
 .hero-photo-2 {
-  width: 190px;
-  height: 150px;
-  top: 120px;
-  right: 160px;
-  transform: rotate(-2.5deg);
+  width: 220px;
+  height: 180px;
+  transform: rotate(2.5deg);
   animation: floatB 7.5s ease-in-out infinite;
   animation-delay: 1s;
 }
 
 /* ── キャラクター＋吹き出し ── */
 .hero-chara-wrap {
-  position: absolute;
-  bottom: 72px;
-  right: 5%;
-  z-index: 4;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -383,7 +376,7 @@ nav a:hover { color: var(--caramel); }
   pointer-events: none;
 }
 .hero-chara {
-  width: 150px;
+  width: 200px;
   filter: drop-shadow(0 8px 16px rgba(58,42,32,0.15));
 }
 .hero-balloon {
@@ -998,11 +991,13 @@ footer {
   nav { display: none; }
   .hamburger { display: flex; }
 
-  .hero-content { padding: 110px 28px 80px; }
-  .scroll-indicator { left: 28px; bottom: 36px; }
-  .hero-photos { display: none; }
-  .hero-chara { width: 115px; right: 16px; bottom: 60px; }
-  .hero-balloon { max-width: 180px; font-size: 0.74rem; }
+  .scroll-indicator { left: 50%; transform: translateX(-50%); bottom: 36px; }
+  .hero-stage { flex-direction: column; align-items: center; gap: 24px; padding: 100px 24px 120px; }
+  .hero-photo { margin-bottom: 0; }
+  .hero-photo-1 { width: 180px; height: 140px; }
+  .hero-photo-2 { display: none; }
+  .hero-chara { width: 140px; }
+  .hero-balloon { max-width: 200px; font-size: 0.76rem; }
 
   #shops, #products, #about, #faq, #contact { padding: 80px 24px 80px; }
 
