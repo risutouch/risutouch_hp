@@ -24,10 +24,10 @@
       <span>焼き菓子.りすたっち</span>
     </div>
     <nav id="main-nav">
-      <a href="#" onclick="goTo(1);return false;">about</a>
-      <a href="shops.html">販売店</a>
-      <a href="contact.html">contact</a>
-      <a href="https://lin.ee/75Gqk1m" class="nav-cta" target="_blank" rel="noopener">LINE で注文</a>
+      <a href="#shops">お取扱店</a>
+      <a href="#about">商品について</a>
+      <a href="#contact">よくある質問</a>
+      <a href="#contact-section">お問い合わせ</a>
     </nav>
     <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="メニュー">
       <span></span><span></span><span></span>
@@ -36,14 +36,14 @@
 
   <div class="mobile-overlay" id="mobile-overlay" onclick="closeMenu()"></div>
   <div class="mobile-nav" id="mobile-nav">
-    <a href="#" onclick="goTo(1);closeMenu();return false;">about</a>
-    <a href="shops.html" onclick="closeMenu()">販売店</a>
-    <a href="contact.html" onclick="closeMenu()">contact</a>
-    <a href="https://lin.ee/75Gqk1m" class="mobile-cta" target="_blank" rel="noopener">💬 LINE で注文</a>
+    <a href="#shops" onclick="closeMenu()">お取扱店</a>
+    <a href="#about" onclick="closeMenu()">商品について</a>
+    <a href="#contact" onclick="closeMenu()">よくある質問</a>
+    <a href="#contact-section" onclick="closeMenu()">お問い合わせ</a>
   </div>
 
-  <!-- ══ Panel 0: Hero ══ -->
-  <section class="panel active" id="panel-0">
+  <!-- ══ 1. Top ══ -->
+  <section id="top">
     <div class="hero-deco">
       <svg viewBox="0 0 800 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
         <path d="M800,30  Q580,200 740,370 Q900,520 640,670"/>
@@ -56,70 +56,290 @@
     <div class="hero-shape hero-shape-1"></div>
     <div class="hero-shape hero-shape-2"></div>
     <div class="hero-shape hero-shape-3"></div>
-    <div class="hero-content">
-      <p class="hero-eyebrow">Yamaguchi / Nagato</p>
-      <h1 class="hero-title">
-        <span class="hero-line">旬の素材と、</span><br>
-        <span class="hero-line">ていねいな</span><br>
-        <span class="hero-line accent">時間。</span>
-      </h1>
-      <p class="hero-sub">"Seasonal ingredients, crafted with care."</p>
-      <div class="hero-actions">
-        <a href="https://lin.ee/75Gqk1m" class="btn btn-primary" target="_blank" rel="noopener">LINEでお問い合わせ</a>
-        <a href="#" class="btn btn-outline" onclick="goTo(1);return false;">もっと見る</a>
+
+    <div class="hero-photos">
+      <div class="hero-photo hero-photo-1">
+        <img src="images/shops/engawa-2.jpg" alt="">
       </div>
+      <div class="hero-photo hero-photo-2">
+        <img src="images/shops/senzakitchen-2.jpg" alt="">
+      </div>
+    </div>
+    <div class="hero-chara-wrap">
+      <div class="hero-balloon" id="hero-balloon">今日もおいしいものを作ってるよ🌰</div>
+      <img src="images/chara1.png" alt="りすたっちキャラクター" class="hero-chara">
+    </div>
+
+    <div class="hero-content">
     </div>
     <div class="scroll-indicator">
       <div class="scroll-line"></div>
       <span>scroll</span>
     </div>
-  </section>
-
-  <!-- ══ Panel 1: Chapter 1 ══ -->
-  <section class="panel panel-ch1" id="panel-1">
-    <div class="sp-bottom">
-      <p class="sp-label">Chapter 1</p>
-      <h2 class="sp-catch">製菓の基礎を学ぶ</h2>
-      <p class="sp-body">製菓専門学校で洋菓子づくりの基礎を学びました。</p>
+    <div class="hero-wave">
+      <svg viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,40 C300,80 900,0 1200,40 L1200,80 L0,80 Z" fill="#EDE4D8"/>
+      </svg>
     </div>
   </section>
 
-  <!-- ══ Panel 2: Chapter 2 ══ -->
-  <section class="panel panel-ch2" id="panel-2">
-    <div class="sp-left">
-      <p class="sp-label">Chapter 2</p>
-      <h2 class="sp-catch sp-catch--lg">洋菓子店<br>での<br>実務経験</h2>
-      <p class="sp-body">洋菓子店に勤務し、現場で技術を磨きました。</p>
+  <!-- ══ 2. お取扱店 ══ -->
+  <section id="shops">
+    <div class="container">
+      <p class="section-label reveal">where to buy</p>
+      <h2 class="section-title reveal reveal-d1">お取扱店</h2>
+      <div class="shops-grid">
+
+        <div class="shop-card reveal">
+          <div class="shop-card-photos">
+            <img src="images/shops/suzuyatch-2.jpg" class="shop-slide active" alt="すずやっち">
+            <img src="images/shops/suzuyatch-3.jpg" class="shop-slide" alt="すずやっち">
+            <div class="shop-dots">
+              <button class="shop-dot active" data-index="0"></button>
+              <button class="shop-dot" data-index="1"></button>
+            </div>
+          </div>
+          <div class="shop-card-basic">
+            <div class="shop-card-name">
+              <img src="images/shops/suzuyatch-1.jpg" class="shop-logo" alt="すずやっち">
+              <h3>すずやっち</h3>
+            </div>
+            <p class="shop-area">山口県長門市</p>
+            <p class="shop-hours">水曜日 10:00–17:00</p>
+            <p class="shop-closed">定休日：月・火・木・金・土・日曜日</p>
+            <a href="https://www.instagram.com/suzuyatti" class="shop-ig" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Instagram"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+            <p class="shop-desc">手作りの生姜糖、りすたっちの焼き菓子、ハンドメイドのバッグなど販売しております。</p>
+          </div>
+        </div>
+
+        <div class="shop-card reveal">
+          <div class="shop-card-photos">
+            <img src="images/shops/engawa-2.jpg" class="shop-slide active" alt="engawa YUMOTO">
+            <img src="images/shops/engawa-3.jpg" class="shop-slide" alt="engawa YUMOTO">
+            <div class="shop-dots">
+              <button class="shop-dot active" data-index="0"></button>
+              <button class="shop-dot" data-index="1"></button>
+            </div>
+          </div>
+          <div class="shop-card-basic">
+            <div class="shop-card-name">
+              <img src="images/shops/engawa-1.jpg" class="shop-logo" alt="engawa YUMOTO">
+              <h3>engawa YUMOTO</h3>
+            </div>
+            <p class="shop-area">山口県長門市湯本</p>
+            <p class="shop-hours">火・土・日曜日 10:00–16:00</p>
+            <p class="shop-closed">定休日：月・水・木・金曜日</p>
+            <a href="https://www.instagram.com/engawayumoto" class="shop-ig" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Instagram"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+            <p class="shop-desc">築70年以上の倉庫をリノベーションしたカフェ兼レンタルスペースで、地元の焼き物や雑貨、焼き菓子などが楽しめる心やすらぐ場所です。</p>
+          </div>
+        </div>
+
+        <div class="shop-card reveal">
+          <div class="shop-card-photos">
+            <img src="images/shops/senzakitchen-2.jpg" class="shop-slide active" alt="センザキッチン">
+            <img src="images/shops/senzakitchen-3.jpg" class="shop-slide" alt="センザキッチン">
+            <div class="shop-dots">
+              <button class="shop-dot active" data-index="0"></button>
+              <button class="shop-dot" data-index="1"></button>
+            </div>
+          </div>
+          <div class="shop-card-basic">
+            <div class="shop-card-name">
+              <img src="images/shops/senzakitchen-1.jpg" class="shop-logo" alt="センザキッチン">
+              <h3>センザキッチン</h3>
+            </div>
+            <p class="shop-area">山口県長門市仙崎</p>
+            <p class="shop-hours">9:00–18:00</p>
+            <p class="shop-closed">定休日：第2木曜日</p>
+            <a href="https://www.instagram.com/senzakitchen" class="shop-ig" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Instagram"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+            <p class="shop-desc">新鮮な地魚や野菜など地元食材が並ぶ直売所と海を望むグリルハウス、レストラン、観光案内に加え、木のおもちゃで遊べる「長門おもちゃ美術館」などを併設する複合施設です。</p>
+          </div>
+        </div>
+
+        <div class="shop-card reveal">
+          <div class="shop-card-photos">
+            <img src="images/shops/yuzuri-2.jpg" class="shop-slide active" alt="yuzuri">
+            <img src="images/shops/yuzuri-3.jpg" class="shop-slide" alt="yuzuri">
+            <div class="shop-dots">
+              <button class="shop-dot active" data-index="0"></button>
+              <button class="shop-dot" data-index="1"></button>
+            </div>
+          </div>
+          <div class="shop-card-basic">
+            <div class="shop-card-name">
+              <img src="images/shops/yuzuri-1.jpg" class="shop-logo" alt="yuzuri">
+              <h3>yuzuri</h3>
+            </div>
+            <p class="shop-area">山口県長門市</p>
+            <p class="shop-hours">11:00–17:00</p>
+            <p class="shop-closed">定休日：不定休</p>
+            <a href="https://www.instagram.com/yuzuri_nagato_shop" class="shop-ig" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Instagram"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+            <p class="shop-desc">オーダーメイド刺繍雑貨や県内外作家の手作り雑貨を販売しつつ、季節のソフトクリームやリキュールをかけた「大人のソフト」、シェイク、生ビールなども販売しています。</p>
+          </div>
+        </div>
+
+      </div>
     </div>
   </section>
 
-  <!-- ══ Panel 3: Chapter 3 ══ -->
-  <section class="panel panel-ch3" id="panel-3">
-    <div class="sp-center">
-      <p class="sp-label">Chapter 3</p>
-      <h2 class="sp-catch">「ジャパンケーキショー東京」<br>で受賞</h2>
-      <p class="sp-body">小型工芸菓子部門にて</p>
-      <p class="sp-award">連合会会長賞<span>最高ランク</span></p>
+  <!-- ══ 3. 商品について ══ -->
+  <section id="about">
+    <div class="wave-top">
+      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,65 C360,15 720,72 1080,28 C1260,8 1380,52 1440,48 L1440,80 L0,80 Z" fill="#FAF7F2"/>
+      </svg>
+    </div>
+    <div class="container">
+      <p class="section-label reveal">products</p>
+      <h2 class="section-title reveal reveal-d1">商品について</h2>
+
+      <div class="about-products reveal reveal-d1">
+        <p class="about-products-lead" style="text-align:center">旬の素材を活かした手づくりの焼き菓子。クッキー・フィナンシェ・タルトなど、季節ごとに変わるラインナップをご用意しています。</p>
+      </div>
+
+      <div class="gallery reveal reveal-d2">
+        <div class="gallery-item"><div class="gallery-img-wrap gallery-placeholder"></div></div>
+        <div class="gallery-item"><div class="gallery-img-wrap gallery-placeholder"></div></div>
+        <div class="gallery-item"><div class="gallery-img-wrap gallery-placeholder"></div></div>
+        <div class="gallery-item"><div class="gallery-img-wrap gallery-placeholder"></div></div>
+        <div class="gallery-item"><div class="gallery-img-wrap gallery-placeholder"></div></div>
+        <div class="gallery-item"><div class="gallery-img-wrap gallery-placeholder"></div></div>
+      </div>
+
+      <div class="about-ig reveal reveal-d3">
+        <p class="about-ig-text">最新の商品はInstagramでご覧いただけます。</p>
+        <a href="https://www.instagram.com/risutouch" class="about-ig-link" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          <span>@risutouch</span>
+        </a>
+      </div>
+
+      <div class="about-brand reveal reveal-d3">
+        <div class="about-brand-card">
+          <div class="about-brand-photo">
+            <img src="images/maker.jpg" alt="作り手">
+          </div>
+          <p class="about-story-text">製菓専門学校で洋菓子づくりの基礎を学び、洋菓子店での実務経験を積んだのち、2021年に山口県長門市でりすたっちをオープン。豆腐店跡地を改装した小さなアトリエで、旬の素材とていねいな時間を大切にした焼き菓子をつくっています。</p>
+        </div>
+        <div class="about-brand-card">
+          <div class="about-award">
+            <p class="about-story-text">ジャパンケーキショー東京にて、小型工芸菓子部門で連合会会長賞（最高ランク）を受賞。</p>
+          </div>
+          <div class="about-brand-photo">
+            <img src="images/syou.jpg" alt="連合会会長賞受賞作品">
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
-  <!-- ══ Panel 4: Chapter 4 ══ -->
-  <section class="panel panel-ch4" id="panel-4">
-    <div class="sp-right">
-      <p class="sp-label">Chapter 4</p>
-      <h2 class="sp-catch sp-catch--xl">「りすたっち」の<br>オープン</h2>
-      <p class="sp-body">2021年、豆腐店跡地を改装し開店。</p>
+  <!-- ══ 4. よくある質問 ══ -->
+  <section id="contact">
+    <div class="wave-top">
+      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,30 Q600,88 1440,42 L1440,80 L0,80 Z" fill="#EDE4D8"/>
+      </svg>
+    </div>
+    <div class="container">
+      <p class="section-label reveal">FAQ</p>
+      <h2 class="section-title reveal reveal-d1">よくある質問</h2>
+      <div class="faq-list reveal reveal-d2">
+        <details class="faq-item">
+          <summary>通販・発送はしていますか？</summary>
+          <div class="faq-content"><p>現在、通販・発送は行っておりません。各委託販売店でお求めください。</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>ギフト包装はできますか？</summary>
+          <div class="faq-content"><p>ギフト対応しております。ご注文・ご相談はLINEまたはInstagramからどうぞ。</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>アレルギー対応はしていますか？</summary>
+          <div class="faq-content"><p>アレルギーのご相談はLINEまたはInstagramからお気軽にご連絡ください。</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>どのくらい日持ちしますか？</summary>
+          <div class="faq-content"><p>商品によって異なります。詳しくは各商品のパッケージ、またはお問い合わせください。</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>予約・取り置きはできますか？</summary>
+          <div class="faq-content"><p>ご予約・取り置きについてはLINEまたはInstagramからご相談ください。</p></div>
+        </details>
+      </div>
     </div>
   </section>
 
-  <!-- ══ Panel dots ══ -->
-  <div class="panel-dots" id="panel-dots">
-    <span class="pdot active" data-panel="0"></span>
-    <span class="pdot" data-panel="1"></span>
-    <span class="pdot" data-panel="2"></span>
-    <span class="pdot" data-panel="3"></span>
-    <span class="pdot" data-panel="4"></span>
-  </div>
+  <!-- ══ 5. お問い合わせ ══ -->
+  <section id="contact-section">
+    <div class="wave-top">
+      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,55 C200,18 400,72 600,38 C800,8 1000,62 1200,38 C1320,24 1400,52 1440,48 L1440,80 L0,80 Z" fill="#FAF7F2"/>
+      </svg>
+    </div>
+    <div class="container">
+      <p class="section-label reveal">contact</p>
+      <h2 class="section-title reveal reveal-d1">お問い合わせ</h2>
+      <div class="contact-intro reveal reveal-d2">
+        <p class="contact-lead">ご注文やギフトのご相談など、お気軽にどうぞ。<br>一人で製造しているため、ご予約はお早めにご連絡いただけますと幸いです。</p>
+      </div>
+
+      <div class="contact-links reveal reveal-d3">
+        <div class="contact-sns-row">
+          <a href="https://lin.ee/75Gqk1m" class="contact-sns-card" target="_blank" rel="noopener">
+            <svg class="sns-icon-lg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.105.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
+            </svg>
+            <span class="sns-label">LINE</span>
+          </a>
+          <a href="https://www.instagram.com/risutouch" class="contact-sns-card" target="_blank" rel="noopener">
+            <svg class="sns-icon-lg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+            </svg>
+            <span class="sns-label">Instagram</span>
+          </a>
+          <a href="mailto:risutouch@gmail.com" class="contact-sns-card">
+            <svg class="sns-icon-lg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M20 4H4C2.9 4 2 4.9 2 6v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            <span class="sns-label">Mail</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ Footer ══ -->
+  <footer>
+    <div class="wave-top">
+      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,22 Q360,82 720,32 Q1080,0 1440,38 L1440,80 L0,80 Z" fill="#3A2A20"/>
+      </svg>
+    </div>
+    <div class="footer-inner">
+      <div class="footer-left">
+        <nav class="footer-nav">
+          <a href="#shops">お取扱店</a>
+          <a href="#about">商品について</a>
+          <a href="#contact">よくある質問</a>
+          <a href="#contact-section">お問い合わせ</a>
+        </nav>
+      </div>
+      <div class="footer-right">
+        <div class="footer-sns">
+          <a href="https://www.instagram.com/risutouch" target="_blank" rel="noopener" class="footer-sns-link" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="https://lin.ee/75Gqk1m" target="_blank" rel="noopener" class="footer-sns-link" aria-label="LINE">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+          </a>
+          <a href="mailto:risutouch@gmail.com" class="footer-sns-link" aria-label="メール">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+          </a>
+        </div>
+        <p class="footer-copy">© 焼き菓子.りすたっち</p>
+      </div>
+    </div>
+  </footer>
 
   <script src="script.js"></script>
   <script>
