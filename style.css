@@ -1017,8 +1017,8 @@ footer {
     letter-spacing: 0.08em;
     color: var(--brown);
     position: absolute;
-    top: 28px; left: 50%;
-    transform: translateX(-50%);
+    top: 20px; left: 20px;
+    transform: none;
     white-space: nowrap;
     z-index: 3;
     animation: fadeUp 0.8s 0.2s ease both;
