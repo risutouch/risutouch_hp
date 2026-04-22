@@ -1021,7 +1021,6 @@ footer {
     transform: none;
     white-space: nowrap;
     z-index: 3;
-    animation: fadeUp 0.8s 0.2s ease both;
   }
 
   .scroll-indicator { left: 24px; transform: none; bottom: 80px; }
