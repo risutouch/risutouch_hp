@@ -1,62 +1,26 @@
 /* ================================================
-   りすたっち — Full-page Fade Panel Engine
+   りすたっち — Scroll Site
    ================================================ */
 
-// ── パネル管理 ──────────────────────────────────
-const panels  = Array.from(document.querySelectorAll('.panel'));
-const pdots   = Array.from(document.querySelectorAll('.pdot'));
 const siteHeader = document.getElementById('site-header');
-let current   = 0;
-let animating = false;
-const LOCK_MS = 850;
 
-function goTo(n) {
-  if (animating) return;
-  if (n < 0 || n >= panels.length) return;
-  if (n === current) return;
-
-  animating = true;
-  panels[current].classList.remove('active');
-  panels[n].classList.add('active');
-  pdots.forEach((d, i) => d.classList.toggle('active', i === n));
-  if (siteHeader) siteHeader.classList.toggle('scrolled', n > 0);
-
-  current = n;
-  setTimeout(() => { animating = false; }, LOCK_MS);
-}
-
-// ── ホイール ────────────────────────────────────
-let wheelBuf = 0;
-window.addEventListener('wheel', e => {
-  e.preventDefault();
-  if (animating) return;
-  wheelBuf += e.deltaY;
-  if (wheelBuf >  60) { goTo(current + 1); wheelBuf = 0; }
-  if (wheelBuf < -60) { goTo(current - 1); wheelBuf = 0; }
-}, { passive: false });
-
-// ── タッチ ──────────────────────────────────────
-let touchY = 0;
-window.addEventListener('touchstart', e => {
-  touchY = e.touches[0].clientY;
+// ── ヘッダー スクロール状態 ──────────────────────
+window.addEventListener('scroll', () => {
+  siteHeader.classList.toggle('scrolled', window.scrollY > 60);
 }, { passive: true });
-window.addEventListener('touchmove', e => {
-  e.preventDefault();
-}, { passive: false });
-window.addEventListener('touchend', e => {
-  const diff = touchY - e.changedTouches[0].clientY;
-  if (diff >  50) goTo(current + 1);
-  if (diff < -50) goTo(current - 1);
-});
 
-// ── キーボード ──────────────────────────────────
-window.addEventListener('keydown', e => {
-  if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
-  if (e.key === 'ArrowUp')                    { e.preventDefault(); goTo(current - 1); }
-});
+// ── スクロールアニメーション（再スクロールで再発火）──
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.intersectionRatio >= 0.15) {
+      entry.target.classList.add('visible');
+    } else if (entry.intersectionRatio === 0) {
+      entry.target.classList.remove('visible');
+    }
+  });
+}, { threshold: [0, 0.15] });
 
-// ── ドット クリック ──────────────────────────────
-pdots.forEach(d => d.addEventListener('click', () => goTo(+d.dataset.panel)));
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 // ── ハンバーガー ────────────────────────────────
 function toggleMenu() {
@@ -73,4 +37,84 @@ function closeMenu() {
 // ── ヒーロー文字アニメーション ────────────────
 document.querySelectorAll('.hero-char').forEach((el, i) => {
   el.style.animationDelay = `${0.04 * i + 0.5}s`;
+});
+
+// ── キャラクター吹き出し ──────────────────────
+(async () => {
+  const balloon = document.getElementById('hero-balloon');
+  if (!balloon) return;
+  try {
+    const res = await fetch('data.json?v=' + Date.now());
+    const data = await res.json();
+    if (data.message) {
+      balloon.textContent = data.message;
+      if (data.post_url) {
+        const a = document.createElement('a');
+        a.href = data.post_url;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.textContent = ' →Instagram';
+        balloon.appendChild(a);
+      }
+    }
+  } catch {
+    // data.jsonが取得できなければデフォルトのまま
+  }
+})();
+
+
+// ── FAQアコーディオン アニメーション ─────────────
+document.querySelectorAll('.faq-item').forEach(details => {
+  const summary = details.querySelector('summary');
+  const content = details.querySelector('.faq-content');
+
+  summary.addEventListener('click', e => {
+    e.preventDefault();
+    if (details.open) {
+      content.style.maxHeight = content.scrollHeight + 'px';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        content.style.maxHeight = '0';
+      }));
+      content.addEventListener('transitionend', () => {
+        details.removeAttribute('open');
+      }, { once: true });
+    } else {
+      details.setAttribute('open', '');
+      content.style.maxHeight = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        content.style.maxHeight = content.scrollHeight + 'px';
+      }));
+    }
+  });
+});
+
+// ── 店舗写真クロスフェード＋ドット ───────────────
+document.querySelectorAll('.shop-card-photos').forEach(photos => {
+  const slides = photos.querySelectorAll('.shop-slide');
+  const dots   = photos.querySelectorAll('.shop-dot');
+  let current  = 0;
+  let timer;
+
+  function goTo(index) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = index;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+
+  function startTimer() {
+    timer = setInterval(() => goTo((current + 1) % slides.length), 6000);
+  }
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      clearInterval(timer);
+      goTo(i);
+      startTimer();
+    });
+  });
+
+  // 店舗ごとにランダムな初期遅延（0〜4秒）
+  setTimeout(startTimer, Math.random() * 4000);
 });
