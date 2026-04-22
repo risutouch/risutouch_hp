@@ -998,10 +998,8 @@ footer {
     box-shadow: none; padding: 16px 20px; height: auto;
   }
   header.scrolled { box-shadow: 0 2px 16px rgba(122,96,80,0.1); }
-  header.scrolled .logo { opacity: 0; pointer-events: none; width: 0; overflow: hidden; }
   nav { display: none; }
   .hamburger { display: flex; }
-  .logo { transition: opacity 0.3s, width 0.3s; }
 
   .scroll-indicator { left: 24px; transform: none; bottom: 80px; }
   .hero-stage { flex-direction: column; align-items: center; gap: 24px; padding: 100px 24px 120px; }
