@@ -86,11 +86,6 @@ def get_recent_news(days: int = 7) -> list[dict]:
         if len(results) >= 3:
             break
 
-    # 日付フィルタ（日付が取れた場合のみ）
-    dated = [r for r in results if r["date"] is not None]
-    if dated:
-        results = [r for r in dated if r["date"] >= cutoff]
-
     return results
 
 
