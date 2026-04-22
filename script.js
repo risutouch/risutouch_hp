@@ -171,7 +171,7 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     const newImg = document.createElement('img');
     newImg.src = next;
     newImg.alt = 'りすたっちの焼き菓子';
-    newImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1s ease;';
+    newImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 3s ease;';
     oldImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';
     wrap.style.position = 'relative';
     wrap.insertBefore(newImg, oldImg);
@@ -186,6 +186,6 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
       wrap.style.position = '';
       reserve.push(shown[slot]);
       shown[slot] = next;
-    }, 1100);
+    }, 3200);
   }, 5000);
 })();
