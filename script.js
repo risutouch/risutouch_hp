@@ -126,3 +126,25 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   // 店舗ごとにランダムな初期遅延（0〜4秒）
   setTimeout(startTimer, Math.random() * 4000);
 });
+
+// ── 商品ギャラリー（ランダム表示） ──────────────
+(function () {
+  const gallery = document.getElementById('products-gallery');
+  if (!gallery) return;
+  const all = [
+    'images/products/products01.jpg',
+    'images/products/products02.jpg',
+    'images/products/products03.jpg',
+    'images/products/products04.jpg',
+    'images/products/products05.jpg',
+    'images/products/products06.jpg',
+    'images/products/products07.jpg',
+  ];
+  const shuffled = all.sort(() => Math.random() - 0.5);
+  gallery.querySelectorAll('.gallery-img-wrap').forEach((wrap, i) => {
+    const img = document.createElement('img');
+    img.src = shuffled[i % shuffled.length];
+    img.alt = 'りすたっちの焼き菓子';
+    wrap.appendChild(img);
+  });
+})();
