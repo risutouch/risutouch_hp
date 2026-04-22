@@ -34,10 +34,6 @@ function closeMenu() {
   );
 }
 
-// ── ヒーロー文字アニメーション ────────────────
-document.querySelectorAll('.hero-char').forEach((el, i) => {
-  el.style.animationDelay = `${0.04 * i + 0.5}s`;
-});
 
 // ── キャラクター吹き出し ──────────────────────
 (async () => {
