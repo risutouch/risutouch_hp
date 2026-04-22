@@ -634,6 +634,17 @@ footer           { z-index: 6; }
   line-height: 2.2;
 }
 .about-award {}
+.about-award-label {
+  font-size: 0.82rem;
+  line-height: 1.9;
+  color: var(--text-mid);
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+.about-award-label strong {
+  color: var(--caramel);
+  font-size: 1rem;
+}
 .award-event {
   font-size: 0.78rem;
   letter-spacing: 0.16em;
