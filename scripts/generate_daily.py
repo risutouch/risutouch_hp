@@ -19,7 +19,7 @@ except ImportError:
     print("pip install requests beautifulsoup4")
     sys.exit(1)
 
-NANAVI_URL = "https://nanavi.jp/senzakitchen/news/"
+NANAVI_RSS = "https://nanavi.jp/senzakitchen/feed/"
 
 SITE_FALLBACKS = [
     {"section": "shops",   "hint": "お取扱店（センザキッチン・えんがわ湯本・すずやっち・ゆずり）の紹介"},
@@ -49,42 +49,36 @@ def parse_date(text: str) -> datetime | None:
     return None
 
 
-def get_recent_news(days: int = 7) -> list[dict]:
+def get_recent_news(count: int = 3) -> list[dict]:
     try:
-        resp = requests.get(NANAVI_URL, timeout=10, headers={
+        resp = requests.get(NANAVI_RSS, timeout=10, headers={
             "User-Agent": "Mozilla/5.0 (compatible; risutouch-bot/1.0)"
         })
         resp.raise_for_status()
     except Exception as e:
-        print(f"fetch error: {e}")
+        print(f"RSS fetch error: {e}")
         return []
 
-    soup = BeautifulSoup(resp.text, "html.parser")
-    cutoff = datetime.now(timezone.utc) - timedelta(days=days)
+    soup = BeautifulSoup(resp.text, "xml")
     results = []
 
-    for item in soup.select(".news-item, article, .post, .entry"):
-        # タイトル
-        title_el = item.select_one("a")
-        title = title_el.get_text(strip=True) if title_el else ""
-        url = title_el.get("href", "") if title_el else ""
-        if url and not url.startswith("http"):
-            url = "https://nanavi.jp" + url
+    for item in soup.select("item")[:count]:
+        title = item.find("title")
+        link  = item.find("link")
+        pub   = item.find("pubDate")
 
-        # 日付（テキスト全体から正規表現で探す）
-        date = None
-        for el in item.select("time, .date, span, p"):
-            date = parse_date(el.get_text())
-            if date:
-                break
-        if not date:
-            date = parse_date(item.get_text())
+        title_text = title.get_text(strip=True) if title else ""
+        url_text   = link.get_text(strip=True) if link else ""
+        date       = None
+        if pub:
+            try:
+                from email.utils import parsedate_to_datetime
+                date = parsedate_to_datetime(pub.get_text(strip=True))
+            except Exception:
+                date = parse_date(pub.get_text())
 
-        if title and (date is None or date >= cutoff):
-            results.append({"title": title, "url": url, "date": date})
-
-        if len(results) >= 3:
-            break
+        if title_text:
+            results.append({"title": title_text, "url": url_text, "date": date})
 
     return results
 
@@ -136,7 +130,7 @@ def main():
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     fallback = SITE_FALLBACKS[datetime.now().weekday() % len(SITE_FALLBACKS)]
 
-    news = get_recent_news(days=7)
+    news = get_recent_news(count=3)
     print(f"取得したニュース: {len(news)}件")
 
     message = generate_message(news, fallback)

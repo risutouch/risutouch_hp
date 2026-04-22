@@ -46,8 +46,10 @@ document.querySelectorAll('.hero-char').forEach((el, i) => {
   try {
     const res = await fetch('data.json?v=' + Date.now());
     const data = await res.json();
-    if (data.message) {
-      balloon.textContent = data.message;
+    const messages = data.messages || (data.message ? [data.message] : []);
+    const msg = messages[Math.floor(Math.random() * messages.length)];
+    if (msg) {
+      balloon.textContent = msg;
       if (data.post_url) {
         const a = document.createElement('a');
         a.href = data.post_url;
