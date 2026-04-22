@@ -92,14 +92,41 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 40px;
 }
 
-/* ── ヘッダー（ハンバーガーのみ） ── */
+/* ── ヘッダー ── */
 header {
   position: fixed;
   top: 20px;
-  right: 24px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 200;
+  width: calc(100% - 80px);
+  max-width: 1100px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(18px);
+  border-radius: 100px;
+  box-shadow: 0 4px 32px rgba(122,96,80,0.12), 0 0 0 1px rgba(122,96,80,0.07);
+  padding: 0 32px;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: box-shadow 0.4s;
+}
+header.scrolled {
+  box-shadow: 0 8px 40px rgba(122,96,80,0.18), 0 0 0 1px rgba(122,96,80,0.1);
+}
+.logo {
   display: flex;
   align-items: center;
+  gap: 10px;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.98rem;
+  letter-spacing: 0.08em;
+  color: var(--brown);
+}
+.logo-img {
+  width: 40px; height: 40px;
+  object-fit: contain;
 }
 nav { display: flex; align-items: center; gap: 4px; }
 nav a {
@@ -119,23 +146,8 @@ nav a:hover { color: var(--caramel); }
 }
 .nav-cta:hover { background: var(--brown) !important; }
 
-/* ── ヒーロー内ロゴ ── */
-.hero-logo {
-  position: absolute;
-  top: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: 'Noto Serif JP', serif;
-  font-size: 0.98rem;
-  letter-spacing: 0.08em;
-  color: var(--brown);
-  z-index: 3;
-  animation: fadeUp 0.8s 0.2s ease both;
-  white-space: nowrap;
-}
+/* ── ヒーロー内ロゴ（モバイル用） ── */
+.hero-logo { display: none; }
 .hero-logo-img {
   width: 40px; height: 40px;
   object-fit: contain;
@@ -985,9 +997,32 @@ footer {
    モバイル
    ════════════════════════════════════════════════ */
 @media (max-width: 860px) {
-  header { top: 16px; right: 16px; }
+  header {
+    width: auto; left: auto; transform: none;
+    top: 16px; right: 16px;
+    background: none; backdrop-filter: none;
+    border-radius: 0; box-shadow: none;
+    padding: 0; height: auto;
+  }
+  header.scrolled { box-shadow: none; }
   nav { display: none; }
+  .logo { display: none; }
   .hamburger { display: flex; }
+  .hero-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    color: var(--brown);
+    position: absolute;
+    top: 28px; left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    z-index: 3;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
 
   .scroll-indicator { left: 24px; transform: none; bottom: 80px; }
   .hero-stage { flex-direction: column; align-items: center; gap: 24px; padding: 100px 24px 120px; }
