@@ -55,9 +55,15 @@ document.querySelectorAll('.hero-char').forEach((el, i) => {
         a.href = data.post_url;
         a.target = '_blank';
         a.rel = 'noopener';
-        a.textContent = ' →Instagram';
+        a.textContent = data.post_label || ' →詳細を見る';
         balloon.appendChild(a);
       }
+    }
+    if (data.images && data.images.length >= 1) {
+      const img1 = document.getElementById('hero-photo-img-1');
+      const img2 = document.getElementById('hero-photo-img-2');
+      if (img1 && data.images[0]) img1.src = data.images[0];
+      if (img2 && data.images[1]) img2.src = data.images[1];
     }
   } catch {
     // data.jsonが取得できなければデフォルトのまま

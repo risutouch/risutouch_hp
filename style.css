@@ -249,56 +249,6 @@ nav a:hover { color: var(--caramel); }
   background: var(--bg);
   overflow: hidden;
 }
-.hero-deco {
-  position: absolute; inset: 0;
-  pointer-events: none;
-}
-.hero-deco svg {
-  position: absolute;
-  top: 0; right: 0;
-  width: 56%; height: 100%;
-}
-.hero-deco path {
-  fill: none;
-  stroke-dasharray: 1200;
-  stroke-dashoffset: 1200;
-  animation: drawLine 3.5s cubic-bezier(0.4,0,0.2,1) forwards;
-}
-.hero-deco path:nth-child(1) { stroke: rgba(196,149,106,0.45); stroke-width: 1.2; animation-delay: 0.1s; }
-.hero-deco path:nth-child(2) { stroke: rgba(196,149,106,0.28); stroke-width: 1.0; animation-delay: 0.35s; }
-.hero-deco path:nth-child(3) { stroke: rgba(221,180,138,0.35); stroke-width: 1.4; animation-delay: 0.6s; }
-.hero-deco path:nth-child(4) { stroke: rgba(122,96,80,0.2);   stroke-width: 0.8; animation-delay: 0.85s; }
-.hero-deco path:nth-child(5) { stroke: rgba(196,149,106,0.18); stroke-width: 1.0; animation-delay: 1.1s; }
-
-.hero-shape {
-  position: absolute;
-  border-radius: 60px;
-  pointer-events: none;
-  will-change: transform;
-}
-.hero-shape-1 {
-  width: 300px; height: 100px;
-  background: linear-gradient(135deg, rgba(221,180,138,0.6), rgba(196,149,106,0.35));
-  top: 38%; right: 10%;
-  filter: blur(1.5px);
-  animation: floatA 5.5s ease-in-out infinite;
-}
-.hero-shape-2 {
-  width: 200px; height: 68px;
-  background: linear-gradient(135deg, rgba(243,230,215,0.75), rgba(221,180,138,0.45));
-  top: 56%; right: 28%;
-  border-radius: 40px;
-  filter: blur(1px);
-  animation: floatB 7s ease-in-out infinite;
-}
-.hero-shape-3 {
-  width: 130px; height: 46px;
-  background: rgba(251,247,242,0.85);
-  top: 24%; right: 20%;
-  border-radius: 24px;
-  filter: blur(1px);
-  animation: floatA 6.5s 1.2s ease-in-out infinite;
-}
 
 .hero-content {
   position: relative;
@@ -433,7 +383,7 @@ nav a:hover { color: var(--caramel); }
   pointer-events: none;
 }
 .hero-chara {
-  width: 110px;
+  width: 150px;
   filter: drop-shadow(0 8px 16px rgba(58,42,32,0.15));
 }
 .hero-balloon {
@@ -443,7 +393,10 @@ nav a:hover { color: var(--caramel); }
   padding: 10px 14px;
   font-size: 0.78rem;
   color: var(--text-mid);
-  white-space: nowrap;
+  white-space: normal;
+  max-width: 220px;
+  line-height: 1.55;
+  text-align: center;
   box-shadow: 0 4px 16px rgba(58,42,32,0.12);
   margin-bottom: 8px;
   animation: fadeUp 0.8s 2s ease both;
@@ -1047,9 +1000,9 @@ footer {
 
   .hero-content { padding: 110px 28px 80px; }
   .scroll-indicator { left: 28px; bottom: 36px; }
-  .hero-deco svg { width: 80%; opacity: 0.5; }
   .hero-photos { display: none; }
-  .hero-chara { width: 80px; right: 16px; bottom: 60px; }
+  .hero-chara { width: 115px; right: 16px; bottom: 60px; }
+  .hero-balloon { max-width: 180px; font-size: 0.74rem; }
 
   #shops, #products, #about, #faq, #contact { padding: 80px 24px 80px; }
 
