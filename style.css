@@ -31,6 +31,23 @@ img { display: block; width: 100%; }
 a { color: inherit; text-decoration: none; }
 
 /* ── Keyframes ── */
+
+@keyframes floatThumb {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+@keyframes floatGentle {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+@keyframes floatGentleMobile {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(-7px); }
+}
+@keyframes floatHero {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-10px); }
+}
 @keyframes charIn {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -256,8 +273,9 @@ nav a:hover { color: var(--caramel); }
   background: var(--bg);
   overflow: hidden;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  padding-top: 108px;
 }
 
 .hero-content { display: none; }
@@ -269,6 +287,7 @@ nav a:hover { color: var(--caramel); }
   margin-bottom: 28px;
   animation: fadeUp 0.8s 0.3s ease both;
 }
+
 
 .scroll-indicator {
   position: absolute;
@@ -301,67 +320,86 @@ nav a:hover { color: var(--caramel); }
 }
 .hero-wave svg { width: 100%; height: 100%; display: block; }
 
-/* ── ヒーローステージ（中央フレックス） ── */
-.hero-stage {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 48px;
-  padding: 80px 40px 140px;
+/* ── ヒーローカルーセル ── */
+.hero-carousel {
   position: relative;
+  width: 100%;
+  height: 620px;
   z-index: 2;
 }
-
-/* ── 写真カード ── */
-.hero-photo {
-  flex-shrink: 0;
-  border-radius: 22px;
+.hero-ci {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 520px;
+  height: 520px;
+  margin-left: -260px;
+  margin-top: -260px;
   overflow: hidden;
-  box-shadow: 0 16px 48px rgba(58,42,32,0.18);
-  margin-bottom: 64px;
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgba(58,42,32,0.28);
 }
-.hero-photo img {
+.hero-ci img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
-.hero-photo-1 {
-  width: 260px;
-  height: 210px;
-  transform: rotate(-3deg);
-  animation: floatA 6s ease-in-out infinite;
+
+/* ── サムネイル（PC・モバイル共通） ── */
+.hero-thumbs {
+  position: absolute;
+  top: 418px;
+  transform: translateY(-50%);
+  left: calc(50% - 260px - 24px - 62px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 4;
 }
-.hero-photo-2 {
-  width: 220px;
-  height: 180px;
-  transform: rotate(2.5deg);
-  animation: floatB 7.5s ease-in-out infinite;
-  animation-delay: 1s;
+.hero-thumb {
+  width: 62px; height: 62px;
+  border-radius: 8px;
+  overflow: hidden;
+  opacity: 0.4;
+  transition: opacity 0.3s;
+  flex-shrink: 0;
 }
+.hero-thumb.active {
+  opacity: 1;
+  outline: 2px solid var(--caramel);
+  outline-offset: 2px;
+}
+.hero-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* ── キャラクター＋吹き出し ── */
 .hero-chara-wrap {
+  position: absolute;
+  bottom: 80px;
+  right: 14%;
+  top: auto;
+  animation: floatGentle 5s ease-in-out infinite;
+  z-index: 4;
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: floatB 4s ease-in-out infinite;
   pointer-events: none;
 }
 .hero-chara {
-  width: 200px;
+  width: 180px;
   filter: drop-shadow(0 8px 16px rgba(58,42,32,0.15));
+  flex-shrink: 0;
 }
 .hero-balloon {
   position: relative;
   background: var(--white);
   border-radius: 16px;
-  padding: 10px 14px;
-  font-size: 0.78rem;
+  padding: 12px 18px;
+  font-size: 0.88rem;
   color: var(--text-mid);
   white-space: normal;
-  max-width: 220px;
-  line-height: 1.55;
+  max-width: 240px;
+  line-height: 1.6;
   text-align: center;
   box-shadow: 0 4px 16px rgba(58,42,32,0.12);
   margin-bottom: 8px;
@@ -1111,12 +1149,13 @@ footer {
   }
 
   .scroll-indicator { left: 24px; transform: none; bottom: 80px; }
-  .hero-stage { flex-direction: column; align-items: center; gap: 24px; padding: 100px 24px 120px; }
-  .hero-photo { margin-bottom: 0; }
-  .hero-photo-1 { width: 180px; height: 140px; }
-  .hero-photo-2 { display: none; }
-  .hero-chara { width: 140px; }
-  .hero-balloon { max-width: 200px; font-size: 0.76rem; }
+  #top { padding-top: 80px; }
+  .hero-carousel { height: 360px; }
+  .hero-ci { left: 50%; width: 355px; height: 355px; margin-left: -177px; margin-top: -177px; }
+  .hero-thumbs { top: calc(80px + 360px + 16px); left: 0; right: 0; transform: none; flex-direction: row; justify-content: center; }
+  .hero-chara-wrap { bottom: 70px; right: 4%; left: auto; transform: none; animation: floatGentle 5s ease-in-out infinite; }
+  .hero-chara { width: 130px; }
+  .hero-balloon { max-width: 180px; font-size: 0.74rem; }
 
   #shops, #products, #about, #faq, #contact { padding: 80px 24px 80px; }
 

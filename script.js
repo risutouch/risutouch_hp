@@ -35,6 +35,39 @@ function closeMenu() {
 }
 
 
+// ── ヒーローカルーセル ──────────────────────────
+(function () {
+  const carousel = document.getElementById('hero-carousel');
+  if (!carousel) return;
+
+  const items = Array.from(carousel.querySelectorAll('.hero-ci'));
+  const n = items.length;
+  let current = 0;
+
+  function update() {
+    items.forEach((item, i) => {
+      const isCenter = i === current;
+      item.classList.toggle('is-center', isCenter);
+      item.style.opacity = isCenter ? '1' : '0';
+      item.style.zIndex  = isCenter ? '2' : '1';
+    });
+    document.querySelectorAll('.hero-thumb').forEach((t, i) => {
+      t.classList.toggle('active', i === current);
+    });
+  }
+
+  items.forEach(el => el.style.transition = 'none');
+  update();
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    items.forEach(el => el.style.transition = 'opacity 0.8s ease');
+  }));
+
+  setInterval(() => {
+    current = (current + 1) % n;
+    update();
+  }, 3500);
+})();
+
 // ── キャラクター吹き出し ──────────────────────
 (async () => {
   const balloon = document.getElementById('hero-balloon');
@@ -54,12 +87,6 @@ function closeMenu() {
         a.textContent = data.post_label || ' →詳細を見る';
         balloon.appendChild(a);
       }
-    }
-    if (data.images && data.images.length >= 1) {
-      const img1 = document.getElementById('hero-photo-img-1');
-      const img2 = document.getElementById('hero-photo-img-2');
-      if (img1 && data.images[0]) img1.src = data.images[0];
-      if (img2 && data.images[1]) img2.src = data.images[1];
     }
   } catch {
     // data.jsonが取得できなければデフォルトのまま
