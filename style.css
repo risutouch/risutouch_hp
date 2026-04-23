@@ -505,9 +505,7 @@ footer           { z-index: 6; }
   width: 32px;
   height: 32px;
   object-fit: contain;
-  border-radius: 50%;
-  background: var(--bg2);
-  padding: 2px;
+  background: var(--white);
   flex-shrink: 0;
 }
 .shop-card-basic h3 {
@@ -646,7 +644,7 @@ footer           { z-index: 6; }
 .career-wrap {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 96px;
   margin-top: 32px;
   margin-bottom: 48px;
   width: fit-content;
@@ -654,41 +652,12 @@ footer           { z-index: 6; }
   margin-right: auto;
 }
 .career-images {
-  display: flex;
-  flex-direction: column;
-  gap: 36px;
   flex-shrink: 0;
-  align-items: center;
 }
-.career-circle-img {
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  border: 3px solid var(--caramel2);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg2);
-}
-.career-circle-img:nth-child(1) {
-  animation: float1 4s ease-in-out infinite;
-}
-.career-circle-img:nth-child(2) {
-  animation: float2 5s ease-in-out infinite;
-}
-.career-circle-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-@keyframes float1 {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-8px); }
-}
-@keyframes float2 {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-6px); }
+.career-single-img {
+  width: 180px;
+  border-radius: 10px;
+  display: block;
 }
 
 /* タイムライン経歴 */
@@ -1093,6 +1062,14 @@ footer {
   width: 15px; height: 15px;
   display: block;
 }
+.footer-address {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 6px;
+  letter-spacing: 0.04em;
+  text-align: right;
+}
+
 .footer-copy {
   font-size: 0.7rem;
   color: rgba(255,255,255,0.25);
@@ -1153,8 +1130,7 @@ footer {
   .about-award-section { flex-direction: column; text-align: center; }
   .maker-profile { flex-direction: column; gap: 12px; padding: 28px 20px; max-width: 88%; }
   .career-wrap { flex-direction: column; }
-  .career-images { flex-direction: row; justify-content: center; }
-  .career-circle-img { width: 100px; height: 100px; }
+  .career-single-img { width: 140px; }
   .maker-photo { width: 130px; }
   .maker-name { text-align: center; margin-top: 4px; }
   .maker-quote { font-size: 1.3rem; margin-bottom: 8px; }
