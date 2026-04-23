@@ -1168,8 +1168,8 @@ footer {
   .story-slide-img img { height: 220px; }
   .about-award-section { flex-direction: column; text-align: center; }
   .maker-profile { flex-direction: column; gap: 12px; padding: 28px 20px; max-width: 88%; }
-  .career-wrap { flex-direction: column; }
-  .career-single-img { width: 140px; }
+  .career-wrap { flex-direction: column-reverse; }
+  .career-single-img { width: 180px; }
   .maker-photo { width: 130px; }
   .maker-name { text-align: center; margin-top: 4px; }
   .maker-quote { font-size: 1.3rem; margin-bottom: 8px; }
