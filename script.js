@@ -141,35 +141,34 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   const wraps = Array.from(gallery.querySelectorAll('.gallery-img-wrap'));
   const SLOTS = wraps.length;
 
-  // シャッフルして初期表示
   const pool = [...all].sort(() => Math.random() - 0.5);
   const shown = pool.slice(0, SLOTS);
   const reserve = pool.slice(SLOTS);
 
+  // 最初から position:relative + position:absolute で統一
+  const BASE = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';
   wraps.forEach((wrap, i) => {
+    wrap.style.position = 'relative';
     const img = document.createElement('img');
     img.src = shown[i];
     img.alt = 'りすたっちの焼き菓子';
-    img.style.transition = 'opacity 0.8s ease';
+    img.style.cssText = BASE;
     wrap.appendChild(img);
   });
 
-  // 画像が2枚以上あれば定期差し替え
-  if (all.length <= SLOTS) return;
+  if (reserve.length === 0) return;
 
   setInterval(() => {
+    if (reserve.length === 0) return;
+
     const slot = Math.floor(Math.random() * SLOTS);
-    const next = reserve.splice(0, 1)[0];
+    const next = reserve.shift();
     const wrap = wraps[slot];
     const oldImg = wrap.querySelector('img');
 
-    // 古い画像を下に固定、新画像を上にフェードイン
-    wrap.style.position = 'relative';
-    oldImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';
-
     const newImg = document.createElement('img');
     newImg.alt = 'りすたっちの焼き菓子';
-    newImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 3s ease;';
+    newImg.style.cssText = BASE + 'opacity:0;transition:opacity 3s ease;';
     wrap.appendChild(newImg);
 
     newImg.onload = () => {
@@ -181,8 +180,7 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
 
     setTimeout(() => {
       if (wrap.contains(oldImg)) wrap.removeChild(oldImg);
-      newImg.style.cssText = 'width:100%;height:100%;object-fit:cover;';
-      wrap.style.position = '';
+      newImg.style.cssText = BASE;
       reserve.push(shown[slot]);
       shown[slot] = next;
     }, 3500);
