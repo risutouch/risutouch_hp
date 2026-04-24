@@ -94,11 +94,11 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: 0.28em;
   color: var(--caramel);
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin-bottom: 0;
 }
 .section-title {
   font-size: clamp(1.7rem, 2.6vw, 2.4rem);
-  margin-bottom: 56px;
+  margin-bottom: 28px;
   color: var(--text);
   letter-spacing: 0.04em;
 }
@@ -112,18 +112,18 @@ a { color: inherit; text-decoration: none; }
 /* ── ヘッダー ── */
 header {
   position: fixed;
-  top: 20px;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
   z-index: 200;
   width: calc(100% - 80px);
   max-width: 1100px;
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.88);
   backdrop-filter: blur(18px);
-  border-radius: 100px;
+  border-radius: 0 0 40px 40px;
   box-shadow: 0 4px 32px rgba(122,96,80,0.12), 0 0 0 1px rgba(122,96,80,0.07);
   padding: 0 32px;
-  height: 80px;
+  height: 72px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -275,7 +275,7 @@ nav a:hover { color: var(--caramel); }
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-top: 108px;
+  padding-top: 100px;
 }
 
 .hero-content { display: none; }
@@ -595,7 +595,7 @@ footer           { z-index: 6; }
 
 .about-products {
   max-width: 640px;
-  margin: 0 auto 72px;
+  margin: 0 auto 40px;
   text-align: center;
 }
 .about-products-lead {
@@ -606,6 +606,11 @@ footer           { z-index: 6; }
 }
 
 /* ── サブ見出し（作り手経歴・受賞歴など） ── */
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--bg3);
+  margin: 48px 0;
+}
 .sub-heading {
   font-size: 1.3rem;
   font-family: 'Noto Serif JP', serif;
@@ -652,11 +657,12 @@ footer           { z-index: 6; }
 }
 .maker-quote {
   font-family: 'Yomogi', cursive;
-  font-size: 1.4rem;
+  font-size: 1.55rem;
   line-height: 2.2;
-  color: var(--brown);
+  color: var(--text);
   position: relative;
   margin-bottom: 24px;
+  text-shadow: 0 1px 0 rgba(58,42,32,0.08);
 }
 
 .maker-name {
@@ -682,7 +688,7 @@ footer           { z-index: 6; }
 .career-wrap {
   display: flex;
   align-items: center;
-  gap: 96px;
+  gap: 40px;
   margin-top: 32px;
   margin-bottom: 48px;
   width: fit-content;
@@ -823,26 +829,34 @@ footer           { z-index: 6; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  margin-top: 56px;
-  padding-bottom: 48px;
-  border-bottom: 1px solid var(--bg3);
+  gap: 12px;
+  margin-top: 48px;
+  padding: 20px 32px;
+  background: var(--white);
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(58,42,32,0.08);
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 .about-ig-text {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--text-mid);
+  line-height: 1.6;
 }
 .about-ig-link {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--text-mid);
+  color: var(--caramel);
   text-decoration: none;
   font-family: 'Noto Serif JP', serif;
-  font-size: 0.95rem;
-  border-bottom: 1px solid transparent;
-  padding-bottom: 2px;
-  transition: color 0.2s, border-color 0.2s;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: opacity 0.2s;
 }
 .about-ig-link svg {
   width: 20px;
@@ -850,14 +864,16 @@ footer           { z-index: 6; }
   fill: currentColor;
 }
 .about-ig-link:hover {
-  color: var(--caramel);
-  border-bottom-color: var(--caramel);
+  opacity: 0.7;
 }
 
 .faq-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
 }
 .faq-item {
   background: var(--white);
@@ -911,7 +927,6 @@ footer           { z-index: 6; }
   background: linear-gradient(to bottom, transparent 80px, var(--bg) 80px);
   padding: 160px 40px 140px;
 }
-.faq-list,
 .contact-sub {
   width: 80%;
   margin-left: auto;
@@ -1115,7 +1130,7 @@ footer {
 
 @media (max-width: 860px) {
   .footer-inner { padding: 40px 24px; max-width: 100%; }
-  .footer-right { align-items: flex-start; }
+  .footer-right { align-items: flex-end; }
 }
 
 /* ════════════════════════════════════════════════
@@ -1157,7 +1172,7 @@ footer {
   .hero-chara { width: 130px; }
   .hero-balloon { max-width: 180px; font-size: 0.74rem; }
 
-  #shops, #products, #about, #faq, #contact { padding: 80px 24px 80px; }
+  #shops, #products, #about, #faq, #contact, #contact-section { padding: 100px 30px 100px; }
 
   .shop-card { grid-template-columns: 1fr; height: auto; width: 100%; border-radius: 32px; }
   .shop-card-photos { min-height: 200px; height: 200px; }
@@ -1167,12 +1182,18 @@ footer {
   .story-slide-img { width: 100%; }
   .story-slide-img img { height: 220px; }
   .about-award-section { flex-direction: column; text-align: center; }
-  .maker-profile { flex-direction: column; gap: 12px; padding: 28px 20px; max-width: 88%; }
-  .career-wrap { flex-direction: column-reverse; }
-  .career-single-img { width: 180px; }
-  .maker-photo { width: 130px; }
-  .maker-name { text-align: center; margin-top: 4px; }
-  .maker-quote { font-size: 1.3rem; margin-bottom: 8px; }
+  .maker-profile { flex-direction: column; gap: 8px; padding: 16px 14px; max-width: 100%; margin-top: 20px; margin-bottom: 20px; }
+  .career-wrap { flex-direction: column-reverse; width: 100%; gap: 40px; }
+  .career-timeline { width: 100%; }
+  .career-single-img { width: 150px; }
+  .maker-photo { width: 90px; }
+  .maker-name { text-align: center; margin-top: 2px; }
+  .maker-quote { font-size: 1.1rem; margin-bottom: 6px; line-height: 1.9; }
 
   .gallery { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .gallery-item:nth-child(n+5) { display: none; }
+
+  .contact-sns-row { gap: 48px; }
+  .faq-list { width: 100%; margin-left: 0; margin-right: 0; }
+
 }
