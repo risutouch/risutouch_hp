@@ -166,9 +166,7 @@ nav a:hover { color: var(--caramel); }
 /* ── 横スクロール画像ストリップ ── */
 .hero-strip {
   position: absolute;
-  top: 50%;
-  left: 0; right: 0;
-  transform: translateY(-56%);
+  inset: 0;
   z-index: 2;
   overflow: hidden;
 }
@@ -181,8 +179,8 @@ nav a:hover { color: var(--caramel); }
 .hero-strip-track:hover { animation-play-state: paused; }
 .hero-strip-img {
   flex-shrink: 0;
-  width: 640px;
-  height: 640px;
+  width: 100vh;
+  height: 100vh;
   border-radius: 0;
   object-fit: cover;
   display: block;
@@ -192,8 +190,7 @@ nav a:hover { color: var(--caramel); }
   100% { transform: translateX(-50%); }
 }
 @media (max-width: 860px) {
-  .hero-strip { transform: translateY(-60%); }
-  .hero-strip-img { width: 200px; height: 200px; }
+  .hero-strip-img { width: 100vw; height: 100vw; }
   .hero-strip-track { animation-duration: 20s; }
 }
 
