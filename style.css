@@ -1091,7 +1091,7 @@ footer .wave-top { background: var(--bg); }
 
 /* ── Footer ── */
 footer {
-  background: linear-gradient(to bottom, transparent 80px, var(--text) 80px);
+  background: var(--text);
   color: rgba(255,255,255,0.45);
   font-size: 0.82rem;
   line-height: 1.8;
