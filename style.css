@@ -301,7 +301,7 @@ nav a:hover { color: var(--caramel); }
 #top {
   position: relative;
   min-height: 100vh;
-  background: var(--bg);
+  background: url('images/testback.png') center center / cover no-repeat;
   overflow: hidden;
   display: flex;
   align-items: flex-start;
