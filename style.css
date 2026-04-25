@@ -960,7 +960,7 @@ footer .wave-top { background: var(--bg); }
    5. お問い合わせ
    ════════════════════════════════════════════════ */
 #contact-section {
-  background: linear-gradient(to bottom, transparent 80px, var(--bg) 80px);
+  background: linear-gradient(to bottom, transparent 80px, var(--bg) 80px, var(--bg) calc(100% - 6px), var(--text) 100%);
   padding: 160px 40px 140px;
 }
 .contact-sub {
