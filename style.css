@@ -174,19 +174,18 @@ nav a:hover { color: var(--caramel); }
 }
 .hero-strip-track {
   display: flex;
-  gap: 16px;
+  gap: 0;
   width: max-content;
-  animation: stripScroll 24s linear infinite;
+  animation: stripScroll 28s linear infinite;
 }
 .hero-strip-track:hover { animation-play-state: paused; }
 .hero-strip-img {
   flex-shrink: 0;
-  width: 260px;
-  height: 260px;
-  border-radius: 14px;
+  width: 320px;
+  height: 320px;
+  border-radius: 0;
   object-fit: cover;
   display: block;
-  box-shadow: 0 4px 20px rgba(58,42,32,0.15);
 }
 @keyframes stripScroll {
   0%   { transform: translateX(0); }
@@ -194,8 +193,8 @@ nav a:hover { color: var(--caramel); }
 }
 @media (max-width: 860px) {
   .hero-strip { transform: translateY(-60%); }
-  .hero-strip-img { width: 160px; height: 160px; border-radius: 10px; }
-  .hero-strip-track { gap: 10px; animation-duration: 18s; }
+  .hero-strip-img { width: 200px; height: 200px; }
+  .hero-strip-track { animation-duration: 20s; }
 }
 
 /* ── ヒーロー内ロゴ（モバイル用） ── */
