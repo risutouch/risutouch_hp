@@ -214,27 +214,3 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   }, 5000);
 })();
 
-// ── 横スクロール画像ストリップ ────────────────
-(function () {
-  const track = document.getElementById('hero-strip-track');
-  if (!track) return;
-
-  const images = [
-    'images/products/products01.jpg',
-    'images/products/products02.jpg',
-    'images/products/products03.jpg',
-    'images/products/products04.jpg',
-    'images/products/products05.jpg',
-    'images/products/products06.jpg',
-    'images/products/products07.jpg',
-  ].sort(() => Math.random() - 0.5);
-
-  // シームレスループのため3セット生成
-  [...images, ...images, ...images].forEach(src => {
-    const img = document.createElement('img');
-    img.src = src;
-    img.alt = 'りすたっちの焼き菓子';
-    img.className = 'hero-strip-img';
-    track.appendChild(img);
-  });
-})();
