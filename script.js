@@ -214,11 +214,10 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   }, 5000);
 })();
 
-// ── テレビヒーロー ────────────────────────────
+// ── 木製掲示板ヒーロー ────────────────────────
 (function () {
-  const imgA = document.getElementById('hero-tv-a');
-  const imgB = document.getElementById('hero-tv-b');
-  const fx   = document.getElementById('hero-tv-fx');
+  const imgA = document.getElementById('hero-board-a');
+  const imgB = document.getElementById('hero-board-b');
   if (!imgA) return;
 
   const images = [
@@ -227,7 +226,7 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     'images/products/products03.jpg',
     'images/products/products04.jpg',
     'images/products/products05.jpg',
-  ];
+  ].sort(() => Math.random() - 0.5);
 
   let current = 0;
   let showA = true;
@@ -235,28 +234,15 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   imgA.style.backgroundImage = `url('${images[0]}')`;
   imgA.classList.add('active');
 
-  function switchChannel() {
-    const next = (current + 1) % images.length;
+  function next() {
+    current = (current + 1) % images.length;
     const incoming = showA ? imgB : imgA;
-    const outgoing = showA ? imgA : imgB;
-
-    incoming.style.backgroundImage = `url('${images[next]}')`;
-
-    // スタティック演出
-    fx.classList.remove('active');
-    void fx.offsetWidth;
-    fx.classList.add('active');
-
-    // 画像切り替え
-    setTimeout(() => {
-      outgoing.classList.remove('active');
-      incoming.classList.add('active');
-      showA = !showA;
-      current = next;
-    }, 180);
-
-    setTimeout(() => fx.classList.remove('active'), 500);
+    const outgoing  = showA ? imgA : imgB;
+    incoming.style.backgroundImage = `url('${images[current]}')`;
+    outgoing.classList.remove('active');
+    incoming.classList.add('active');
+    showA = !showA;
   }
 
-  setInterval(switchChannel, 4000);
+  setInterval(next, 4000);
 })();
