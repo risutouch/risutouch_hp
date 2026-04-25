@@ -163,6 +163,41 @@ nav a:hover { color: var(--caramel); }
 }
 .nav-cta:hover { background: var(--brown) !important; }
 
+/* ── シャボン玉ヒーロー ── */
+#hero-bubbles {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.hero-bubble {
+  position: absolute;
+  overflow: hidden;
+}
+.hero-bubble--transition {
+  transition: width 1.2s cubic-bezier(0.4,0,0.2,1),
+              height 1.2s cubic-bezier(0.4,0,0.2,1),
+              left 1.2s cubic-bezier(0.4,0,0.2,1),
+              top 1.2s cubic-bezier(0.4,0,0.2,1),
+              border-radius 1.2s cubic-bezier(0.4,0,0.2,1),
+              opacity 1.2s ease,
+              box-shadow 1.2s ease;
+}
+.hero-bubble::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.45) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 1;
+}
+.hero-bubble img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 /* ── ヒーロー内ロゴ（モバイル用） ── */
 .hero-logo { display: none; }
 .hero-logo-img {
@@ -1060,6 +1095,7 @@ footer {
   font-size: 0.82rem;
   line-height: 1.8;
   padding-top: 80px;
+  margin-top: -1px;
 }
 .footer-inner {
   display: flex;

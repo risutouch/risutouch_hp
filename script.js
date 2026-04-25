@@ -213,3 +213,106 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     }, 3500);
   }, 5000);
 })();
+
+// ── シャボン玉ヒーロー ──────────────────────────
+(function () {
+  const section = document.getElementById('top');
+  const container = document.getElementById('hero-bubbles');
+  if (!container || !section) return;
+
+  const images = [
+    'images/products/products01.jpg',
+    'images/products/products02.jpg',
+    'images/products/products03.jpg',
+    'images/products/products04.jpg',
+    'images/products/products05.jpg',
+  ];
+
+  const MIN_SIZE = 60, MAX_SIZE = 120;
+  function sw() { return section.offsetWidth; }
+  function sh() { return section.offsetHeight; }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function randSize() { return MIN_SIZE + Math.random() * (MAX_SIZE - MIN_SIZE); }
+
+  const bubbles = images.map(src => {
+    const el = document.createElement('div');
+    el.className = 'hero-bubble';
+    const img = document.createElement('img');
+    img.src = src; img.alt = '';
+    el.appendChild(img);
+    container.appendChild(el);
+
+    const size = randSize();
+    const x = 40 + Math.random() * (sw() - size - 80);
+    const y = 110 + Math.random() * (sh() - size - 200);
+    el.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px;opacity:0.42;border-radius:50%;z-index:2;box-shadow:0 4px 16px rgba(58,42,32,0.12),inset 0 0 18px rgba(255,255,255,0.3);`;
+    return { el, x, y, size, vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4, featured: false };
+  });
+
+  // ふわふわ浮遊ループ
+  function tick() {
+    bubbles.forEach(b => {
+      if (b.featured) return;
+      b.vx += (Math.random()-0.5) * 0.06;
+      b.vy += (Math.random()-0.5) * 0.06;
+      b.vx = clamp(b.vx, -0.55, 0.55);
+      b.vy = clamp(b.vy, -0.55, 0.55);
+      b.x += b.vx; b.y += b.vy;
+      b.x = clamp(b.x, 20, sw()-b.size-20);
+      b.y = clamp(b.y, 90, sh()-b.size-100);
+      if (b.x <= 20 || b.x >= sw()-b.size-20) b.vx *= -1;
+      if (b.y <= 90 || b.y >= sh()-b.size-100) b.vy *= -1;
+      b.el.style.left = b.x + 'px';
+      b.el.style.top  = b.y + 'px';
+    });
+    requestAnimationFrame(tick);
+  }
+
+  function feature(i) {
+    const b = bubbles[i];
+    b.featured = true;
+    const mobile = sw() < 860;
+    const FW = mobile ? Math.min(sw() * 0.85, 360) : Math.min(sw() * 0.55, 560);
+    const fx = (sw() - FW) / 2;
+    const fy = mobile ? 110 : (sh() - FW) / 2 - 30;
+    b.el.classList.add('hero-bubble--transition');
+    Object.assign(b.el.style, {
+      width: FW+'px', height: FW+'px',
+      left: fx+'px', top: fy+'px',
+      opacity: '1', borderRadius: '24px',
+      zIndex: '5', boxShadow: '0 16px 48px rgba(58,42,32,0.26)'
+    });
+  }
+
+  function unfeature(i) {
+    const b = bubbles[i];
+    b.size = randSize();
+    b.x = 40 + Math.random() * (sw()-b.size-80);
+    b.y = 110 + Math.random() * (sh()-b.size-200);
+    b.vx = (Math.random()-0.5)*0.4;
+    b.vy = (Math.random()-0.5)*0.4;
+    b.el.classList.add('hero-bubble--transition');
+    Object.assign(b.el.style, {
+      width: b.size+'px', height: b.size+'px',
+      left: b.x+'px', top: b.y+'px',
+      opacity: '0.42', borderRadius: '50%',
+      zIndex: '2', boxShadow: '0 4px 16px rgba(58,42,32,0.12),inset 0 0 18px rgba(255,255,255,0.3)'
+    });
+    setTimeout(() => {
+      b.el.classList.remove('hero-bubble--transition');
+      b.featured = false;
+    }, 1300);
+  }
+
+  let current = 0;
+  requestAnimationFrame(tick);
+  setTimeout(() => {
+    feature(current);
+    setInterval(() => {
+      const prev = current;
+      current = (current + 1) % bubbles.length;
+      unfeature(prev);
+      setTimeout(() => feature(current), 500);
+    }, 4500);
+  }, 800);
+})();
