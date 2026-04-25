@@ -214,11 +214,10 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   }, 5000);
 })();
 
-// ── 木製掲示板ヒーロー ────────────────────────
+// ── 横スクロール画像ストリップ ────────────────
 (function () {
-  const imgA = document.getElementById('hero-board-a');
-  const imgB = document.getElementById('hero-board-b');
-  if (!imgA) return;
+  const track = document.getElementById('hero-strip-track');
+  if (!track) return;
 
   const images = [
     'images/products/products01.jpg',
@@ -226,23 +225,16 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     'images/products/products03.jpg',
     'images/products/products04.jpg',
     'images/products/products05.jpg',
+    'images/products/products06.jpg',
+    'images/products/products07.jpg',
   ].sort(() => Math.random() - 0.5);
 
-  let current = 0;
-  let showA = true;
-
-  imgA.style.backgroundImage = `url('${images[0]}')`;
-  imgA.classList.add('active');
-
-  function next() {
-    current = (current + 1) % images.length;
-    const incoming = showA ? imgB : imgA;
-    const outgoing  = showA ? imgA : imgB;
-    incoming.style.backgroundImage = `url('${images[current]}')`;
-    outgoing.classList.remove('active');
-    incoming.classList.add('active');
-    showA = !showA;
-  }
-
-  setInterval(next, 4000);
+  // シームレスループのため3セット生成
+  [...images, ...images, ...images].forEach(src => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = 'りすたっちの焼き菓子';
+    img.className = 'hero-strip-img';
+    track.appendChild(img);
+  });
 })();

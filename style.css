@@ -163,73 +163,39 @@ nav a:hover { color: var(--caramel); }
 }
 .nav-cta:hover { background: var(--brown) !important; }
 
-/* ── 木製掲示板ヒーロー ── */
-.hero-board-wrap {
+/* ── 横スクロール画像ストリップ ── */
+.hero-strip {
   position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -54%);
+  left: 0; right: 0;
+  transform: translateY(-56%);
   z-index: 2;
+  overflow: hidden;
 }
-.hero-board {
-  padding: 26px;
-  background:
-    repeating-linear-gradient(92deg, transparent, transparent 4px, rgba(0,0,0,0.03) 4px, rgba(0,0,0,0.03) 8px),
-    repeating-linear-gradient(180deg, transparent, transparent 8px, rgba(255,255,255,0.04) 8px, rgba(255,255,255,0.04) 16px),
-    linear-gradient(160deg, #C09060 0%, #8B5A28 30%, #6B3E18 60%, #9A6A38 100%);
-  border-radius: 10px;
-  box-shadow:
-    0 10px 40px rgba(0,0,0,0.4),
-    inset 0 2px 0 rgba(255,255,255,0.18),
-    inset 0 -3px 0 rgba(0,0,0,0.25),
-    inset 3px 0 0 rgba(0,0,0,0.1),
-    inset -3px 0 0 rgba(0,0,0,0.1);
-  width: 500px;
+.hero-strip-track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  animation: stripScroll 24s linear infinite;
 }
-.hero-board-inner {
-  position: relative;
-  aspect-ratio: 4 / 3;
-  overflow: visible;
-  border-radius: 3px;
-  box-shadow:
-    0 4px 16px rgba(0,0,0,0.35),
-    inset 0 0 0 1px rgba(0,0,0,0.15);
+.hero-strip-track:hover { animation-play-state: paused; }
+.hero-strip-img {
+  flex-shrink: 0;
+  width: 260px;
+  height: 260px;
+  border-radius: 14px;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 4px 20px rgba(58,42,32,0.15);
 }
-.hero-board-img {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  border-radius: 3px;
-  transition: opacity 1s ease;
+@keyframes stripScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
-.hero-board-img.active { opacity: 1; }
-.hero-board-pin {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 38% 35%, #F0D070, #B08020 60%, #806010);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.4);
-  z-index: 5;
-}
-.hero-board-pin::after {
-  content: '';
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.25);
-}
-.hero-board-pin:nth-child(1) { top: -9px; left: -9px; }
-.hero-board-pin:nth-child(2) { top: -9px; right: -9px; }
-.hero-board-pin:nth-child(3) { bottom: -9px; left: -9px; }
-.hero-board-pin:nth-child(4) { bottom: -9px; right: -9px; }
 @media (max-width: 860px) {
-  .hero-board-wrap { transform: translate(-50%, -58%); }
-  .hero-board { width: 84vw; padding: 18px; }
+  .hero-strip { transform: translateY(-60%); }
+  .hero-strip-img { width: 160px; height: 160px; border-radius: 10px; }
+  .hero-strip-track { gap: 10px; animation-duration: 18s; }
 }
 
 /* ── ヒーロー内ロゴ（モバイル用） ── */
