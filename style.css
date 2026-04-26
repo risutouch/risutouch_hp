@@ -1273,8 +1273,8 @@ footer {
   .hs-hero-img-wrap { width: 88%; }
   /* モバイル：草・花をキャラ対称の左側に配置 */
   .hs-hana2, .hs-hana3 { display: none; }
-  .hs-kusa1 { height: 38px; left: 20%; bottom: 55px; }
-  .hs-hana1 { height: 56px; left: 30%; bottom: 55px; }
+  .hs-kusa1 { height: 38px; left: 18%; bottom: 55px; }
+  .hs-hana1 { height: 56px; left: 36%; bottom: 55px; }
 
   #shops, #products, #about, #faq, #contact, #contact-section { padding: 100px 30px 100px; }
 
