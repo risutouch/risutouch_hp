@@ -369,8 +369,8 @@ nav a:hover { color: var(--caramel); }
 .hs-ki-L    { height: 340px; left: -2%;  top: 16%; z-index: 2; transform-origin: top center; animation: hs-sway-slow  9s ease-in-out infinite; }
 .hs-ki-R    { height: 340px; right: -1%; top: 16%; z-index: 2; transform-origin: top center; animation: hs-sway-slow 11s ease-in-out infinite; animation-delay: -4s; }
 .hs-ki-C    { height: 340px; left: 22%;  top: 16%; z-index: 2; transform-origin: top center; animation: hs-sway-slow 13s ease-in-out infinite; animation-delay: -7s; opacity: 0.75; }
-.hs-kusa2-L { height: 130px; left: 6%;   bottom: 0; z-index: 2; transform-origin: bottom center; animation: hs-sway-mid  6s ease-in-out infinite; animation-delay: -2s; }
-.hs-kusa2-R { height: 110px; right: 5%;  bottom: 0; z-index: 2; transform-origin: bottom center; animation: hs-sway-mid  7s ease-in-out infinite; animation-delay: -3s; }
+.hs-kusa2-L { height: 130px; left: 6%;   top: 16%; z-index: 2; transform-origin: top center; animation: hs-sway-mid  6s ease-in-out infinite; animation-delay: -2s; }
+.hs-kusa2-R { height: 110px; right: 5%;  top: 16%; z-index: 2; transform-origin: top center; animation: hs-sway-mid  7s ease-in-out infinite; animation-delay: -3s; }
 
 /* 掲示板（z:4 = wave前面、中央）*/
 .hs-keijiban {
@@ -1265,8 +1265,8 @@ footer {
   .hs-ki-L      { height: 220px; top: 18%; }
   .hs-ki-R      { height: 220px; top: 18%; }
   .hs-ki-C      { display: none; }
-  .hs-kusa2-L   { height: 95px; }
-  .hs-kusa2-R   { height: 80px; }
+  .hs-kusa2-L   { height: 95px; top: 18%; }
+  .hs-kusa2-R   { height: 80px; top: 18%; }
   .hs-keijiban  { width: 88%; height: auto; bottom: 68px; }
   .hs-kusa1     { height: 48px; left: 10%; }
   .hs-hana1     { height: 64px; left: 22%; }
