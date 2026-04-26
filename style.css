@@ -369,7 +369,7 @@ nav a:hover { color: var(--caramel); }
 .hs-hero-img-wrap {
   width: 36%;
   aspect-ratio: 1;
-  left: 23%; bottom: 80px;
+  left: 23%; bottom: 160px;
   top: auto; transform: none;
   z-index: 4;
   overflow: hidden;
@@ -392,7 +392,7 @@ nav a:hover { color: var(--caramel); }
 .hs-kusa1 { display: none; }
 .hs-hana1 { display: none; }
 .hs-hana2 { display: none; }
-.hs-hana3 { height: 56px; right: 4%; bottom: 80px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.9s ease-in-out infinite; animation-delay: -0.7s; }
+.hs-hana3 { height: 56px; left: 77%; bottom: 160px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.9s ease-in-out infinite; animation-delay: -0.7s; }
 .hs-hana4 { display: none; }
 
 
@@ -470,7 +470,7 @@ nav a:hover { color: var(--caramel); }
 /* ── キャラクター＋吹き出し ── */
 .hero-chara-wrap {
   position: absolute;
-  bottom: 80px;
+  bottom: 160px;
   left: 61%;
   right: auto;
   top: auto;
