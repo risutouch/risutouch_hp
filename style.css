@@ -393,8 +393,6 @@ nav a:hover { color: var(--caramel); }
 .hs-hana2 { height: 62px;  right: 18%; bottom: 26%; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 4.2s ease-in-out infinite; animation-delay: -1.5s; }
 .hs-hana3 { height: 116px; right: 4%;  bottom: 10%; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.9s ease-in-out infinite; animation-delay: -0.7s; }
 
-/* 虫（z:5）*/
-.hs-musi1 { height: 26px; left: 58%; top: 42%; z-index: 5; animation: hs-wander 12s ease-in-out infinite; }
 
 /* アニメーション */
 @keyframes hs-drift        { 0%,100%{transform:translateX(0)}       50%{transform:translateX(40px)} }
@@ -464,7 +462,7 @@ nav a:hover { color: var(--caramel); }
   right: 14%;
   top: auto;
   animation: floatGentle 5s ease-in-out infinite;
-  z-index: 4;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: center;
