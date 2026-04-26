@@ -1252,19 +1252,18 @@ footer {
   .hero-ci { left: 50%; width: 355px; height: 355px; margin-left: -177px; margin-top: -177px; }
   .hero-thumbs { top: calc(80px + 360px + 16px); left: 0; right: 0; transform: none; flex-direction: row; justify-content: center; }
   .hero-chara-wrap { bottom: 70px; right: 4%; left: auto; transform: none; animation: floatGentle 5s ease-in-out infinite; }
-  .hero-chara { width: 130px; }
-  .hero-balloon { max-width: 180px; font-size: 0.74rem; }
+  .hero-chara { width: 150px; }
+  .hero-balloon { max-width: 180px; font-size: 0.74rem; margin-bottom: 2px; }
 
   /* モバイル：シーン素材 縮小・整理 */
-  .hs-kumo1     { height: 52px; top: 14%; }
-  .hs-kumo2     { height: 38px; top: 8%; }
+  .hs-kumo1     { height: 52px; top: 3%; }
+  .hs-kumo2     { height: 38px; top: 1%; }
   .hs-kumo3     { display: none; }
   .hs-hero-img-wrap { width: 88%; }
-  /* モバイル：花2個のみ、小さめ・キャラより上 */
-  .hs-hana3, .hs-musi1 { display: none; }
-  .hs-kusa1 { height: 36px; left: 2%;   bottom: 36%; }
-  .hs-hana1 { height: 52px; left: 8%;   bottom: 29%; }
-  .hs-hana2 { height: 44px; right: 2%;  bottom: 32%; }
+  /* モバイル：草・花はキャラの左側に2個 */
+  .hs-hana2, .hs-hana3, .hs-musi1 { display: none; }
+  .hs-kusa1 { height: 38px; right: 34%; bottom: 10%; }
+  .hs-hana1 { height: 56px; right: 26%; bottom: 9%; }
 
   #shops, #products, #about, #faq, #contact, #contact-section { padding: 100px 30px 100px; }
 
