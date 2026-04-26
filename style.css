@@ -1282,7 +1282,7 @@ footer {
   .hs-kusa1 { display: block; height: 38px; left: 18%; bottom: 55px; }
   .hs-hana1 { display: block; height: 38px; left: 36%; bottom: 55px; }
 
-  #shops, #products, #about, #faq, #contact, #contact-section { padding: 100px 30px 100px; }
+  #shops, #products, #about, #faq, #contact, #contact-section { padding: 100px max(30px, calc((100% - 720px) / 2)) 100px; }
 
   .shop-card { grid-template-columns: 1fr; height: auto; width: 100%; border-radius: 32px; }
   .shop-card-photos { min-height: 200px; height: 200px; }
