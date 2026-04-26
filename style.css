@@ -369,7 +369,7 @@ nav a:hover { color: var(--caramel); }
 .hs-hero-img-wrap {
   width: 36%;
   aspect-ratio: 1;
-  left: 23%; bottom: 160px;
+  left: 23%; bottom: 15%;
   top: auto; transform: none;
   z-index: 4;
   overflow: hidden;
@@ -392,7 +392,7 @@ nav a:hover { color: var(--caramel); }
 .hs-kusa1 { display: none; }
 .hs-hana1 { display: none; }
 .hs-hana2 { display: none; }
-.hs-hana3 { height: 56px; left: 77%; bottom: 160px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.9s ease-in-out infinite; animation-delay: -0.7s; }
+.hs-hana3 { height: 56px; left: calc(61% + 196px); bottom: 15%; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.9s ease-in-out infinite; animation-delay: -0.7s; }
 .hs-hana4 { display: none; }
 
 
@@ -470,7 +470,7 @@ nav a:hover { color: var(--caramel); }
 /* ── キャラクター＋吹き出し ── */
 .hero-chara-wrap {
   position: absolute;
-  bottom: 160px;
+  bottom: 15%;
   left: 61%;
   right: auto;
   top: auto;
@@ -1273,6 +1273,7 @@ footer {
   .hs-kumo2     { height: 38px; top: 5%; }
   .hs-kumo3     { display: none; }
   .hs-hero-img-wrap { width: 88%; left: 50%; bottom: auto; top: 46%; transform: translateX(-50%) translateY(-50%); }
+  .hero-chara-wrap  { bottom: 55px; right: 4%; left: auto; }
   /* モバイル：草・花をキャラ対称の左側に配置 */
   .hs-hana2, .hs-hana3, .hs-hana4 { display: none; }
   .hs-kusa1 { display: block; height: 38px; left: 18%; bottom: 55px; }
