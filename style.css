@@ -255,6 +255,27 @@ nav a:hover { color: var(--caramel); }
 }
 .mobile-nav.open { opacity: 1; visibility: visible; pointer-events: auto; }
 
+.mnav-item {
+  width: 100%;
+  max-width: 320px;
+  background: var(--white);
+  border-radius: 16px;
+  padding: 18px 24px;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1rem;
+  color: var(--text);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s, color 0.2s;
+}
+.mnav-item::after {
+  content: '→';
+  color: var(--caramel);
+  font-size: 0.9rem;
+}
+.mnav-item:hover { background: var(--bg2); color: var(--caramel); }
+
 .mobile-cta {
   background: var(--caramel) !important;
   color: var(--white) !important;
