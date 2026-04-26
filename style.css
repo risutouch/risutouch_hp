@@ -365,10 +365,6 @@ nav a:hover { color: var(--caramel); }
 .hs-kumo2 { height: 50px;  right: 9%;  top: 7%;  z-index: 1; opacity: 0.65; animation: hs-drift 30s ease-in-out infinite reverse; animation-delay: -14s; }
 .hs-kumo3 { height: 42px;  left: 38%;  top: 5%;  z-index: 1; opacity: 0.55; animation: hs-drift 25s ease-in-out infinite; animation-delay: -8s; }
 
-/* 掲示板左右の木（PC）*/
-.hs-tree-L { height: 290px; left: 8%;  top: 26%; z-index: 3; transform-origin: bottom center; animation: hs-sway-slow 10s ease-in-out infinite; }
-.hs-tree-R { height: 200px; right: 8%; top: 36%; z-index: 3; transform-origin: bottom center; animation: hs-sway-mid   7s ease-in-out infinite; animation-delay: -3s; }
-
 /* 中央メイン画像（正方形）*/
 .hs-hero-img-wrap {
   width: 35%;
@@ -377,7 +373,7 @@ nav a:hover { color: var(--caramel); }
   transform: translateX(-50%) translateY(-50%);
   z-index: 4;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 36px;
 }
 .hs-hero-img {
   position: static;
@@ -386,11 +382,11 @@ nav a:hover { color: var(--caramel); }
   display: block;
 }
 
-/* 地面前景 - 固定配置・高さに差あり（z:5）*/
-.hs-kusa1 { height: 52px; left: 5%;  bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-mid  4.5s ease-in-out infinite; animation-delay: -1s; }
-.hs-hana1 { height: 84px; left: 20%; bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.6s ease-in-out infinite; }
-.hs-hana2 { height: 68px; right: 20%; bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 4.2s ease-in-out infinite; animation-delay: -1.5s; }
-.hs-hana3 { height: 94px; right: 5%;  bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.9s ease-in-out infinite; animation-delay: -0.7s; }
+/* 地面前景 - 下半分にばらつかせて配置（z:5）*/
+.hs-kusa1 { height: 48px;  left: 4%;  bottom: 22%; z-index: 5; transform-origin: bottom center; animation: hs-sway-mid  4.5s ease-in-out infinite; animation-delay: -1s; }
+.hs-hana1 { height: 100px; left: 18%; bottom: 9%;  z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.6s ease-in-out infinite; }
+.hs-hana2 { height: 62px;  right: 18%; bottom: 26%; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 4.2s ease-in-out infinite; animation-delay: -1.5s; }
+.hs-hana3 { height: 116px; right: 4%;  bottom: 10%; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.9s ease-in-out infinite; animation-delay: -0.7s; }
 
 /* 虫（z:5）*/
 .hs-musi1 { height: 26px; left: 58%; top: 42%; z-index: 5; animation: hs-wander 12s ease-in-out infinite; }
@@ -1261,7 +1257,6 @@ footer {
   .hs-kumo2     { height: 38px; top: 8%; }
   .hs-kumo3     { display: none; }
   .hs-hero-img-wrap { width: 88%; }
-  .hs-tree-L, .hs-tree-R { display: none; }
   .hs-kusa1, .hs-hana1, .hs-hana2, .hs-hana3 { display: none; }
   .hs-musi1     { display: none; }
 
