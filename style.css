@@ -1275,13 +1275,13 @@ footer {
   .hs-hero-img-wrap { width: 88%; }
   /* モバイル：草・花をキャラ対称の左側に配置 */
   .hs-hana2, .hs-hana3 { display: none; }
-  .hs-kusa1 { height: 38px; left: 4%;  bottom: 10%; }
-  .hs-hana1 { height: 56px; left: 14%; bottom: 9%;  }
+  .hs-kusa1 { height: 38px; left: 20%; bottom: 10%; }
+  .hs-hana1 { height: 56px; left: 30%; bottom: 9%;  }
   /* てんとう虫：花の周りを飛んで止まる */
   .hs-musi1 {
     display: block;
     height: 22px;
-    left: 20%; bottom: 14%;
+    left: 36%; bottom: 14%;
     z-index: 5;
     animation: hs-fly-land 9s ease-in-out infinite;
     animation-delay: -2s;
