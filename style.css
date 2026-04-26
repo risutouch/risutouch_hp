@@ -210,14 +210,14 @@ nav a:hover { color: var(--caramel); }
   gap: 5px;
   width: 44px; height: 44px;
   border-radius: 50%;
-  background: var(--caramel);
+  background: var(--brown);
   border: none;
   cursor: pointer;
-  box-shadow: 0 2px 12px rgba(196,149,106,0.35);
+  box-shadow: 0 2px 12px rgba(122,96,80,0.35);
   transition: background 0.2s;
   flex-shrink: 0;
 }
-.hamburger:hover { background: var(--brown); }
+.hamburger:hover { background: var(--text); }
 .hamburger span {
   display: block;
   width: 18px; height: 2px;
