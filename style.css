@@ -375,19 +375,14 @@ nav a:hover { color: var(--caramel); }
   animation: hs-float-gentle 6s ease-in-out infinite;
 }
 
-/* 地面前景（z:5）*/
-.hs-kusa1   { height: 60px;  left: 13%;  bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-mid  4.5s ease-in-out infinite; animation-delay: -1s; }
-.hs-hana1   { height: 78px;  left: 27%;  bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.6s ease-in-out infinite; }
-.hs-hana2   { height: 88px;  right: 26%; bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 4.2s ease-in-out infinite; animation-delay: -1.5s; }
-.hs-hana3   { height: 84px;  right: 39%; bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.9s ease-in-out infinite; animation-delay: -0.7s; }
-.hs-kinoko1 { height: 54px;  left: 40%;  bottom: 78px; z-index: 5; animation: hs-float 4s ease-in-out infinite; }
-.hs-kinoko2 { height: 44px;  right: 14%; bottom: 78px; z-index: 5; animation: hs-float 5s ease-in-out infinite; animation-delay: -2s; }
-.hs-iwa     { height: 44px;  left: 22%;  bottom: 78px; z-index: 5; }
+/* 地面前景 - 位置はJSで設定（z:5）*/
+.hs-kusa1 { height: 60px; bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-mid  4.5s ease-in-out infinite; animation-delay: -1s; }
+.hs-hana1 { height: 78px; bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.6s ease-in-out infinite; }
+.hs-hana2 { height: 88px; bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 4.2s ease-in-out infinite; animation-delay: -1.5s; }
+.hs-hana3 { height: 84px; bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.9s ease-in-out infinite; animation-delay: -0.7s; }
 
-/* どんぐり・虫（z:3）*/
-.hs-don1  { height: 40px; left: 7%;  top: 32%; z-index: 3; animation: hs-bob    3.4s ease-in-out infinite; }
-.hs-don2  { height: 34px; right: 6%; top: 25%; z-index: 3; animation: hs-bob    4.2s ease-in-out infinite; animation-delay: -1.8s; }
-.hs-musi1 { height: 26px; left: 58%; top: 42%; z-index: 5; animation: hs-wander  12s ease-in-out infinite; }
+/* 虫（z:5）*/
+.hs-musi1 { height: 26px; left: 58%; top: 42%; z-index: 5; animation: hs-wander 12s ease-in-out infinite; }
 
 /* アニメーション */
 @keyframes hs-drift        { 0%,100%{transform:translateX(0)}       50%{transform:translateX(40px)} }
@@ -1256,15 +1251,7 @@ footer {
   .hs-kumo2     { height: 38px; top: 8%; }
   .hs-kumo3     { display: none; }
   .hs-keijiban  { width: 88%; }
-  .hs-kusa1     { height: 48px; left: 10%; }
-  .hs-hana1     { height: 64px; left: 22%; }
-  .hs-hana2     { height: 70px; right: 20%; }
-  .hs-hana3     { display: none; }
-  .hs-kinoko1   { height: 42px; left: 38%; }
-  .hs-kinoko2   { height: 34px; right: 12%; }
-  .hs-iwa       { height: 34px; left: 18%; }
-  .hs-don1      { display: none; }
-  .hs-don2      { display: none; }
+  .hs-kusa1, .hs-hana1, .hs-hana2, .hs-hana3 { display: none; }
   .hs-musi1     { display: none; }
 
   #shops, #products, #about, #faq, #contact, #contact-section { padding: 100px 30px 100px; }

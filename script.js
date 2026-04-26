@@ -213,3 +213,30 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     }, 3500);
   }, 5000);
 })();
+
+// ── ヒーロー地面素材ランダム配置（掲示板と重ならない）──
+(function () {
+  if (window.innerWidth < 768) return;
+
+  const ground = [
+    { sel: '.hs-kusa1' },
+    { sel: '.hs-hana1' },
+    { sel: '.hs-hana2' },
+    { sel: '.hs-hana3' },
+  ];
+
+  // 掲示板は width:35% で中央配置 → 32.5%〜67.5% を除外
+  // 左ゾーン: 2〜28%、右ゾーン: 72〜96%
+  const zones = [
+    [2, 26], [2, 26],   // 左に2個
+    [74, 96], [74, 96], // 右に2個
+  ];
+  zones.sort(() => Math.random() - 0.5);
+
+  ground.forEach(({ sel }, i) => {
+    const el = document.querySelector(sel);
+    if (!el) return;
+    const [min, max] = zones[i];
+    el.style.left = (min + Math.random() * (max - min)).toFixed(1) + '%';
+  });
+})();
