@@ -225,7 +225,7 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     'images/sozai/kinoko1.png',
   ];
 
-  const slots = ['.hs-kusa1', '.hs-hana1', '.hs-hana2', '.hs-hana3']
+  const slots = ['.hs-kusa1', '.hs-hana1', '.hs-hana2', '.hs-hana3', '.hs-hana4']
     .map(s => document.querySelector(s))
     .filter(Boolean);
 

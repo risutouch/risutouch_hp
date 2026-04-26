@@ -389,10 +389,11 @@ nav a:hover { color: var(--caramel); }
 
 
 /* 地面前景 - キャラより上に配置（z:5）*/
-.hs-kusa1 { height: 54px; left: 24%;  bottom: 36%; z-index: 5; transform-origin: bottom center; animation: hs-sway-mid  4.5s ease-in-out infinite; animation-delay: -1s; }
-.hs-hana1 { height: 66px; right: 24%; bottom: 32%; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.6s ease-in-out infinite; }
-.hs-hana2 { height: 50px; left: 38%;  bottom: 80px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 4.2s ease-in-out infinite; animation-delay: -1.5s; }
-.hs-hana3 { height: 62px; left: 57%;  bottom: 80px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.9s ease-in-out infinite; animation-delay: -0.7s; }
+.hs-kusa1 { height: 52px; left:  4%; bottom: 80px; z-index: 5; transform-origin: bottom center; animation: hs-sway-mid  4.5s ease-in-out infinite; animation-delay: -1s; }
+.hs-hana1 { height: 64px; left: 20%; bottom: 80px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.6s ease-in-out infinite; }
+.hs-hana2 { height: 48px; left: 38%; bottom: 80px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 4.2s ease-in-out infinite; animation-delay: -1.5s; }
+.hs-hana3 { height: 60px; left: 56%; bottom: 80px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.9s ease-in-out infinite; animation-delay: -0.7s; }
+.hs-hana4 { height: 54px; left: 70%; bottom: 80px; z-index: 5; transform-origin: bottom center; animation: hs-sway-mid  4.8s ease-in-out infinite; animation-delay: -2.2s; }
 
 
 /* アニメーション */
@@ -1272,7 +1273,7 @@ footer {
   .hs-kumo3     { display: none; }
   .hs-hero-img-wrap { width: 88%; }
   /* モバイル：草・花をキャラ対称の左側に配置 */
-  .hs-hana2, .hs-hana3 { display: none; }
+  .hs-hana2, .hs-hana3, .hs-hana4 { display: none; }
   .hs-kusa1 { height: 38px; left: 18%; bottom: 55px; }
   .hs-hana1 { height: 38px; left: 36%; bottom: 55px; }
 
