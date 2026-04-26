@@ -365,6 +365,10 @@ nav a:hover { color: var(--caramel); }
 .hs-kumo2 { height: 50px;  right: 9%;  top: 7%;  z-index: 1; opacity: 0.65; animation: hs-drift 30s ease-in-out infinite reverse; animation-delay: -14s; }
 .hs-kumo3 { height: 42px;  left: 38%;  top: 5%;  z-index: 1; opacity: 0.55; animation: hs-drift 25s ease-in-out infinite; animation-delay: -8s; }
 
+/* 掲示板左右の木（PC）*/
+.hs-tree-L { height: 290px; left: 8%;  top: 26%; z-index: 3; transform-origin: bottom center; animation: hs-sway-slow 10s ease-in-out infinite; }
+.hs-tree-R { height: 200px; right: 8%; top: 36%; z-index: 3; transform-origin: bottom center; animation: hs-sway-mid   7s ease-in-out infinite; animation-delay: -3s; }
+
 /* 掲示板（z:4 = wave前面、中央）*/
 .hs-keijiban {
   width: 35%;
@@ -372,14 +376,13 @@ nav a:hover { color: var(--caramel); }
   left: 50%; top: 50%;
   transform: translateX(-50%) translateY(-50%);
   z-index: 4;
-  animation: hs-float-gentle 6s ease-in-out infinite;
 }
 
-/* 地面前景 - 位置はJSで設定（z:5）*/
-.hs-kusa1 { height: 60px; bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-mid  4.5s ease-in-out infinite; animation-delay: -1s; }
-.hs-hana1 { height: 78px; bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.6s ease-in-out infinite; }
-.hs-hana2 { height: 88px; bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 4.2s ease-in-out infinite; animation-delay: -1.5s; }
-.hs-hana3 { height: 84px; bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.9s ease-in-out infinite; animation-delay: -0.7s; }
+/* 地面前景 - 固定配置・高さに差あり（z:5）*/
+.hs-kusa1 { height: 52px; left: 5%;  bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-mid  4.5s ease-in-out infinite; animation-delay: -1s; }
+.hs-hana1 { height: 84px; left: 20%; bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.6s ease-in-out infinite; }
+.hs-hana2 { height: 68px; right: 20%; bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 4.2s ease-in-out infinite; animation-delay: -1.5s; }
+.hs-hana3 { height: 94px; right: 5%;  bottom: 78px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.9s ease-in-out infinite; animation-delay: -0.7s; }
 
 /* 虫（z:5）*/
 .hs-musi1 { height: 26px; left: 58%; top: 42%; z-index: 5; animation: hs-wander 12s ease-in-out infinite; }
@@ -390,7 +393,6 @@ nav a:hover { color: var(--caramel); }
 @keyframes hs-sway-mid     { 0%,100%{transform:rotate(-2.5deg)}     50%{transform:rotate(2.5deg)} }
 @keyframes hs-sway-fast    { 0%,100%{transform:rotate(-4deg)}       50%{transform:rotate(4deg)} }
 @keyframes hs-float        { 0%,100%{transform:translateY(0)}        50%{transform:translateY(-6px)} }
-@keyframes hs-float-gentle { 0%,100%{transform:translateX(-50%) translateY(-50%)} 50%{transform:translateX(-50%) translateY(calc(-50% - 6px))} }
 @keyframes hs-bob          { 0%,100%{transform:translateY(0) rotate(-6deg)} 50%{transform:translateY(-14px) rotate(5deg)} }
 @keyframes hs-wander       { 0%{transform:translate(0,0) rotate(0deg)} 20%{transform:translate(18px,-10px) rotate(25deg)} 40%{transform:translate(35px,4px) rotate(-15deg)} 60%{transform:translate(18px,14px) rotate(20deg)} 80%{transform:translate(-4px,6px) rotate(-25deg)} 100%{transform:translate(0,0) rotate(0deg)} }
 
@@ -1251,6 +1253,7 @@ footer {
   .hs-kumo2     { height: 38px; top: 8%; }
   .hs-kumo3     { display: none; }
   .hs-keijiban  { width: 88%; }
+  .hs-tree-L, .hs-tree-R { display: none; }
   .hs-kusa1, .hs-hana1, .hs-hana2, .hs-hana3 { display: none; }
   .hs-musi1     { display: none; }
 
