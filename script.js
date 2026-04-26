@@ -213,3 +213,37 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     }, 3500);
   }, 5000);
 })();
+
+// ── 草・花・どんぐり・きのこ ランダム切り替え ──
+(function () {
+  const pool = [
+    'images/sozai/hana1.png',
+    'images/sozai/hana2.png',
+    'images/sozai/hana3.png',
+    'images/sozai/kusa1.png',
+    'images/sozai/don1.png',
+    'images/sozai/don2.png',
+    'images/sozai/kinoko1.png',
+    'images/sozai/kinoko2.png',
+  ];
+
+  const slots = ['.hs-kusa1', '.hs-hana1', '.hs-hana2', '.hs-hana3']
+    .map(s => document.querySelector(s))
+    .filter(Boolean);
+
+  // 初期：ランダムに割り当て（重複なし）
+  const initial = [...pool].sort(() => Math.random() - 0.5);
+  slots.forEach((el, i) => { el.src = initial[i % pool.length]; });
+
+  // 一定間隔でランダムな1スロットをフェード切り替え
+  setInterval(() => {
+    const slot = slots[Math.floor(Math.random() * slots.length)];
+    const next = pool[Math.floor(Math.random() * pool.length)];
+    slot.style.transition = 'opacity 0.7s ease';
+    slot.style.opacity = '0';
+    setTimeout(() => {
+      slot.src = next;
+      slot.style.opacity = '1';
+    }, 700);
+  }, 3000);
+})();
