@@ -389,10 +389,10 @@ nav a:hover { color: var(--caramel); }
 
 
 /* 地面前景 - キャラより上に配置（z:5）*/
-.hs-kusa1 { height: 52px; left:  6%; bottom: 80px; z-index: 5; transform-origin: bottom center; animation: hs-sway-mid  4.5s ease-in-out infinite; animation-delay: -1s; }
+.hs-kusa1 { display: none; }
 .hs-hana1 { display: none; }
-.hs-hana2 { height: 56px; left: 48%; bottom: 80px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 4.2s ease-in-out infinite; animation-delay: -1.5s; }
-.hs-hana3 { height: 52px; right: 6%; bottom: 80px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.9s ease-in-out infinite; animation-delay: -0.7s; }
+.hs-hana2 { display: none; }
+.hs-hana3 { height: 56px; right: 4%; bottom: 80px; z-index: 5; transform-origin: bottom center; animation: hs-sway-fast 3.9s ease-in-out infinite; animation-delay: -0.7s; }
 .hs-hana4 { display: none; }
 
 
@@ -474,7 +474,7 @@ nav a:hover { color: var(--caramel); }
   left: 61%;
   right: auto;
   top: auto;
-  animation: floatGentle 5s ease-in-out infinite;
+  animation: none;
   z-index: 10;
   display: flex;
   flex-direction: column;
@@ -1275,7 +1275,7 @@ footer {
   .hs-hero-img-wrap { width: 88%; left: 50%; bottom: auto; top: 46%; transform: translateX(-50%) translateY(-50%); }
   /* モバイル：草・花をキャラ対称の左側に配置 */
   .hs-hana2, .hs-hana3, .hs-hana4 { display: none; }
-  .hs-kusa1 { height: 38px; left: 18%; bottom: 55px; }
+  .hs-kusa1 { display: block; height: 38px; left: 18%; bottom: 55px; }
   .hs-hana1 { display: block; height: 38px; left: 36%; bottom: 55px; }
 
   #shops, #products, #about, #faq, #contact, #contact-section { padding: 100px 30px 100px; }
