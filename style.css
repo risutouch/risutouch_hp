@@ -1272,7 +1272,7 @@ footer {
   .hs-kumo1     { height: 52px; top: 8%; }
   .hs-kumo2     { height: 38px; top: 5%; }
   .hs-kumo3     { display: none; }
-  .hs-hero-img-wrap { width: 88%; left: 50%; bottom: auto; top: 46%; transform: translateX(-50%) translateY(-50%); }
+  .hs-hero-img-wrap { width: min(78%, 48vh); left: 50%; bottom: auto; top: 44%; transform: translateX(-50%) translateY(-50%); }
   .hero-chara-wrap  { bottom: 55px; right: 4%; left: auto; }
   /* モバイル：草・花をキャラ対称の左側に配置 */
   .hs-hana2, .hs-hana3, .hs-hana4 { display: none; }
