@@ -210,14 +210,14 @@ nav a:hover { color: var(--caramel); }
   gap: 5px;
   width: 44px; height: 44px;
   border-radius: 50%;
-  background: var(--brown);
+  background: #5E4838;
   border: none;
   cursor: pointer;
-  box-shadow: 0 2px 12px rgba(122,96,80,0.35);
+  box-shadow: 0 2px 12px rgba(94,72,56,0.35);
   transition: background 0.2s;
   flex-shrink: 0;
 }
-.hamburger:hover { background: var(--brown); }
+.hamburger:hover { background: #5E4838; }
 .hamburger span {
   display: block;
   width: 18px; height: 2px;
@@ -1170,7 +1170,7 @@ footer           { position: relative; z-index: 6; }
 
 /* ── Footer ── */
 footer {
-  background: var(--brown);
+  background: #5E4838;
   color: rgba(255,255,255,0.7);
   font-size: 0.82rem;
   line-height: 1.8;
