@@ -369,13 +369,21 @@ nav a:hover { color: var(--caramel); }
 .hs-tree-L { height: 290px; left: 8%;  top: 26%; z-index: 3; transform-origin: bottom center; animation: hs-sway-slow 10s ease-in-out infinite; }
 .hs-tree-R { height: 200px; right: 8%; top: 36%; z-index: 3; transform-origin: bottom center; animation: hs-sway-mid   7s ease-in-out infinite; animation-delay: -3s; }
 
-/* 掲示板（z:4 = wave前面、中央）*/
-.hs-keijiban {
+/* 中央メイン画像（正方形）*/
+.hs-hero-img-wrap {
   width: 35%;
-  height: auto;
+  aspect-ratio: 1;
   left: 50%; top: 50%;
   transform: translateX(-50%) translateY(-50%);
   z-index: 4;
+  overflow: hidden;
+  border-radius: 12px;
+}
+.hs-hero-img {
+  position: static;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* 地面前景 - 固定配置・高さに差あり（z:5）*/
@@ -1252,7 +1260,7 @@ footer {
   .hs-kumo1     { height: 52px; top: 14%; }
   .hs-kumo2     { height: 38px; top: 8%; }
   .hs-kumo3     { display: none; }
-  .hs-keijiban  { width: 88%; }
+  .hs-hero-img-wrap { width: 88%; }
   .hs-tree-L, .hs-tree-R { display: none; }
   .hs-kusa1, .hs-hana1, .hs-hana2, .hs-hana3 { display: none; }
   .hs-musi1     { display: none; }
