@@ -369,8 +369,8 @@ nav a:hover { color: var(--caramel); }
 .hs-keijiban {
   width: 35%;
   height: auto;
-  left: 50%; transform: translateX(-50%);
-  bottom: 62px;
+  left: 50%; top: 50%;
+  transform: translateX(-50%) translateY(-50%);
   z-index: 4;
   animation: hs-float-gentle 6s ease-in-out infinite;
 }
@@ -395,7 +395,7 @@ nav a:hover { color: var(--caramel); }
 @keyframes hs-sway-mid     { 0%,100%{transform:rotate(-2.5deg)}     50%{transform:rotate(2.5deg)} }
 @keyframes hs-sway-fast    { 0%,100%{transform:rotate(-4deg)}       50%{transform:rotate(4deg)} }
 @keyframes hs-float        { 0%,100%{transform:translateY(0)}        50%{transform:translateY(-6px)} }
-@keyframes hs-float-gentle { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(-5px)} }
+@keyframes hs-float-gentle { 0%,100%{transform:translateX(-50%) translateY(-50%)} 50%{transform:translateX(-50%) translateY(calc(-50% - 6px))} }
 @keyframes hs-bob          { 0%,100%{transform:translateY(0) rotate(-6deg)} 50%{transform:translateY(-14px) rotate(5deg)} }
 @keyframes hs-wander       { 0%{transform:translate(0,0) rotate(0deg)} 20%{transform:translate(18px,-10px) rotate(25deg)} 40%{transform:translate(35px,4px) rotate(-15deg)} 60%{transform:translate(18px,14px) rotate(20deg)} 80%{transform:translate(-4px,6px) rotate(-25deg)} 100%{transform:translate(0,0) rotate(0deg)} }
 
@@ -1255,7 +1255,7 @@ footer {
   .hs-kumo1     { height: 52px; top: 14%; }
   .hs-kumo2     { height: 38px; top: 8%; }
   .hs-kumo3     { display: none; }
-  .hs-keijiban  { width: 88%; height: auto; bottom: 68px; }
+  .hs-keijiban  { width: 88%; }
   .hs-kusa1     { height: 48px; left: 10%; }
   .hs-hana1     { height: 64px; left: 22%; }
   .hs-hana2     { height: 70px; right: 20%; }
