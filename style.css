@@ -1170,8 +1170,8 @@ footer           { position: relative; z-index: 6; }
 
 /* ── Footer ── */
 footer {
-  background: var(--text);
-  color: rgba(255,255,255,0.45);
+  background: var(--brown);
+  color: rgba(255,255,255,0.7);
   font-size: 0.82rem;
   line-height: 1.8;
   padding-top: 0;
