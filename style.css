@@ -351,6 +351,9 @@ nav a:hover { color: var(--caramel); }
 }
 .hero-wave svg { width: 100%; height: 100%; display: block; }
 
+/* ── ヒーロー前景（一時非表示） ── */
+#hero-scene, .hero-chara-wrap, .scroll-indicator { display: none; }
+
 /* ── ヒーローシーン素材 ── */
 #hero-scene {
   position: absolute;
