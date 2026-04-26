@@ -221,7 +221,6 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     'images/sozai/hana2.png',
     'images/sozai/hana3.png',
     'images/sozai/kusa1.png',
-    'images/sozai/don1.png',
     'images/sozai/kinoko1.png',
   ];
 
