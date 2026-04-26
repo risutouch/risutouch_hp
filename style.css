@@ -239,27 +239,33 @@ nav a:hover { color: var(--caramel); }
 .mobile-overlay.open { display: block; }
 
 .mobile-nav {
-  display: none;
+  display: flex;
   position: fixed;
-  top: 72px; right: 16px;
-  background: var(--white);
-  border-radius: 16px;
-  padding: 16px;
+  inset: 0;
+  background: var(--bg);
   z-index: 160;
-  box-shadow: 0 16px 48px rgba(122,96,80,0.2);
-  min-width: 200px;
   flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
 }
-.mobile-nav.open { display: flex; }
+.mobile-nav.open { opacity: 1; visibility: visible; pointer-events: auto; }
 .mobile-nav a {
-  padding: 12px 16px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  color: var(--text-mid);
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  font-family: 'Noto Serif JP', serif;
+  color: var(--text);
+  width: 100%;
+  max-width: 280px;
+  text-align: center;
+  border-radius: 12px;
   transition: all 0.2s;
 }
-.mobile-nav a:hover { color: var(--caramel); }
+.mobile-nav a:hover { color: var(--caramel); background: var(--bg2); }
 .mobile-cta {
   background: var(--caramel) !important;
   color: var(--white) !important;
