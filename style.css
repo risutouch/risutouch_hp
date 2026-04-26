@@ -255,49 +255,6 @@ nav a:hover { color: var(--caramel); }
 }
 .mobile-nav.open { opacity: 1; visibility: visible; pointer-events: auto; }
 
-/* アコーディオン項目 */
-.mnav-item {
-  width: 100%;
-  max-width: 320px;
-  background: var(--white);
-  border-radius: 16px;
-  overflow: hidden;
-}
-.mnav-item summary {
-  list-style: none;
-  padding: 18px 24px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1rem;
-  color: var(--text);
-  user-select: none;
-}
-.mnav-item summary::-webkit-details-marker { display: none; }
-.mnav-item summary::after {
-  content: '+';
-  font-size: 1.2rem;
-  color: var(--caramel);
-  transition: transform 0.3s ease;
-  flex-shrink: 0;
-}
-.mnav-item[open] summary::after { transform: rotate(45deg); }
-.mnav-sub {
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.35s ease;
-}
-.mnav-sub a {
-  display: block;
-  padding: 12px 24px 12px 32px;
-  font-size: 0.9rem;
-  color: var(--text-mid);
-  border-top: 1px solid var(--bg2);
-  transition: color 0.2s;
-}
-.mnav-sub a:hover { color: var(--caramel); }
 .mobile-cta {
   background: var(--caramel) !important;
   color: var(--white) !important;
