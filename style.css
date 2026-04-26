@@ -387,8 +387,6 @@ nav a:hover { color: var(--caramel); }
   filter: sepia(18%) saturate(85%) brightness(103%);
 }
 
-/* てんとう虫（PCでは非表示）*/
-.hs-musi1 { display: none; }
 
 /* 地面前景 - キャラより上に配置（z:5）*/
 .hs-kusa1 { height: 44px; left: 4%;   bottom: 40%; z-index: 5; transform-origin: bottom center; animation: hs-sway-mid  4.5s ease-in-out infinite; animation-delay: -1s; }
@@ -1277,15 +1275,6 @@ footer {
   .hs-hana2, .hs-hana3 { display: none; }
   .hs-kusa1 { height: 38px; left: 20%; bottom: 55px; }
   .hs-hana1 { height: 56px; left: 30%; bottom: 55px; }
-  /* てんとう虫：花の周りを飛んで止まる */
-  .hs-musi1 {
-    display: block;
-    height: 22px;
-    left: 36%; bottom: 14%;
-    z-index: 5;
-    animation: hs-fly-land 9s ease-in-out infinite;
-    animation-delay: -2s;
-  }
 
   #shops, #products, #about, #faq, #contact, #contact-section { padding: 100px 30px 100px; }
 
