@@ -369,17 +369,22 @@ nav a:hover { color: var(--caramel); }
 .hs-hero-img-wrap {
   width: 35%;
   aspect-ratio: 1;
-  left: 50%; top: 50%;
+  left: 50%; top: 42%;
   transform: translateX(-50%) translateY(-50%);
   z-index: 4;
   overflow: hidden;
   border-radius: 36px;
+  box-shadow:
+    0 0 0 6px var(--bg),
+    0 0 0 10px rgba(122,96,80,0.18),
+    0 12px 40px rgba(58,42,32,0.18);
 }
 .hs-hero-img {
   position: static;
   width: 100%; height: 100%;
   object-fit: cover;
   display: block;
+  filter: sepia(18%) saturate(85%) brightness(103%);
 }
 
 /* 地面前景 - 下半分にばらつかせて配置（z:5）*/
