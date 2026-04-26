@@ -94,6 +94,24 @@ function closeMenu() {
 })();
 
 
+// ── モバイルナビ アコーディオン ──────────────────
+document.querySelectorAll('.mnav-item').forEach(details => {
+  const summary = details.querySelector('summary');
+  const sub = details.querySelector('.mnav-sub');
+  summary.addEventListener('click', e => {
+    e.preventDefault();
+    if (details.open) {
+      sub.style.maxHeight = sub.scrollHeight + 'px';
+      requestAnimationFrame(() => requestAnimationFrame(() => { sub.style.maxHeight = '0'; }));
+      sub.addEventListener('transitionend', () => details.removeAttribute('open'), { once: true });
+    } else {
+      details.setAttribute('open', '');
+      sub.style.maxHeight = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => { sub.style.maxHeight = sub.scrollHeight + 'px'; }));
+    }
+  });
+});
+
 // ── FAQアコーディオン アニメーション ─────────────
 document.querySelectorAll('.faq-item').forEach(details => {
   const summary = details.querySelector('summary');
