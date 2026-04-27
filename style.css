@@ -367,66 +367,6 @@ nav a:hover { color: var(--caramel); }
 }
 .hero-wave svg { width: 100%; height: 100%; display: block; }
 
-/* ── シャボン玉バブル ── */
-.bubble-layer {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 2;
-}
-.hero-bubble {
-  position: absolute;
-  border-radius: 50%;
-  overflow: hidden;
-  box-shadow:
-    inset 0 0 24px rgba(255,255,255,0.45),
-    inset -5px -5px 14px rgba(255,255,255,0.25),
-    0 6px 28px rgba(122,96,80,0.18);
-}
-.hero-bubble::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: radial-gradient(circle at 32% 28%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.08) 45%, transparent 65%);
-  pointer-events: none;
-  z-index: 2;
-}
-.hero-bubble img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  display: block;
-  border-radius: 50%;
-  filter: sepia(12%) saturate(88%) brightness(104%);
-}
-
-/* バブル個別配置・サイズ */
-.hb1 { width: 150px; height: 150px; left: 7%;   top: 22%; animation: hb-float1 14s ease-in-out infinite; }
-.hb2 { width: 100px; height: 100px; right: 10%;  top: 15%; animation: hb-float2 18s ease-in-out infinite; animation-delay: -6s; }
-.hb3 { width: 80px;  height: 80px;  left: 42%;  top: 55%; animation: hb-float3 16s ease-in-out infinite; animation-delay: -4s; }
-.hb4 { width: 120px; height: 120px; right: 22%;  top: 45%; animation: hb-float1 20s ease-in-out infinite; animation-delay: -10s; }
-.hb5 { width: 68px;  height: 68px;  left: 22%;  top: 65%; animation: hb-float2 12s ease-in-out infinite; animation-delay: -2s; }
-.hb6 { width: 90px;  height: 90px;  left: 62%;  top: 20%; animation: hb-float3 22s ease-in-out infinite; animation-delay: -8s; }
-
-@keyframes hb-float1 {
-  0%,100% { transform: translate(0,    0px)   scale(1);    }
-  25%      { transform: translate(18px, -28px) scale(1.03); }
-  50%      { transform: translate(-8px, -52px) scale(1);    }
-  75%      { transform: translate(12px, -30px) scale(0.97); }
-}
-@keyframes hb-float2 {
-  0%,100% { transform: translate(0,    0px)   scale(1);    }
-  30%      { transform: translate(-20px,-35px) scale(0.97); }
-  60%      { transform: translate(10px, -58px) scale(1.02); }
-  80%      { transform: translate(-5px, -40px) scale(1);    }
-}
-@keyframes hb-float3 {
-  0%,100% { transform: translate(0,    0px)   scale(1);    }
-  20%      { transform: translate(14px, -22px) scale(1.02); }
-  55%      { transform: translate(-14px,-46px) scale(0.98); }
-  80%      { transform: translate(6px,  -30px) scale(1.01); }
-}
 
 /* ── ヒーロー前景（キャラ・草・花・画像は非表示、雲のみ表示） ── */
 .hero-chara-wrap { display: none !important; }
