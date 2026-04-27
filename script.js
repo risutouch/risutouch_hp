@@ -38,7 +38,7 @@
     el.appendChild(ring);
   });
 
-  const state = els.map(el => makeParams(el, rnd(80, 130)));
+  const state = els.map(el => makeParams(el, rnd(100, 130)));
 
   function tick() {
     const t  = Date.now() * 0.001;
