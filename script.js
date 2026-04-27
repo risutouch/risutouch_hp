@@ -66,13 +66,13 @@
       for (let b = a + 1; b < state.length; b++) {
         const pa = base[a], pb = base[b];
         const sa = state[a], sb = state[b];
-        const minDist = pa.r + pb.r + 12;
+        const minDist = pa.r + pb.r + 28;
         const dx = (pa.bx + sa.repX) - (pb.bx + sb.repX);
         const dy = (pa.by + sa.repY) - (pb.by + sb.repY);
         const dist = Math.sqrt(dx*dx + dy*dy) || 1;
         if (dist < minDist) {
-          // 重なり量に比例した反発（最大50px）
-          const strength = Math.min(((minDist - dist) / minDist) * 50, 50);
+          // 重なり量に比例した反発（最大90px）
+          const strength = Math.min(((minDist - dist) / minDist) * 90, 90);
           const nx = dx / dist, ny = dy / dist;
           targetRepX[a] += nx * strength;
           targetRepY[a] += ny * strength;
@@ -84,8 +84,8 @@
 
     // スムージング（lerp）で急激な動きを防ぐ
     state.forEach((s, i) => {
-      s.repX += (targetRepX[i] - s.repX) * 0.12;
-      s.repY += (targetRepY[i] - s.repY) * 0.12;
+      s.repX += (targetRepX[i] - s.repX) * 0.20;
+      s.repY += (targetRepY[i] - s.repY) * 0.20;
     });
 
     // 3rd pass: 描画
