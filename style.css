@@ -1172,11 +1172,10 @@ footer           { position: relative; z-index: 6; }
 }
 .career-images {
   flex-shrink: 0;
-}
-.career-single-img {
   width: 180px;
+  height: 220px;
   border-radius: 10px;
-  display: block;
+  overflow: hidden;
 }
 
 /* タイムライン経歴 */
@@ -1726,7 +1725,7 @@ footer {
   .maker-profile { flex-direction: column; gap: 8px; padding: 16px 14px; max-width: 100%; margin-top: 20px; margin-bottom: 20px; }
   .career-wrap { flex-direction: column-reverse; width: 100%; max-width: 480px; margin-left: auto; margin-right: auto; gap: 40px; }
   .career-timeline { width: 100%; }
-  .career-single-img { width: 150px; }
+  .career-images { width: 150px; height: 180px; }
   .maker-photo { width: 90px; }
   .maker-name { text-align: center; margin-top: 2px; }
   .maker-quote { font-size: 1.1rem; margin-bottom: 6px; line-height: 1.9; }

@@ -12,7 +12,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;600&family=Yomogi&display=swap" rel="stylesheet">
-  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="icon" href="favicon/favicon.ico" sizes="48x48">
+  <link rel="icon" href="favicon/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon/favicon-96x96.png" type="image/png" sizes="96x96">
+  <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png">
+  <link rel="manifest" href="favicon/site.webmanifest">
+  <meta name="theme-color" content="#FAF7F2">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -234,8 +239,13 @@
 <h3 class="sub-heading reveal reveal-d2">店主の経歴</h3>
 
       <div class="career-wrap reveal reveal-d3">
-        <div class="career-images">
-          <img src="images/career.png" alt="" class="career-single-img">
+        <div class="career-images shop-card-photos">
+          <img src="images/career1.png" class="shop-slide active" alt="りすたっちの経歴">
+          <img src="images/career2.jpg" class="shop-slide" alt="りすたっちの経歴">
+          <div class="shop-dots">
+            <button class="shop-dot active" data-index="0"></button>
+            <button class="shop-dot" data-index="1"></button>
+          </div>
         </div>
         <div class="career-timeline">
           <div class="timeline-item">
