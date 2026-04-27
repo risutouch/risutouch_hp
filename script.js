@@ -36,10 +36,10 @@
     };
   }
 
-  const state = els.map(el => makeParams(el, rnd(60, 165)));
+  const state = els.map(el => makeParams(el, rnd(80, 130)));
 
   function respawn(s, el) {
-    const bs = rnd(60, 165);
+    const bs = rnd(80, 130);
     el.style.width  = bs + 'px';
     el.style.height = bs + 'px';
     Object.assign(s, makeParams(el, bs));
