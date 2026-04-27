@@ -2,35 +2,38 @@
    りすたっち — Scroll Site
    ================================================ */
 
-// ── シャボン玉バブル（GPU transform のみ・滑らか）────────
+// ── シャボン玉バブル（sin波イージング・有機的な動き）────────
 (function () {
   const layer = document.querySelector('.bubble-layer');
   if (!layer) return;
 
   const els = Array.from(layer.querySelectorAll('.hero-bubble'));
 
-  const state = els.map((el, i) => {
+  // すべての動きをsin波で定義 → 端で自然に減速・加速するイージングになる
+  const state = els.map((el) => {
     const baseSize = 60 + Math.random() * 105;
-    // 初期位置・サイズはCSSで固定（レイアウト変更なし）
     el.style.cssText = `
       position:absolute; left:0; top:0;
       width:${baseSize}px; height:${baseSize}px;
       border-radius:50%; overflow:hidden;
       will-change:transform,opacity,filter;
     `;
+    const cx = 15 + Math.random() * 70;  // 移動中心X (%)
+    const cy = 45 + Math.random() * 35;  // 移動中心Y (%)
     return {
-      x:          15 + Math.random() * 70,
-      y:          42 + Math.random() * 40,
-      depth:      Math.random(),
       baseSize,
-      vx:         (Math.random() - 0.5) * 0.018,
-      vy:         (Math.random() - 0.5) * 0.010,
-      depthV:     (Math.random() - 0.5) * 0.0022,
-      wobPhase:   Math.random() * Math.PI * 2,
-      wobSpeed:   0.55 + Math.random() * 0.9,
-      wobAmp:     0.03  + Math.random() * 0.05,
-      floatPhase: Math.random() * Math.PI * 2,
-      floatSpeed: 0.22  + Math.random() * 0.32,
+      cx, cy,
+      // X移動：2つのsin波を重ねてランダムな軌跡に
+      xA1: 5  + Math.random() * 10, xF1: 0.04 + Math.random() * 0.06, xP1: Math.random() * Math.PI * 2,
+      xA2: 3  + Math.random() * 6,  xF2: 0.09 + Math.random() * 0.08, xP2: Math.random() * Math.PI * 2,
+      // Y移動
+      yA1: 4  + Math.random() * 7,  yF1: 0.05 + Math.random() * 0.05, yP1: Math.random() * Math.PI * 2,
+      yA2: 2  + Math.random() * 4,  yF2: 0.11 + Math.random() * 0.07, yP2: Math.random() * Math.PI * 2,
+      // 奥行き：ゆっくりしたsin波
+      dF:  0.025 + Math.random() * 0.035, dP: Math.random() * Math.PI * 2,
+      // ぐにゃぐにゃ
+      wobF: 0.5  + Math.random() * 0.9,   wobP: Math.random() * Math.PI * 2,
+      wobA: 0.03 + Math.random() * 0.05,
     };
   });
 
@@ -40,42 +43,37 @@
     const lh = layer.offsetHeight;
 
     state.forEach((s, i) => {
-      // 奥行き更新
-      s.depth += s.depthV;
-      if (s.depth > 1) { s.depth = 1; s.depthV *= -1; }
-      if (s.depth < 0) { s.depth = 0; s.depthV *= -1; }
+      // 位置：sin波の重ね合わせ → 有機的な曲線軌跡
+      const xPct = s.cx + Math.sin(t * s.xF1 + s.xP1) * s.xA1
+                        + Math.sin(t * s.xF2 + s.xP2) * s.xA2;
+      const yPct = s.cy + Math.sin(t * s.yF1 + s.yP1) * s.yA1
+                        + Math.cos(t * s.yF2 + s.yP2) * s.yA2;
 
-      // 位置更新（手前ほど速い）
-      const spd = 0.25 + s.depth * 0.75;
-      s.x += s.vx * spd;
-      s.y += s.vy * spd;
-      if (s.x < 4)  { s.x = 4;  s.vx =  Math.abs(s.vx); }
-      if (s.x > 96) { s.x = 96; s.vx = -Math.abs(s.vx); }
-      if (s.y < 42) { s.y = 42; s.vy =  Math.abs(s.vy); }
-      if (s.y > 88) { s.y = 88; s.vy = -Math.abs(s.vy); }
+      // 奥行き：0〜1のsin波（端でゆっくり・中央で速い）
+      const depth = 0.5 + 0.5 * Math.sin(t * s.dF + s.dP);
 
-      // px換算（transformのみで移動 → レイアウト不要）
-      const px     = (s.x / 100) * lw - s.baseSize / 2;
-      const py     = (s.y / 100) * lh - s.baseSize / 2;
-      const floatY = Math.sin(t * s.floatSpeed + s.floatPhase) * 9;
+      // サイズスケール
+      const depSc = 0.35 + depth * 0.65;
 
-      // 奥行きスケール + ぐにゃぐにゃ
-      const depSc  = 0.35 + s.depth * 0.65;
-      const wob    = Math.sin(t * s.wobSpeed + s.wobPhase) * s.wobAmp;
-      const sx     = depSc * (1 + wob);
-      const sy     = depSc * (1 - wob * 0.6);
+      // ぐにゃぐにゃ
+      const wob = Math.sin(t * s.wobF + s.wobP) * s.wobA;
+      const sx  = depSc * (1 + wob);
+      const sy  = depSc * (1 - wob * 0.6);
 
-      // 視覚（奥行きで変化）
-      const opacity = 0.28 + s.depth * 0.54;
-      const blur    = (1 - s.depth) * 2.5;
-      const sat     = 68  + s.depth * 28;
-      const zi      = Math.round(s.depth * 10);
+      // px位置
+      const px = (xPct / 100) * lw - s.baseSize / 2;
+      const py = (yPct / 100) * lh - s.baseSize / 2;
+
+      // 見た目
+      const opacity = 0.28 + depth * 0.54;
+      const blur    = (1 - depth) * 2.5;
+      const sat     = 68 + depth * 28;
 
       const el = els[i];
-      el.style.transform = `translate(${px.toFixed(1)}px,${(py + floatY).toFixed(1)}px) scaleX(${sx.toFixed(4)}) scaleY(${sy.toFixed(4)})`;
+      el.style.transform = `translate(${px.toFixed(1)}px,${py.toFixed(1)}px) scaleX(${sx.toFixed(4)}) scaleY(${sy.toFixed(4)})`;
       el.style.opacity   = opacity.toFixed(3);
       el.style.filter    = `blur(${blur.toFixed(2)}px) saturate(${sat|0}%)`;
-      el.style.zIndex    = zi;
+      el.style.zIndex    = Math.round(depth * 10);
     });
 
     requestAnimationFrame(tick);
