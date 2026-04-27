@@ -640,14 +640,20 @@ nav a:hover { color: var(--caramel); }
 
 
 /* 地面前景 - キャラより上に配置（z:5）*/
+@keyframes kiSway {
+  0%, 100% { transform: translateY(-50%) rotate(-1deg); }
+  50%       { transform: translateY(-50%) rotate(1deg); }
+}
 .hs-ki {
   width: 180px;
   top: 50%;
   z-index: 6;
+  transform-origin: bottom center;
 }
 .hs-ki-l {
   left: calc(50% - clamp(270px, 56vw, 660px) / 2 - 200px);
-  transform: translateY(-50%);
+  animation: kiSway 6s ease-in-out infinite;
+  animation-delay: -1.5s;
 }
 .hs-kusa1 { display: none; }
 .hs-hana1 { display: none; }
