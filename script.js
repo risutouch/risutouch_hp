@@ -341,7 +341,7 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   document.body.appendChild(overlay);
 
   const bee = document.createElement('img');
-  bee.src = 'images/sozai/bee.png';
+  bee.src = 'images/deco/bee.png';
   bee.setAttribute('aria-hidden', 'true');
   bee.style.cssText = 'position:absolute;left:0;top:0;width:26px;height:auto;pointer-events:none;display:none;will-change:transform;';
   overlay.appendChild(bee);
@@ -393,10 +393,10 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
 // ── 草・花・どんぐり・きのこ ランダム割り当て（初回のみ）──
 (function () {
   const pool = [
-    'images/sozai/hana1.png',
-    'images/sozai/hana2.png',
-    'images/sozai/hana3.png',
-    'images/sozai/kusa1.png',
+    'images/deco/hana1.png',
+    'images/deco/hana2.png',
+    'images/deco/hana3.png',
+    'images/deco/kusa1.png',
   ];
 
   const slots = ['.hs-kusa1', '.hs-hana1', '.hs-hana2', '.hs-hana3', '.hs-hana4']
