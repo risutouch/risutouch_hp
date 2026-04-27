@@ -67,7 +67,7 @@
       const r     = s.baseSize * depSc / 2;
       const age   = Math.min(1, (Date.now() - s.born) / 1200);
       const opacity = (0.28 + depth * 0.54) * age;
-      const blur    = 0.4 + (1 - depth) * 5.5;   // 手前0.4px〜奥5.9px
+      const blur    = 2.5;
       const sat     = 68 + depth * 28;
       return { px, py, sx, sy, cx, cy, r, depth, opacity, blur, sat };
     });
