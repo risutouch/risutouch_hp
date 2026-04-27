@@ -27,29 +27,73 @@
     el.appendChild(ring);
   });
 
-  // 各バブルにランダムな漂いパラメータ
+  // 漂いパラメータ（sin波 x2 重ね）
   const params = els.map(() => ({
-    xAmp:  60 + Math.random() * 80,
-    yAmp:  50 + Math.random() * 60,
-    xFreq: 0.02 + Math.random() * 0.03,
-    yFreq: 0.015 + Math.random() * 0.025,
-    xPh: Math.random() * Math.PI * 2,
-    yPh: Math.random() * Math.PI * 2,
-    // 2つ目のsin波を重ねて軌跡を不規則に
-    xAmp2: 20 + Math.random() * 30, xFreq2: 0.05 + Math.random() * 0.04, xPh2: Math.random() * Math.PI * 2,
-    yAmp2: 15 + Math.random() * 25, yFreq2: 0.04 + Math.random() * 0.04, yPh2: Math.random() * Math.PI * 2,
+    xAmp:  60 + Math.random() * 80,  yAmp:  50 + Math.random() * 60,
+    xFreq: 0.02 + Math.random() * 0.03, yFreq: 0.015 + Math.random() * 0.025,
+    xPh: Math.random() * Math.PI * 2,   yPh: Math.random() * Math.PI * 2,
+    xAmp2: 20 + Math.random() * 30,  yAmp2: 15 + Math.random() * 25,
+    xFreq2: 0.05 + Math.random() * 0.04, yFreq2: 0.04 + Math.random() * 0.04,
+    xPh2: Math.random() * Math.PI * 2,  yPh2: Math.random() * Math.PI * 2,
   }));
+
+  // 反発オフセット（スムージング済み）
+  const rep = els.map(() => ({ x: 0, y: 0 }));
+
+  // CSSベース位置を読み取る（transform適用前）
+  let bases = [];
+  function readBases() {
+    bases = els.map(el => ({
+      cx: el.offsetLeft + el.offsetWidth  / 2,
+      cy: el.offsetTop  + el.offsetHeight / 2,
+      r:  el.offsetWidth / 2,
+    }));
+  }
+  readBases();
+  window.addEventListener('resize', readBases, { passive: true });
 
   function tick() {
     const t = Date.now() * 0.001;
-    els.forEach((el, i) => {
-      const p  = params[i];
-      const tx = Math.sin(t * p.xFreq  + p.xPh)  * p.xAmp
-               + Math.sin(t * p.xFreq2 + p.xPh2) * p.xAmp2;
-      const ty = Math.sin(t * p.yFreq  + p.yPh)  * p.yAmp
-               + Math.sin(t * p.yFreq2 + p.yPh2) * p.yAmp2;
-      el.style.transform = `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px)`;
+
+    // sin波オフセット計算
+    const sw = params.map(p => ({
+      tx: Math.sin(t*p.xFreq+p.xPh)*p.xAmp + Math.sin(t*p.xFreq2+p.xPh2)*p.xAmp2,
+      ty: Math.sin(t*p.yFreq+p.yPh)*p.yAmp + Math.sin(t*p.yFreq2+p.yPh2)*p.yAmp2,
+    }));
+
+    // 反発力計算
+    const tRep = els.map(() => ({ x: 0, y: 0 }));
+    for (let a = 0; a < els.length - 1; a++) {
+      for (let b = a + 1; b < els.length; b++) {
+        const ax = bases[a].cx + sw[a].tx + rep[a].x;
+        const ay = bases[a].cy + sw[a].ty + rep[a].y;
+        const bx = bases[b].cx + sw[b].tx + rep[b].x;
+        const by = bases[b].cy + sw[b].ty + rep[b].y;
+        const dx = ax - bx, dy = ay - by;
+        const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+        const minD = bases[a].r + bases[b].r + 18;
+        if (dist < minD) {
+          const str = ((minD - dist) / minD) * 70;
+          const nx = dx / dist, ny = dy / dist;
+          tRep[a].x += nx * str; tRep[a].y += ny * str;
+          tRep[b].x -= nx * str; tRep[b].y -= ny * str;
+        }
+      }
+    }
+
+    // スムージング
+    rep.forEach((r, i) => {
+      r.x += (tRep[i].x - r.x) * 0.14;
+      r.y += (tRep[i].y - r.y) * 0.14;
     });
+
+    // 描画
+    els.forEach((el, i) => {
+      const tx = sw[i].tx + rep[i].x;
+      const ty = sw[i].ty + rep[i].y;
+      el.style.transform = `translate(${tx.toFixed(2)}px,${ty.toFixed(2)}px)`;
+    });
+
     requestAnimationFrame(tick);
   }
   tick();
