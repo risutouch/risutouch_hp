@@ -29,20 +29,25 @@
 
   // 各バブルにランダムな漂いパラメータ
   const params = els.map(() => ({
-    xAmp:  8 + Math.random() * 10,
-    yAmp: 10 + Math.random() * 12,
-    xFreq: 0.03 + Math.random() * 0.04,
-    yFreq: 0.025 + Math.random() * 0.035,
+    xAmp:  60 + Math.random() * 80,
+    yAmp:  50 + Math.random() * 60,
+    xFreq: 0.02 + Math.random() * 0.03,
+    yFreq: 0.015 + Math.random() * 0.025,
     xPh: Math.random() * Math.PI * 2,
     yPh: Math.random() * Math.PI * 2,
+    // 2つ目のsin波を重ねて軌跡を不規則に
+    xAmp2: 20 + Math.random() * 30, xFreq2: 0.05 + Math.random() * 0.04, xPh2: Math.random() * Math.PI * 2,
+    yAmp2: 15 + Math.random() * 25, yFreq2: 0.04 + Math.random() * 0.04, yPh2: Math.random() * Math.PI * 2,
   }));
 
   function tick() {
     const t = Date.now() * 0.001;
     els.forEach((el, i) => {
       const p  = params[i];
-      const tx = Math.sin(t * p.xFreq + p.xPh) * p.xAmp;
-      const ty = Math.sin(t * p.yFreq + p.yPh) * p.yAmp;
+      const tx = Math.sin(t * p.xFreq  + p.xPh)  * p.xAmp
+               + Math.sin(t * p.xFreq2 + p.xPh2) * p.xAmp2;
+      const ty = Math.sin(t * p.yFreq  + p.yPh)  * p.yAmp
+               + Math.sin(t * p.yFreq2 + p.yPh2) * p.yAmp2;
       el.style.transform = `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px)`;
     });
     requestAnimationFrame(tick);
