@@ -640,14 +640,20 @@ nav a:hover { color: var(--caramel); }
 
 
 /* 地面前景 - キャラより上に配置（z:5）*/
+@keyframes kiSway {
+  0%, 100% { transform: translateY(-50%) rotate(-1deg); }
+  50%       { transform: translateY(-50%) rotate(1deg); }
+}
 .hs-ki {
   width: 180px;
   top: 50%;
   z-index: 6;
+  transform-origin: bottom center;
 }
 .hs-ki-l {
   left: calc(50% - clamp(270px, 56vw, 660px) / 2 - 200px);
-  transform: translateY(-50%);
+  animation: kiSway 6s ease-in-out infinite;
+  animation-delay: -1.5s;
 }
 .hs-kusa1 { display: none; }
 .hs-hana1 { display: none; }
@@ -916,7 +922,7 @@ footer           { position: relative; z-index: 6; }
 .deco-contact-kirikabu {
   width: 90px;
   bottom: 40px;
-  left: max(20px, calc(50% - 520px));
+  right: max(20px, calc(50% - 520px));
   animation: none;
   opacity: 0.9;
 }
@@ -1047,6 +1053,7 @@ footer           { position: relative; z-index: 6; }
   line-height: 1.8;
   margin-top: 10px;
 }
+.shop-links { display: flex; align-items: center; gap: 10px; }
 .shop-ig {
   color: var(--text-lt);
   transition: color 0.2s;
@@ -1401,13 +1408,9 @@ footer           { position: relative; z-index: 6; }
   background: linear-gradient(to bottom, transparent 80px, var(--bg) 80px);
   padding: 160px max(40px, calc(50% - 480px)) 140px;
 }
-.contact-sub {
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-}
 .contact-intro { max-width: 640px; margin: 0 auto 40px; text-align: center; }
 .contact-lead { color: var(--text-mid); font-size: 0.95rem; line-height: 2; }
+.contact-sub  { color: var(--text-mid); font-size: 0.85rem; line-height: 1.8; text-align: center; padding-bottom: 60px; }
 
 /* ── SNS リンク ── */
 .contact-links {
@@ -1490,8 +1493,6 @@ footer           { position: relative; z-index: 6; }
 }
 .contact-sub {
   margin-top: 48px;
-  padding-top: 32px;
-  border-top: 1px solid var(--bg3);
 }
 .contact-sub-lead {
   font-size: 0.82rem;
@@ -1544,9 +1545,10 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 44px max(40px, calc(50% - 480px));
+  padding: 44px max(60px, calc(50% - 560px));
+  gap: 40px;
 }
 .footer-left {
   display: flex;
