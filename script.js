@@ -36,6 +36,13 @@
     };
   }
 
+  // 手書き風リングを各バブルに追加
+  els.forEach(el => {
+    const ring = document.createElement('span');
+    ring.className = 'bubble-ring';
+    el.appendChild(ring);
+  });
+
   const state = els.map(el => makeParams(el, rnd(80, 130)));
 
   function respawn(s, el) {
