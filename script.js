@@ -15,7 +15,7 @@
     el.style.cssText = `
       position:absolute;left:0;top:0;
       width:${baseSize}px;height:${baseSize}px;
-      border-radius:50%;overflow:hidden;
+      border-radius:50%;overflow:visible;
       will-change:transform,opacity,filter;
     `;
     return {
