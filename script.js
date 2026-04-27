@@ -55,7 +55,7 @@
       const yPct  = s.cy + Math.sin(t*s.yF1+s.yP1)*s.yA1 + Math.cos(t*s.yF2+s.yP2)*s.yA2;
       const depth = 0.5 + 0.5 * Math.sin(t*s.dF+s.dP);
       const depSc = 0.60 + depth * 0.40;
-      const r     = s.baseSize * depSc / 2;
+      const r     = s.baseSize / 2;
       const bx    = (xPct/100)*lw;
       const by    = (yPct/100)*lh;
       const wob   = Math.sin(t*s.wobF+s.wobP) * s.wobA;
@@ -96,8 +96,8 @@
     state.forEach((s, i) => {
       const el = els[i];
       const p  = base[i];
-      const sx = p.depSc * (1 + p.wob);
-      const sy = p.depSc * (1 - p.wob * 0.6);
+      const sx = 1 + p.wob;
+      const sy = 1 - p.wob * 0.6;
       const px = p.bx + s.repX - s.baseSize / 2;
       const py = p.by + s.repY - s.baseSize / 2;
       const opacity = (0.28 + p.depth * 0.54) * p.age;
