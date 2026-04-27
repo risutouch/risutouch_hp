@@ -41,11 +41,13 @@
   ];
   const RADII = [0.72, 0.50, 0.40, 0.60, 0.34, 0.46];
 
-  const loader  = new THREE.TextureLoader();
   const bubbles = [];
 
   IMAGES.forEach((src, i) => {
-    loader.load(src, tex => {
+    const img = new Image();
+    img.onload = () => {
+      const tex = new THREE.Texture(img);
+      tex.needsUpdate = true;
       const r   = RADII[i];
       const geo = new THREE.SphereGeometry(r, 48, 48);
       const mat = new THREE.MeshPhongMaterial({
@@ -74,7 +76,8 @@
         rotX:  (Math.random() - 0.5) * 0.006,
         rotY:  (Math.random() - 0.5) * 0.008,
       });
-    });
+    };
+    img.src = src;
   });
 
   (function animate() {
