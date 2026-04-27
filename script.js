@@ -46,7 +46,6 @@
 
   IMAGES.forEach((src, i) => {
     loader.load(src, tex => {
-      tex.colorSpace = THREE.SRGBColorSpace;
       const r   = RADII[i];
       const geo = new THREE.SphereGeometry(r, 48, 48);
       const mat = new THREE.MeshPhongMaterial({
