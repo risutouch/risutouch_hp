@@ -54,7 +54,7 @@
       const xPct  = s.cx + Math.sin(t*s.xF1+s.xP1)*s.xA1 + Math.sin(t*s.xF2+s.xP2)*s.xA2;
       const yPct  = s.cy + Math.sin(t*s.yF1+s.yP1)*s.yA1 + Math.cos(t*s.yF2+s.yP2)*s.yA2;
       const depth = 0.5 + 0.5 * Math.sin(t*s.dF+s.dP);
-      const depSc = 0.35 + depth * 0.65;
+      const depSc = 0.60 + depth * 0.40;
       const r     = s.baseSize * depSc / 2;
       const bx    = (xPct/100)*lw;
       const by    = (yPct/100)*lh;
