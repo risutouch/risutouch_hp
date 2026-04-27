@@ -37,8 +37,9 @@
     xPh2: Math.random() * Math.PI * 2,  yPh2: Math.random() * Math.PI * 2,
   }));
 
-  // 反発オフセット（スムージング済み）
-  const rep = els.map(() => ({ x: 0, y: 0 }));
+  // 反発・ドラッグオフセット
+  const rep  = els.map(() => ({ x: 0, y: 0 }));
+  const drag = els.map(() => ({ active: false, ox: 0, oy: 0, px: 0, py: 0 }));
 
   // CSSベース位置を読み取る（transform適用前）
   let bases = [];
@@ -52,23 +53,76 @@
   readBases();
   window.addEventListener('resize', readBases, { passive: true });
 
+  // ドラッグ処理
+  let dragIdx = -1;
+
+  function pointerPos(e) {
+    const rect = layer.getBoundingClientRect();
+    const src  = e.touches ? e.touches[0] : e;
+    return { x: src.clientX - rect.left, y: src.clientY - rect.top };
+  }
+
+  els.forEach((el, i) => {
+    function onStart(e) {
+      e.preventDefault();
+      dragIdx = i;
+      drag[i].active = true;
+      const p = pointerPos(e);
+      drag[i].px = p.x;
+      drag[i].py = p.y;
+    }
+    el.addEventListener('mousedown',  onStart);
+    el.addEventListener('touchstart', onStart, { passive: false });
+  });
+
+  function onMove(e) {
+    if (dragIdx < 0) return;
+    if (e.cancelable) e.preventDefault();
+    const p = pointerPos(e);
+    drag[dragIdx].px = p.x;
+    drag[dragIdx].py = p.y;
+  }
+  function onEnd() {
+    if (dragIdx >= 0) { drag[dragIdx].active = false; dragIdx = -1; }
+  }
+  window.addEventListener('mousemove',  onMove);
+  window.addEventListener('touchmove',  onMove, { passive: false });
+  window.addEventListener('mouseup',    onEnd);
+  window.addEventListener('touchend',   onEnd);
+
   function tick() {
     const t = Date.now() * 0.001;
 
-    // sin波オフセット計算
+    // sin波オフセット
     const sw = params.map(p => ({
       tx: Math.sin(t*p.xFreq+p.xPh)*p.xAmp + Math.sin(t*p.xFreq2+p.xPh2)*p.xAmp2,
       ty: Math.sin(t*p.yFreq+p.yPh)*p.yAmp + Math.sin(t*p.yFreq2+p.yPh2)*p.yAmp2,
     }));
 
-    // 反発力計算
+    // ドラッグオフセット更新
+    drag.forEach((d, i) => {
+      if (d.active) {
+        // ポインターにバブル中心を合わせるオフセット
+        const targetOx = d.px - bases[i].cx - sw[i].tx;
+        const targetOy = d.py - bases[i].cy - sw[i].ty;
+        d.ox += (targetOx - d.ox) * 0.28;
+        d.oy += (targetOy - d.oy) * 0.28;
+      } else {
+        // 離したら自然に戻る
+        d.ox *= 0.86;
+        d.oy *= 0.86;
+      }
+    });
+
+    // 反発力（ドラッグ中は除外）
     const tRep = els.map(() => ({ x: 0, y: 0 }));
     for (let a = 0; a < els.length - 1; a++) {
       for (let b = a + 1; b < els.length; b++) {
-        const ax = bases[a].cx + sw[a].tx + rep[a].x;
-        const ay = bases[a].cy + sw[a].ty + rep[a].y;
-        const bx = bases[b].cx + sw[b].tx + rep[b].x;
-        const by = bases[b].cy + sw[b].ty + rep[b].y;
+        if (drag[a].active || drag[b].active) continue;
+        const ax = bases[a].cx + sw[a].tx + drag[a].ox + rep[a].x;
+        const ay = bases[a].cy + sw[a].ty + drag[a].oy + rep[a].y;
+        const bx = bases[b].cx + sw[b].tx + drag[b].ox + rep[b].x;
+        const by = bases[b].cy + sw[b].ty + drag[b].oy + rep[b].y;
         const dx = ax - bx, dy = ay - by;
         const dist = Math.sqrt(dx*dx + dy*dy) || 1;
         const minD = bases[a].r + bases[b].r + 65;
@@ -80,8 +134,6 @@
         }
       }
     }
-
-    // スムージング
     rep.forEach((r, i) => {
       r.x += (tRep[i].x - r.x) * 0.14;
       r.y += (tRep[i].y - r.y) * 0.14;
@@ -89,8 +141,8 @@
 
     // 描画
     els.forEach((el, i) => {
-      const tx = sw[i].tx + rep[i].x;
-      const ty = sw[i].ty + rep[i].y;
+      const tx = sw[i].tx + drag[i].ox + rep[i].x;
+      const ty = sw[i].ty + drag[i].oy + rep[i].y;
       el.style.transform = `translate(${tx.toFixed(2)}px,${ty.toFixed(2)}px)`;
     });
 
