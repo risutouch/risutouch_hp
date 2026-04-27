@@ -83,7 +83,15 @@
     drag[dragIdx].py = p.y;
   }
   function onEnd() {
-    if (dragIdx >= 0) { drag[dragIdx].active = false; dragIdx = -1; }
+    if (dragIdx < 0) return;
+    const i = dragIdx;
+    // ドラッグオフセットをベース位置に吸収 → その場所を中心に漂い続ける
+    bases[i].cx += drag[i].ox;
+    bases[i].cy += drag[i].oy;
+    drag[i].ox = 0;
+    drag[i].oy = 0;
+    drag[i].active = false;
+    dragIdx = -1;
   }
   window.addEventListener('mousemove',  onMove);
   window.addEventListener('touchmove',  onMove, { passive: false });
@@ -107,10 +115,6 @@
         const targetOy = d.py - bases[i].cy - sw[i].ty;
         d.ox += (targetOx - d.ox) * 0.28;
         d.oy += (targetOy - d.oy) * 0.28;
-      } else {
-        // 離したら自然に戻る
-        d.ox *= 0.86;
-        d.oy *= 0.86;
       }
     });
 
