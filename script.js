@@ -2,33 +2,40 @@
    りすたっち — Scroll Site
    ================================================ */
 
-// ── シャボン玉バブル（反発・sin波・GPU transform）───────────
+// ── シャボン玉バブル（物理ベース：スプリング引力＋反発＋衝突で割れる）──
 (function () {
   const layer = document.querySelector('.bubble-layer');
   if (!layer) return;
 
   const els = Array.from(layer.querySelectorAll('.hero-bubble'));
+  const ALIVE = 0, POPPING = 1, HIDDEN = 2;
 
   function rnd(a, b) { return a + Math.random() * (b - a); }
+  function bubbleSize() { return window.innerWidth <= 860 ? rnd(60, 85) : rnd(100, 130); }
 
-  function makeParams(el, baseSize) {
+  function makeState(el, bs) {
+    const lw = layer.offsetWidth, lh = layer.offsetHeight;
     el.style.cssText = `
       position:absolute;left:0;top:0;
-      width:${baseSize}px;height:${baseSize}px;
+      width:${bs}px;height:${bs}px;
       border-radius:50%;overflow:visible;
       will-change:transform,opacity,filter;
     `;
     return {
-      baseSize,
-      born: Date.now(),
-      cx: rnd(12, 78), cy: rnd(22, 72),
-      xA1: rnd(5,12), xF1: rnd(0.03,0.08), xP1: rnd(0, Math.PI*2),
-      xA2: rnd(3, 7), xF2: rnd(0.08,0.15), xP2: rnd(0, Math.PI*2),
-      yA1: rnd(4, 9), yF1: rnd(0.04,0.08), yP1: rnd(0, Math.PI*2),
-      yA2: rnd(2, 5), yF2: rnd(0.10,0.16), yP2: rnd(0, Math.PI*2),
-      dF: rnd(0.02, 0.05), dP: rnd(0, Math.PI*2),
-      wobF: rnd(0.5, 1.4), wobP: rnd(0, Math.PI*2), wobA: rnd(0.03, 0.06),
-      repX: 0, repY: 0,   // 反発オフセット（スムージング済み）
+      baseSize: bs,
+      status: ALIVE, popT: 0, born: Date.now(),
+      px: rnd(0.15, 0.85) * lw,
+      py: rnd(0.28, 0.80) * lh,
+      vx: rnd(-0.6, 0.6), vy: rnd(-0.4, 0.4),
+      // sin波ターゲット（引力の目標）
+      cx: rnd(15, 75), cy: rnd(28, 72),
+      xA1: rnd(5,12), xF1: rnd(0.03,0.07), xP1: rnd(0, Math.PI*2),
+      xA2: rnd(3, 7), xF2: rnd(0.08,0.14), xP2: rnd(0, Math.PI*2),
+      yA1: rnd(4, 9), yF1: rnd(0.04,0.07), yP1: rnd(0, Math.PI*2),
+      yA2: rnd(2, 5), yF2: rnd(0.09,0.15), yP2: rnd(0, Math.PI*2),
+      dF: rnd(0.02,0.05), dP: rnd(0, Math.PI*2),
+      wobF: rnd(0.5,1.4),  wobP: rnd(0, Math.PI*2), wobA: rnd(0.03,0.06),
+      lastPx: 0, lastPy: 0, lastOp: 0.5,
     };
   }
 
@@ -38,75 +45,109 @@
     el.appendChild(ring);
   });
 
-  function bubbleSize() {
-    return window.innerWidth <= 860 ? rnd(60, 85) : rnd(100, 130);
-  }
+  const state = els.map(el => makeState(el, bubbleSize()));
 
-  const state = els.map(el => makeParams(el, bubbleSize()));
+  function respawn(s, el) {
+    const bs = bubbleSize();
+    el.style.width = bs + 'px';
+    el.style.height = bs + 'px';
+    Object.assign(s, makeState(el, bs));
+  }
 
   function tick() {
     const t  = Date.now() * 0.001;
     const lw = layer.offsetWidth;
     const lh = layer.offsetHeight;
 
-    // 1st pass: sin波ベース位置を計算
-    const base = state.map(s => {
-      const xPct  = s.cx + Math.sin(t*s.xF1+s.xP1)*s.xA1 + Math.sin(t*s.xF2+s.xP2)*s.xA2;
-      const yPct  = s.cy + Math.sin(t*s.yF1+s.yP1)*s.yA1 + Math.cos(t*s.yF2+s.yP2)*s.yA2;
-      const depth = 0.5 + 0.5 * Math.sin(t*s.dF+s.dP);
-      const depSc = 0.60 + depth * 0.40;
-      const r     = s.baseSize / 2;
-      const bx    = (xPct/100)*lw;
-      const by    = (yPct/100)*lh;
-      const wob   = Math.sin(t*s.wobF+s.wobP) * s.wobA;
-      const age   = Math.min(1, (Date.now() - s.born) / 1200);
-      return { xPct, yPct, depth, depSc, r, bx, by, wob, age };
-    });
+    state.forEach((s, i) => {
+      if (s.status !== ALIVE) return;
 
-    // 2nd pass: 反発力を計算（ターゲット値）
-    const targetRepX = state.map(() => 0);
-    const targetRepY = state.map(() => 0);
-    for (let a = 0; a < state.length - 1; a++) {
-      for (let b = a + 1; b < state.length; b++) {
-        const pa = base[a], pb = base[b];
-        const sa = state[a], sb = state[b];
-        const minDist = pa.r + pb.r + 28;
-        const dx = (pa.bx + sa.repX) - (pb.bx + sb.repX);
-        const dy = (pa.by + sa.repY) - (pb.by + sb.repY);
+      // sin波ターゲット位置（スプリング引力の目標）
+      const tx = ((s.cx + Math.sin(t*s.xF1+s.xP1)*s.xA1 + Math.sin(t*s.xF2+s.xP2)*s.xA2) / 100) * lw;
+      const ty = ((s.cy + Math.sin(t*s.yF1+s.yP1)*s.yA1 + Math.cos(t*s.yF2+s.yP2)*s.yA2) / 100) * lh;
+
+      // スプリング力（ターゲットに引き寄せる）
+      s.vx += (tx - s.px) * 0.016;
+      s.vy += (ty - s.py) * 0.016;
+
+      // 他バブルとの反発・衝突
+      const ra = s.baseSize / 2;
+      for (let j = 0; j < state.length; j++) {
+        if (i === j || state[j].status !== ALIVE) continue;
+        const sj = state[j];
+        const rb  = sj.baseSize / 2;
+        const dx  = s.px - sj.px;
+        const dy  = s.py - sj.py;
         const dist = Math.sqrt(dx*dx + dy*dy) || 1;
-        if (dist < minDist) {
-          // 重なり量に比例した反発（最大90px）
-          const strength = Math.min(((minDist - dist) / minDist) * 90, 90);
-          const nx = dx / dist, ny = dy / dist;
-          targetRepX[a] += nx * strength;
-          targetRepY[a] += ny * strength;
-          targetRepX[b] -= nx * strength;
-          targetRepY[b] -= ny * strength;
+        const contact = ra + rb;
+        const repZone = contact + 55; // 接触55px前から反発開始
+
+        if (dist < contact) {
+          // 接触 → 割れる
+          [s, state[j]].forEach(b => {
+            b.status  = POPPING; b.popT = 0;
+            b.lastPx  = b.px - b.baseSize / 2;
+            b.lastPy  = b.py - b.baseSize / 2;
+            b.lastOp  = parseFloat(els[state.indexOf(b)]?.style.opacity) || 0.5;
+          });
+          return;
+        } else if (dist < repZone) {
+          // 反発力（接近度に比例・滑らか）
+          const force = ((repZone - dist) / repZone) * 1.4;
+          s.vx += (dx / dist) * force;
+          s.vy += (dy / dist) * force;
         }
       }
-    }
 
-    // スムージング（lerp）で急激な動きを防ぐ
-    state.forEach((s, i) => {
-      s.repX += (targetRepX[i] - s.repX) * 0.20;
-      s.repY += (targetRepY[i] - s.repY) * 0.20;
+      // 減衰
+      s.vx *= 0.90;
+      s.vy *= 0.90;
+
+      // 位置更新
+      s.px += s.vx;
+      s.py += s.vy;
+
+      // 境界反射
+      const m = ra + 8;
+      if (s.px < m)      { s.px = m;      s.vx =  Math.abs(s.vx) * 0.5; }
+      if (s.px > lw - m) { s.px = lw - m; s.vx = -Math.abs(s.vx) * 0.5; }
+      if (s.py < lh*0.22){ s.py = lh*0.22; s.vy =  Math.abs(s.vy) * 0.5; }
+      if (s.py > lh*0.90){ s.py = lh*0.90; s.vy = -Math.abs(s.vy) * 0.5; }
     });
 
-    // 3rd pass: 描画
+    // 描画
     state.forEach((s, i) => {
       const el = els[i];
-      const p  = base[i];
-      const sx = 1 + p.wob;
-      const sy = 1 - p.wob * 0.6;
-      const px = p.bx + s.repX - s.baseSize / 2;
-      const py = p.by + s.repY - s.baseSize / 2;
-      const opacity = (0.28 + p.depth * 0.54) * p.age;
-      const sat     = 68 + p.depth * 28;
 
-      el.style.transform = `translate(${px.toFixed(1)}px,${py.toFixed(1)}px) scaleX(${sx.toFixed(4)}) scaleY(${sy.toFixed(4)})`;
+      if (s.status === POPPING) {
+        s.popT += 0.05;
+        if (s.popT >= 1) {
+          s.status = HIDDEN;
+          el.style.opacity = '0';
+          setTimeout(() => respawn(s, el), rnd(2000, 5000));
+          return;
+        }
+        const sc = 1 + s.popT * s.popT * 1.2;
+        el.style.transform = `translate(${s.lastPx.toFixed(1)}px,${s.lastPy.toFixed(1)}px) scaleX(${sc.toFixed(4)}) scaleY(${sc.toFixed(4)})`;
+        el.style.opacity   = (s.lastOp * (1 - s.popT)).toFixed(3);
+        el.style.filter    = `blur(${(s.popT * 6).toFixed(1)}px)`;
+        return;
+      }
+
+      if (s.status === HIDDEN) return;
+
+      const depth = 0.5 + 0.5 * Math.sin(t*s.dF+s.dP);
+      const wob   = Math.sin(t*s.wobF+s.wobP) * s.wobA;
+      const age   = Math.min(1, (Date.now() - s.born) / 1200);
+      const opacity = (0.28 + depth * 0.54) * age;
+      const sat     = 68 + depth * 28;
+      const px = s.px - s.baseSize / 2;
+      const py = s.py - s.baseSize / 2;
+
+      el.style.transform = `translate(${px.toFixed(1)}px,${py.toFixed(1)}px) scaleX(${(1+wob).toFixed(4)}) scaleY(${(1-wob*0.6).toFixed(4)})`;
       el.style.opacity   = opacity.toFixed(3);
       el.style.filter    = `blur(1.5px) saturate(${sat|0}%)`;
-      el.style.zIndex    = Math.round(p.depth * 10);
+      el.style.zIndex    = Math.round(depth * 10);
     });
 
     requestAnimationFrame(tick);
