@@ -71,9 +71,9 @@
         const by = bases[b].cy + sw[b].ty + rep[b].y;
         const dx = ax - bx, dy = ay - by;
         const dist = Math.sqrt(dx*dx + dy*dy) || 1;
-        const minD = bases[a].r + bases[b].r + 18;
+        const minD = bases[a].r + bases[b].r + 65;
         if (dist < minD) {
-          const str = ((minD - dist) / minD) * 70;
+          const str = ((minD - dist) / minD) * 80;
           const nx = dx / dist, ny = dy / dist;
           tRep[a].x += nx * str; tRep[a].y += ny * str;
           tRep[b].x -= nx * str; tRep[b].y -= ny * str;
