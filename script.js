@@ -2,78 +2,124 @@
    りすたっち — Scroll Site
    ================================================ */
 
-// ── シャボン玉バブル（sin波イージング・有機的な動き）────────
+// ── シャボン玉バブル ────────────────────────────────
 (function () {
   const layer = document.querySelector('.bubble-layer');
   if (!layer) return;
 
-  const els = Array.from(layer.querySelectorAll('.hero-bubble'));
+  const els   = Array.from(layer.querySelectorAll('.hero-bubble'));
+  const ALIVE = 0, POPPING = 1, HIDDEN = 2;
 
-  // すべての動きをsin波で定義 → 端で自然に減速・加速するイージングになる
-  const state = els.map((el) => {
-    const baseSize = 60 + Math.random() * 105;
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+
+  function makeParams(el, baseSize) {
     el.style.cssText = `
-      position:absolute; left:0; top:0;
-      width:${baseSize}px; height:${baseSize}px;
-      border-radius:50%; overflow:hidden;
+      position:absolute;left:0;top:0;
+      width:${baseSize}px;height:${baseSize}px;
+      border-radius:50%;overflow:hidden;
       will-change:transform,opacity,filter;
     `;
-    const cx = 15 + Math.random() * 70;  // 移動中心X (%)
-    const cy = 45 + Math.random() * 35;  // 移動中心Y (%)
     return {
       baseSize,
-      cx, cy,
-      // X移動：2つのsin波を重ねてランダムな軌跡に
-      xA1: 5  + Math.random() * 10, xF1: 0.04 + Math.random() * 0.06, xP1: Math.random() * Math.PI * 2,
-      xA2: 3  + Math.random() * 6,  xF2: 0.09 + Math.random() * 0.08, xP2: Math.random() * Math.PI * 2,
-      // Y移動
-      yA1: 4  + Math.random() * 7,  yF1: 0.05 + Math.random() * 0.05, yP1: Math.random() * Math.PI * 2,
-      yA2: 2  + Math.random() * 4,  yF2: 0.11 + Math.random() * 0.07, yP2: Math.random() * Math.PI * 2,
-      // 奥行き：ゆっくりしたsin波
-      dF:  0.025 + Math.random() * 0.035, dP: Math.random() * Math.PI * 2,
-      // ぐにゃぐにゃ
-      wobF: 0.5  + Math.random() * 0.9,   wobP: Math.random() * Math.PI * 2,
-      wobA: 0.03 + Math.random() * 0.05,
+      status: ALIVE,
+      popT:  0,
+      born:  Date.now(),
+      lastPx: 0, lastPy: 0, lastSx: 1, lastSy: 1, lastOp: 0.5,
+      cx: rnd(12, 78),  // 移動中心X%
+      cy: rnd(22, 72),  // 移動中心Y%（雲下から下部まで広く）
+      xA1: rnd(5,12),  xF1: rnd(0.03,0.08), xP1: rnd(0, Math.PI*2),
+      xA2: rnd(3, 7),  xF2: rnd(0.08,0.15), xP2: rnd(0, Math.PI*2),
+      yA1: rnd(4, 9),  yF1: rnd(0.04,0.08), yP1: rnd(0, Math.PI*2),
+      yA2: rnd(2, 5),  yF2: rnd(0.10,0.16), yP2: rnd(0, Math.PI*2),
+      dF:  rnd(0.02, 0.05), dP: rnd(0, Math.PI*2),
+      wobF: rnd(0.5, 1.4),  wobP: rnd(0, Math.PI*2), wobA: rnd(0.03, 0.06),
     };
-  });
+  }
+
+  const state = els.map(el => makeParams(el, rnd(60, 165)));
+
+  function respawn(s, el) {
+    const bs = rnd(60, 165);
+    el.style.width  = bs + 'px';
+    el.style.height = bs + 'px';
+    Object.assign(s, makeParams(el, bs));
+  }
 
   function tick() {
     const t  = Date.now() * 0.001;
     const lw = layer.offsetWidth;
     const lh = layer.offsetHeight;
 
-    state.forEach((s, i) => {
-      // 位置：sin波の重ね合わせ → 有機的な曲線軌跡
-      const xPct = s.cx + Math.sin(t * s.xF1 + s.xP1) * s.xA1
-                        + Math.sin(t * s.xF2 + s.xP2) * s.xA2;
-      const yPct = s.cy + Math.sin(t * s.yF1 + s.yP1) * s.yA1
-                        + Math.cos(t * s.yF2 + s.yP2) * s.yA2;
-
-      // 奥行き：0〜1のsin波（端でゆっくり・中央で速い）
-      const depth = 0.5 + 0.5 * Math.sin(t * s.dF + s.dP);
-
-      // サイズスケール
+    // 1st pass: 位置計算（衝突判定用）
+    const pos = state.map(s => {
+      if (s.status !== ALIVE) return null;
+      const xPct  = s.cx + Math.sin(t*s.xF1+s.xP1)*s.xA1 + Math.sin(t*s.xF2+s.xP2)*s.xA2;
+      const yPct  = s.cy + Math.sin(t*s.yF1+s.yP1)*s.yA1 + Math.cos(t*s.yF2+s.yP2)*s.yA2;
+      const depth = 0.5 + 0.5 * Math.sin(t*s.dF+s.dP);
       const depSc = 0.35 + depth * 0.65;
-
-      // ぐにゃぐにゃ
-      const wob = Math.sin(t * s.wobF + s.wobP) * s.wobA;
-      const sx  = depSc * (1 + wob);
-      const sy  = depSc * (1 - wob * 0.6);
-
-      // px位置
-      const px = (xPct / 100) * lw - s.baseSize / 2;
-      const py = (yPct / 100) * lh - s.baseSize / 2;
-
-      // 見た目
-      const opacity = 0.28 + depth * 0.54;
-      const blur    = (1 - depth) * 2.5;
+      const wob   = Math.sin(t*s.wobF+s.wobP) * s.wobA;
+      const sx    = depSc * (1 + wob);
+      const sy    = depSc * (1 - wob * 0.6);
+      const px    = (xPct/100)*lw - s.baseSize/2;
+      const py    = (yPct/100)*lh - s.baseSize/2;
+      const cx    = px + s.baseSize/2;
+      const cy    = py + s.baseSize/2;
+      const r     = s.baseSize * depSc / 2;
+      const age   = Math.min(1, (Date.now() - s.born) / 1200);
+      const opacity = (0.28 + depth * 0.54) * age;
+      const blur    = 1.8 + (1 - depth) * 2.2;   // 常に最低1.8px
       const sat     = 68 + depth * 28;
+      return { px, py, sx, sy, cx, cy, r, depth, opacity, blur, sat };
+    });
 
+    // 衝突判定
+    for (let a = 0; a < state.length - 1; a++) {
+      for (let b = a + 1; b < state.length; b++) {
+        if (!pos[a] || !pos[b]) continue;
+        if (state[a].status !== ALIVE || state[b].status !== ALIVE) continue;
+        const dx = pos[a].cx - pos[b].cx;
+        const dy = pos[a].cy - pos[b].cy;
+        if (dx*dx + dy*dy < (pos[a].r + pos[b].r) ** 2) {
+          [a, b].forEach(idx => {
+            const s = state[idx]; const p = pos[idx];
+            s.status = POPPING; s.popT = 0;
+            s.lastPx = p.px; s.lastPy = p.py;
+            s.lastSx = p.sx; s.lastSy = p.sy;
+            s.lastOp = p.opacity;
+          });
+        }
+      }
+    }
+
+    // 2nd pass: 描画
+    state.forEach((s, i) => {
       const el = els[i];
-      el.style.transform = `translate(${px.toFixed(1)}px,${py.toFixed(1)}px) scaleX(${sx.toFixed(4)}) scaleY(${sy.toFixed(4)})`;
-      el.style.opacity   = opacity.toFixed(3);
-      el.style.filter    = `blur(${blur.toFixed(2)}px) saturate(${sat|0}%)`;
-      el.style.zIndex    = Math.round(depth * 10);
+
+      if (s.status === POPPING) {
+        s.popT += 0.045;
+        if (s.popT >= 1) {
+          s.status = HIDDEN;
+          el.style.opacity = '0';
+          setTimeout(() => respawn(s, el), rnd(2000, 5000));
+          return;
+        }
+        const e  = s.popT * s.popT;          // ease-in（速く膨らんで消える）
+        const sc = 1 + e * 1.1;
+        el.style.transform = `translate(${s.lastPx.toFixed(1)}px,${s.lastPy.toFixed(1)}px) scaleX(${(s.lastSx*sc).toFixed(4)}) scaleY(${(s.lastSy*sc).toFixed(4)})`;
+        el.style.opacity   = (s.lastOp * (1 - s.popT * s.popT)).toFixed(3);
+        el.style.filter    = `blur(${(s.popT * 6).toFixed(1)}px)`;
+        return;
+      }
+
+      if (s.status === HIDDEN) return;
+
+      const p = pos[i];
+      if (!p) return;
+      s.lastPx = p.px; s.lastPy = p.py; s.lastSx = p.sx; s.lastSy = p.sy; s.lastOp = p.opacity;
+      el.style.transform = `translate(${p.px.toFixed(1)}px,${p.py.toFixed(1)}px) scaleX(${p.sx.toFixed(4)}) scaleY(${p.sy.toFixed(4)})`;
+      el.style.opacity   = p.opacity.toFixed(3);
+      el.style.filter    = `blur(${p.blur.toFixed(2)}px) saturate(${p.sat|0}%)`;
+      el.style.zIndex    = Math.round(p.depth * 10);
     });
 
     requestAnimationFrame(tick);
