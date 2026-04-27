@@ -2,6 +2,85 @@
    りすたっち — Scroll Site
    ================================================ */
 
+// ── シャボン玉バブル（リアルタイム奥行き・ぐにゃぐにゃ）────
+(function () {
+  const layer = document.querySelector('.bubble-layer');
+  if (!layer) return;
+
+  const els = Array.from(layer.querySelectorAll('.hero-bubble'));
+
+  const state = els.map(() => {
+    const baseSize = 55 + Math.random() * 110;
+    return {
+      x:           15 + Math.random() * 70,   // % (横：左右端を避ける)
+      y:           42 + Math.random() * 40,   // % (縦：中央〜下)
+      depth:       Math.random(),              // 0=奥 / 1=手前
+      baseSize,
+      vx:          (Math.random() - 0.5) * 0.018,
+      vy:          (Math.random() - 0.5) * 0.010,
+      depthV:      (Math.random() - 0.5) * 0.0025,
+      wobPhase:    Math.random() * Math.PI * 2,
+      wobSpeed:    0.6 + Math.random() * 1.0,
+      wobAmp:      0.035 + Math.random() * 0.055,
+      floatPhase:  Math.random() * Math.PI * 2,
+      floatSpeed:  0.25 + Math.random() * 0.35,
+    };
+  });
+
+  function tick() {
+    const t = Date.now() * 0.001;
+
+    state.forEach((s, i) => {
+      // 奥行きを変化
+      s.depth += s.depthV;
+      if (s.depth > 1) { s.depth = 1; s.depthV *= -1; }
+      if (s.depth < 0) { s.depth = 0; s.depthV *= -1; }
+
+      // 移動（手前ほど速い）
+      const spd = 0.25 + s.depth * 0.75;
+      s.x += s.vx * spd;
+      s.y += s.vy * spd;
+
+      // 範囲バウンス（雲と被らないよう上限を42%に）
+      if (s.x < 4)  { s.x = 4;  s.vx =  Math.abs(s.vx); }
+      if (s.x > 96) { s.x = 96; s.vx = -Math.abs(s.vx); }
+      if (s.y < 42) { s.y = 42; s.vy =  Math.abs(s.vy); }
+      if (s.y > 88) { s.y = 88; s.vy = -Math.abs(s.vy); }
+
+      // サイズ（奥行きで変化）
+      const size = s.baseSize * (0.35 + s.depth * 0.65);
+
+      // ぐにゃぐにゃ（縦横が交互に伸び縮み）
+      const wob   = Math.sin(t * s.wobSpeed + s.wobPhase) * s.wobAmp;
+      const scaleX = 1 + wob;
+      const scaleY = 1 - wob * 0.6;
+
+      // 浮遊（上下ふわふわ）
+      const floatY = Math.sin(t * s.floatSpeed + s.floatPhase) * 9;
+
+      // 見た目（奥行きで変化）
+      const opacity = 0.30 + s.depth * 0.52;
+      const blur    = (1 - s.depth) * 2.8;
+      const sat     = 68 + s.depth * 28;
+      const zIndex  = Math.round(s.depth * 10);
+
+      const el = els[i];
+      el.style.width   = size + 'px';
+      el.style.height  = size + 'px';
+      el.style.left    = s.x + '%';
+      el.style.top     = `calc(${s.y}% + ${floatY}px)`;
+      el.style.transform  = `translate(-50%,-50%) scaleX(${scaleX.toFixed(4)}) scaleY(${scaleY.toFixed(4)})`;
+      el.style.opacity    = opacity.toFixed(3);
+      el.style.filter     = `blur(${blur.toFixed(2)}px) saturate(${sat.toFixed(0)}%)`;
+      el.style.zIndex     = zIndex;
+    });
+
+    requestAnimationFrame(tick);
+  }
+
+  tick();
+})();
+
 const siteHeader = document.getElementById('site-header');
 
 // ── ヘッダー スクロール状態 ──────────────────────
