@@ -18,8 +18,9 @@
   --white:    #FFFFFF;
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
+  overflow-x: hidden;
   background: var(--bg);
   color: var(--text);
   font-family: 'Noto Sans JP', sans-serif;
@@ -376,20 +377,21 @@ nav a:hover { color: var(--caramel); }
   z-index: 2;
 }
 .hero-bubble {
+  display: none;
   position: absolute;
   border-radius: 50%;
   overflow: visible;
-  pointer-events: auto;
-  cursor: grab;
+  pointer-events: none;
   user-select: none;
+  transform-origin: center center;
 }
-.hero-bubble:active { cursor: grabbing; }
 .hero-bubble img {
   display: block;
   width: 100%; height: 100%;
   object-fit: cover;
   border-radius: 50%;
   clip-path: circle(48% at 50% 50%);
+  transition: opacity 0.12s ease;
 }
 .hero-bubble::after {
   content: '';
@@ -401,6 +403,7 @@ nav a:hover { color: var(--caramel); }
     radial-gradient(circle at 70% 76%, rgba(255,255,255,0.12) 0%, transparent 20%);
   pointer-events: none;
   z-index: 2;
+  transition: opacity 0.12s ease;
 }
 .bubble-ring {
   position: absolute;
@@ -410,30 +413,193 @@ nav a:hover { color: var(--caramel); }
   pointer-events: none;
   z-index: 3;
   filter: url(#hand-rough);
+  transition: opacity 0.12s ease;
+}
+.bubble-burst {
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 4;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,0) 44%, rgba(255,255,255,0.78) 47%, rgba(255,255,255,0) 54%),
+    radial-gradient(circle at 18% 22%, rgba(255,255,255,0.9) 0 3px, transparent 4px),
+    radial-gradient(circle at 80% 18%, rgba(255,255,255,0.85) 0 2px, transparent 3px),
+    radial-gradient(circle at 16% 78%, rgba(255,255,255,0.8) 0 2px, transparent 3px),
+    radial-gradient(circle at 84% 74%, rgba(255,255,255,0.84) 0 3px, transparent 4px),
+    radial-gradient(circle at 48% 8%, rgba(255,255,255,0.75) 0 2px, transparent 3px),
+    radial-gradient(circle at 52% 92%, rgba(255,255,255,0.78) 0 2px, transparent 3px);
+  transform: scale(0.6);
+}
+.hero-bubble.is-hidden img,
+.hero-bubble.is-hidden .bubble-ring,
+.hero-bubble.is-hidden::after {
+  opacity: 0;
+}
+.hero-bubble.is-bursting .bubble-burst {
+  animation: bubbleBurst 0.34s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+/* ケンバーンズ：4方向パン */
+@keyframes pan-lt { from { transform: scale(1.10) translate( 2%,  1.5%); } to { transform: scale(1.04) translate(-2%, -1.5%); } }
+@keyframes pan-rt { from { transform: scale(1.10) translate(-2%,  1.5%); } to { transform: scale(1.04) translate( 2%, -1.5%); } }
+@keyframes pan-lb { from { transform: scale(1.10) translate( 2%, -1.5%); } to { transform: scale(1.04) translate(-2%,  1.5%); } }
+@keyframes pan-rb { from { transform: scale(1.10) translate(-2%, -1.5%); } to { transform: scale(1.04) translate( 2%,  1.5%); } }
+
+.featured-bubble-popup {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  width:  clamp(270px, 56vw, 660px);
+  height: clamp(270px, min(42vw, 58vh), 500px); /* 幅・高さ両方に追従 */
+  border-radius: 12%;
+  background: var(--bg);
+  box-shadow: 0 0 0 8px var(--bg), 0 18px 42px rgba(58,42,32,0.24);
+  transform: translate(-50%, -50%) scale(0.94);
+  z-index: 25;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: auto;
+  transition:
+    opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0.42s;
+}
+.featured-bubble-popup::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 12%;
+  border: 2.5px solid rgba(120, 88, 52, 0.52);
+  pointer-events: none;
+  filter: url(#hand-rough);
+}
+/* 画像クリップ用ラッパー（overflow:hidden をここだけに限定） */
+.featured-bubble-img-wrap {
+  width: 100%;
+  height: 100%;
+  border-radius: 12%;
+  overflow: hidden;
+}
+.featured-bubble-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.featured-bubble-img-wrap img.pan-lt { animation: pan-lt 6s ease-in-out forwards; }
+.featured-bubble-img-wrap img.pan-rt { animation: pan-rt 6s ease-in-out forwards; }
+.featured-bubble-img-wrap img.pan-lb { animation: pan-lb 6s ease-in-out forwards; }
+.featured-bubble-img-wrap img.pan-rb { animation: pan-rb 6s ease-in-out forwards; }
+/* タップ可能な画像 */
+.featured-bubble-img-wrap.has-link {
+  cursor: pointer;
+}
+.featured-bubble-popup.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+  transition-delay: 0s;
+}
+.featured-bubble-thumbs {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 22px);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: max-content;
+  max-width: min(92vw, 560px);
+}
+.featured-bubble-thumb {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+  opacity: 0.72;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+  box-shadow:
+    0 0 0 2px rgba(120, 88, 52, 0.36),
+    0 6px 14px rgba(58,42,32,0.12);
+}
+.featured-bubble-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.featured-bubble-thumb.is-active {
+  opacity: 1;
+  transform: translateY(-2px) scale(1.08);
+  box-shadow:
+    0 0 0 3px rgba(120, 88, 52, 0.52),
+    0 8px 18px rgba(58,42,32,0.18);
 }
 
-/* 固定位置・サイズ（アニメーションはJS制御） */
-.hb1 { width:120px; height:120px; left:6%;   top:30%; opacity:0.75; }
-.hb2 { width:105px; height:105px; left:22%;  top:58%; opacity:0.70; }
-.hb3 { width: 95px; height: 95px; left:40%;  top:38%; opacity:0.65; }
-.hb4 { width:115px; height:115px; left:57%;  top:62%; opacity:0.72; }
-.hb5 { width: 90px; height: 90px; left:72%;  top:30%; opacity:0.60; }
-.hb6 { width:125px; height:125px; left:82%;  top:52%; opacity:0.78; }
-.hb7 { width:100px; height:100px; left:32%;  top:72%; opacity:0.68; }
+@keyframes bubbleBurst {
+  0% {
+    opacity: 0.92;
+    transform: scale(0.72);
+    filter: blur(0);
+  }
+  65% {
+    opacity: 0.5;
+    transform: scale(1.18);
+    filter: blur(0.6px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.42);
+    filter: blur(1.2px);
+  }
+}
+
+/* 3列の中央整列レイアウト */
+.hb1 { width:108px; height:108px; left:calc(50% - 210px); top:20%; opacity:0.74; }
+.hb2 { width:108px; height:108px; left:calc(50% - 54px);  top:20%; opacity:0.70; }
+.hb3 { width:108px; height:108px; left:calc(50% + 102px); top:20%; opacity:0.68; }
+.hb4 { width:108px; height:108px; left:calc(50% - 210px); top:35%; opacity:0.72; }
+.hb5 { width:108px; height:108px; left:calc(50% - 54px);  top:35%; opacity:0.64; }
+.hb6 { width:108px; height:108px; left:calc(50% + 102px); top:35%; opacity:0.78; }
+.hb7 { width:108px; height:108px; left:calc(50% - 54px);  top:50%; opacity:0.66; }
 
 /* モバイル：サイズを縮小 */
 @media (max-width: 860px) {
-  .hb1 { width:75px;  height:75px;  left:5%;  top:32%; }
-  .hb2 { width:65px;  height:65px;  left:24%; top:60%; }
-  .hb3 { width:60px;  height:60px;  left:44%; top:36%; }
-  .hb4 { width:70px;  height:70px;  left:58%; top:64%; }
-  .hb5 { width:58px;  height:58px;  left:72%; top:28%; }
-  .hb6 { width:78px;  height:78px;  left:78%; top:52%; }
-  .hb7 { width:62px;  height:62px;  left:30%; top:74%; }
+  .featured-bubble-popup {
+    top: 40%;
+  }
+  .featured-bubble-thumbs {
+    top: calc(100% + 16px);
+    gap: 8px;
+    max-width: min(92vw, 340px);
+  }
+  .featured-bubble-thumb {
+    width: 34px;
+    height: 34px;
+  }
+  .featured-bubble-popup::after {
+    inset: -6px;
+  }
+  .hb1 { width:68px; height:68px; left:calc(50% - 120px); top:18%; }
+  .hb2 { width:68px; height:68px; left:calc(50% - 34px);  top:18%; }
+  .hb3 { width:68px; height:68px; left:calc(50% + 52px);  top:18%; }
+  .hb4 { width:68px; height:68px; left:calc(50% - 120px); top:30%; }
+  .hb5 { width:68px; height:68px; left:calc(50% - 34px);  top:30%; }
+  .hb6 { width:68px; height:68px; left:calc(50% + 52px);  top:30%; }
+  .hb7 { width:68px; height:68px; left:calc(50% - 34px);  top:42%; }
 }
 
-/* ── ヒーロー前景（キャラ・草・花・画像は非表示、雲のみ表示） ── */
-.hero-chara-wrap { display: none !important; }
+/* ── ヒーロー前景（草・花・画像は非表示、雲・キャラのみ表示） ── */
 .hs-hero-img-wrap, .hs-kusa1, .hs-hana1, .hs-hana2, .hs-hana3, .hs-hana4 { display: none !important; }
 
 /* ── ヒーローシーン素材 ── */
@@ -446,9 +612,9 @@ nav a:hover { color: var(--caramel); }
 .hs { position: absolute; width: auto; display: block; }
 
 /* 雲（z:1）*/
-.hs-kumo1 { height: 70px;  left: 6%;   top: 10%; z-index: 1; opacity: 0.80; animation: hs-drift 22s ease-in-out infinite; }
-.hs-kumo2 { height: 50px;  right: 9%;  top: 7%;  z-index: 1; opacity: 0.65; animation: hs-drift 30s ease-in-out infinite reverse; animation-delay: -14s; }
-.hs-kumo3 { height: 42px;  left: 38%;  top: 5%;  z-index: 1; opacity: 0.55; animation: hs-drift 25s ease-in-out infinite; animation-delay: -8s; }
+.hs-kumo1 { height: 70px;  left: 12%;  top: 10%; z-index: 1; opacity: 0.80; animation: hs-drift 22s ease-in-out infinite; }
+.hs-kumo2 { height: 50px;  right: 15%; top: 7%;  z-index: 1; opacity: 0.65; animation: hs-drift 30s ease-in-out infinite reverse; animation-delay: -14s; }
+.hs-kumo3 { height: 42px;  left: 40%;  top: 14%; z-index: 1; opacity: 0.55; animation: hs-drift 25s ease-in-out infinite; animation-delay: -8s; }
 
 /* 中央メイン画像（正方形）*/
 .hs-hero-img-wrap {
@@ -474,6 +640,15 @@ nav a:hover { color: var(--caramel); }
 
 
 /* 地面前景 - キャラより上に配置（z:5）*/
+.hs-ki {
+  width: 180px;
+  top: 50%;
+  z-index: 6;
+}
+.hs-ki-l {
+  left: calc(50% - clamp(270px, 56vw, 660px) / 2 - 200px);
+  transform: translateY(-50%);
+}
 .hs-kusa1 { display: none; }
 .hs-hana1 { display: none; }
 .hs-hana2 { display: none; }
@@ -486,6 +661,10 @@ nav a:hover { color: var(--caramel); }
 @keyframes hs-sway-slow    { 0%,100%{transform:rotate(-1.5deg)}     50%{transform:rotate(1.5deg)} }
 @keyframes hs-sway-mid     { 0%,100%{transform:rotate(-2.5deg)}     50%{transform:rotate(2.5deg)} }
 @keyframes hs-sway-fast    { 0%,100%{transform:rotate(-4deg)}       50%{transform:rotate(4deg)} }
+@keyframes sectionDecoSway {
+  0%, 100% { transform: translateY(0) rotate(var(--deco-rotate-from, 0deg)); }
+  50% { transform: translateY(-4px) rotate(var(--deco-rotate-to, 4deg)); }
+}
 @keyframes hs-float        { 0%,100%{transform:translateY(0)}        50%{transform:translateY(-6px)} }
 @keyframes hs-bob          { 0%,100%{transform:translateY(0) rotate(-6deg)} 50%{transform:translateY(-14px) rotate(5deg)} }
 @keyframes hs-wander       { 0%{transform:translate(0,0) rotate(0deg)} 20%{transform:translate(18px,-10px) rotate(25deg)} 40%{transform:translate(35px,4px) rotate(-15deg)} 60%{transform:translate(18px,14px) rotate(20deg)} 80%{transform:translate(-4px,6px) rotate(-25deg)} 100%{transform:translate(0,0) rotate(0deg)} }
@@ -555,44 +734,88 @@ nav a:hover { color: var(--caramel); }
 /* ── キャラクター＋吹き出し ── */
 .hero-chara-wrap {
   position: absolute;
-  bottom: 15%;
-  left: 61%;
+  bottom: 7%;
+  left: calc(50% + 370px);
   right: auto;
   top: auto;
+  transform: translateX(-50%);
   animation: none;
-  z-index: 10;
+  z-index: 40;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
   pointer-events: none;
+}
+@keyframes charaFloat {
+  0%   { transform: translateY(0)    rotate(0deg); }
+  40%  { transform: translateY(-6px) rotate(0.8deg); }
+  100% { transform: translateY(0)    rotate(0deg); }
 }
 .hero-chara {
   width: 180px;
   filter: drop-shadow(0 8px 16px rgba(58,42,32,0.15));
   flex-shrink: 0;
+  animation: charaFloat 3.2s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+@keyframes balloonPop {
+  0%   { opacity: 0; transform: translateY(5px) scale(0.96); }
+  60%  { opacity: 1; transform: translateY(-1px) scale(1.01); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.hero-balloon.balloon-pop {
+  animation: balloonPop 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 .hero-balloon {
   position: relative;
   background: var(--white);
   border-radius: 16px;
-  padding: 12px 18px;
+  padding: 24px 18px;
   font-size: 0.88rem;
   color: var(--text-mid);
   white-space: normal;
-  max-width: 240px;
+  width: min(270px, calc(100vw - 80px));
+  max-width: min(270px, calc(100vw - 80px));
+  min-height: 0;
   line-height: 1.6;
   text-align: center;
   box-shadow: 0 4px 16px rgba(58,42,32,0.12);
-  margin-bottom: 4px;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   animation: fadeUp 0.8s 2s ease both;
   pointer-events: auto;
   cursor: default;
 }
+.hero-balloon.is-refreshing {
+  animation: balloonRefresh 0.48s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero-balloon-content {
+  display: block;
+  animation: balloonTextRefresh 0.56s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hero-balloon.is-link {
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(58,42,32,0.16);
+}
+.hero-balloon.is-link::before {
+  content: '↗';
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  color: var(--caramel);
+  font-size: 0.9rem;
+  line-height: 1;
+  font-weight: 700;
+}
 .hero-balloon::after {
   content: '';
   position: absolute;
-  bottom: -8px;
   left: 50%;
+  bottom: -8px;
   transform: translateX(-50%);
   border: 8px solid transparent;
   border-top-color: var(--white);
@@ -603,6 +826,28 @@ nav a:hover { color: var(--caramel); }
   text-decoration: underline;
   text-underline-offset: 2px;
   pointer-events: auto;
+}
+
+@keyframes balloonRefresh {
+  0% {
+    opacity: 0.5;
+    transform: translateY(8px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes balloonTextRefresh {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .scroll-line::after {
@@ -620,12 +865,61 @@ nav a:hover { color: var(--caramel); }
 #shops, #about, #contact, #contact-section {
   position: relative;
   margin-top: -80px;
+  overflow: hidden;
 }
 #shops           { z-index: 2; }
 #about           { z-index: 3; }
 #contact         { z-index: 4; }
 #contact-section { z-index: 5; }
 footer           { position: relative; z-index: 6; }
+
+.section-deco {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  opacity: 1;
+  z-index: 0;
+  transform-origin: bottom center;
+  animation: sectionDecoSway 5.8s ease-in-out infinite;
+}
+.deco-shops-flower {
+  width: 44px;
+  top: 154px;
+  right: max(40px, calc(50% - 470px));
+  --deco-rotate-from: 6deg;
+  --deco-rotate-to: 12deg;
+}
+.deco-about-flower-2 {
+  width: 44px;
+  top: 154px;
+  right: max(40px, calc(50% - 470px));
+  --deco-rotate-from: 5deg;
+  --deco-rotate-to: 11deg;
+  animation-delay: -2.2s;
+}
+.deco-contact-flower {
+  width: 44px;
+  top: 154px;
+  right: max(40px, calc(50% - 470px));
+  --deco-rotate-from: -9deg;
+  --deco-rotate-to: -3deg;
+  animation-delay: -0.8s;
+}
+.deco-contact2-flower {
+  width: 44px;
+  top: 152px;
+  right: 9%;
+  --deco-rotate-from: 7deg;
+  --deco-rotate-to: 13deg;
+  animation-delay: -2.8s;
+}
+.deco-contact-kirikabu {
+  width: 90px;
+  bottom: 40px;
+  left: max(20px, calc(50% - 520px));
+  animation: none;
+  opacity: 0.9;
+}
 
 .wave-top {
   position: absolute;
@@ -1124,6 +1418,11 @@ footer           { position: relative; z-index: 6; }
   gap: 24px;
   margin-top: 8px;
 }
+.contact-kirikabu {
+  width: 80px;
+  margin-top: 8px;
+  opacity: 0.85;
+}
 .contact-sns-row {
   display: flex;
   gap: 80px;
@@ -1349,14 +1648,54 @@ footer {
   .hero-carousel { height: 360px; }
   .hero-ci { left: 50%; width: 355px; height: 355px; margin-left: -177px; margin-top: -177px; }
   .hero-thumbs { top: calc(80px + 360px + 16px); left: 0; right: 0; transform: none; flex-direction: row; justify-content: center; }
-  .hero-chara-wrap { bottom: 55px; right: 4%; left: auto; transform: none; animation: none; gap: 0; }
-  .hero-chara { width: 150px; }
-  .hero-balloon { max-width: 180px; font-size: 0.74rem; margin-bottom: -4px; }
+  .hero-chara-wrap {
+    bottom: 55px;
+    right: 4%;
+    left: auto;
+    transform: none;
+    animation: none;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0;
+  }
+  .hero-chara {
+    width: 150px;
+  }
+  .hero-balloon {
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
+    transform: none;
+    max-width: 176px;
+    font-size: 0.74rem;
+    margin-top: 4px;
+    margin-bottom: 0;
+    margin-right: -10px;
+    padding: 16px 14px;
+  }
+  .hero-balloon.is-link::before {
+    top: 8px;
+    right: 10px;
+    font-size: 0.8rem;
+  }
+  .hero-balloon::after {
+    left: auto;
+    bottom: auto;
+    transform: none;
+    right: -8px;
+    top: 48px;
+    border: 8px solid transparent;
+    border-left-color: var(--white);
+    border-right: none;
+  }
 
   /* モバイル：シーン素材 縮小・整理 */
-  .hs-kumo1     { height: 52px; top: 8%; }
-  .hs-kumo2     { height: 38px; top: 5%; }
-  .hs-kumo3     { display: none; }
+  .hs-kumo1     { height: 52px; top: 8%; left: 14%; }
+  .hs-kumo2     { height: 38px; top: 5%; right: 17%; }
+  .hs-kumo3     { height: 32px; top: 14%; left: 38%; }
   .hs-hero-img-wrap { width: min(78%, 48vh); left: 50%; bottom: auto; top: 44%; transform: translateX(-50%) translateY(-50%); }
   .hero-chara-wrap  { bottom: 55px; right: 4%; left: auto; }
   /* モバイル：草・花をキャラ対称の左側に配置 */
@@ -1365,6 +1704,16 @@ footer {
   .hs-hana1 { display: block; height: 38px; left: 36%; bottom: 55px; }
 
   #shops, #products, #about, #faq, #contact, #contact-section { padding: 100px max(30px, calc(50% - 300px)) 100px; }
+
+  .section-deco { opacity: 1; }
+  .deco-shops-flower,
+  .deco-contact-flower,
+  .deco-contact2-flower,
+  .deco-about-flower-2 {
+    width: 36px;
+    top: 112px;
+    right: 24px;
+  }
 
   .shop-card { grid-template-columns: 1fr; height: auto; width: 100%; border-radius: 32px; }
   .shop-card-photos { min-height: 200px; height: 200px; }

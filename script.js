@@ -2,158 +2,150 @@
    りすたっち — Scroll Site
    ================================================ */
 
-// ── シャボン玉バブル（画像ランダム＋ゆっくり漂う）────────────
+// ── ヒーロー画像＋吹き出し ───────────────────────
 (function () {
-  const layer = document.querySelector('.bubble-layer');
-  if (!layer) return;
+  const heroRoot = document.getElementById('top');
+  const balloon  = document.getElementById('hero-balloon');
+  if (!heroRoot) return;
 
-  const imgs = [
-    'images/products/products01.jpg',
-    'images/products/products02.jpg',
-    'images/products/products03.jpg',
-    'images/products/products04.jpg',
-    'images/products/products05.jpg',
-    'images/products/products06.jpg',
-    'images/products/products07.jpg',
-  ];
+  // データ読み込み（hero_data.js のグローバル変数を使用）
+  const data = window.__heroData;
+  if (!data) return;
 
-  // 画像をランダムに割り当て
-  const shuffled = [...imgs].sort(() => Math.random() - 0.5);
-  const els = Array.from(layer.querySelectorAll('.hero-bubble'));
-  els.forEach((el, i) => {
-    el.querySelector('img').src = shuffled[i % shuffled.length];
-    const ring = document.createElement('span');
-    ring.className = 'bubble-ring';
-    el.appendChild(ring);
+  const { greetings, monthly, images, events } = data;
+  if (!images || !images.length) return;
+
+  // 時間帯判定
+  function getTimeBucket() {
+    const h = new Date().getHours();
+    if (h >= 5  && h <= 9)  return 'morning';
+    if (h >= 10 && h <= 16) return 'daytime';
+    if (h >= 17 && h <= 19) return 'evening';
+    if (h >= 20 && h <= 23) return 'night';
+    return 'late_night';
+  }
+
+  function pickRandom(arr) {
+    if (!arr || !arr.length) return null;
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  function showBalloon(text) {
+    if (!balloon || !text) return;
+    balloon.classList.remove('balloon-pop');
+    void balloon.offsetWidth;
+    balloon.textContent = text;
+    balloon.classList.add('balloon-pop');
+  }
+
+  // ポップアップ UI 構築
+  const popup = document.createElement('div');
+  popup.className = 'featured-bubble-popup is-visible';
+  const imgWrap = document.createElement('div');
+  imgWrap.className = 'featured-bubble-img-wrap';
+  const popupImg = document.createElement('img');
+  imgWrap.appendChild(popupImg);
+  popup.appendChild(imgWrap);
+  const popupThumbs = document.createElement('div');
+  popupThumbs.className = 'featured-bubble-thumbs';
+  popup.appendChild(popupThumbs);
+  heroRoot.appendChild(popup);
+
+  let currentIndex = 0;
+  let autoTimer   = null;
+
+  const thumbEls = images.map((image, index) => {
+    const thumb = document.createElement('button');
+    thumb.type  = 'button';
+    thumb.className = 'featured-bubble-thumb';
+    thumb.setAttribute('aria-label', image.title || `商品画像 ${index + 1}`);
+    const thumbImg = document.createElement('img');
+    thumbImg.src = image.srcs[0];
+    thumbImg.alt = '';
+    thumb.appendChild(thumbImg);
+    popupThumbs.appendChild(thumb);
+    thumb.addEventListener('click', () => { showImage(index); restartAuto(); });
+    return thumb;
   });
 
-  // 漂いパラメータ（sin波 x2 重ね）
-  const params = els.map(() => ({
-    xAmp:  60 + Math.random() * 80,  yAmp:  50 + Math.random() * 60,
-    xFreq: 0.02 + Math.random() * 0.03, yFreq: 0.015 + Math.random() * 0.025,
-    xPh: Math.random() * Math.PI * 2,   yPh: Math.random() * Math.PI * 2,
-    xAmp2: 20 + Math.random() * 30,  yAmp2: 15 + Math.random() * 25,
-    xFreq2: 0.05 + Math.random() * 0.04, yFreq2: 0.04 + Math.random() * 0.04,
-    xPh2: Math.random() * Math.PI * 2,  yPh2: Math.random() * Math.PI * 2,
-  }));
+  // ケンバーンズ方向パターン（ランダム選択）
+  const panVariants = ['pan-lt', 'pan-rt', 'pan-lb', 'pan-rb'];
+  let lastPan = '';
 
-  // 反発・ドラッグオフセット
-  const rep  = els.map(() => ({ x: 0, y: 0 }));
-  const drag = els.map(() => ({ active: false, ox: 0, oy: 0, px: 0, py: 0 }));
-
-  // CSSベース位置を読み取る（transform適用前）
-  let bases = [];
-  function readBases() {
-    bases = els.map(el => ({
-      cx: el.offsetLeft + el.offsetWidth  / 2,
-      cy: el.offsetTop  + el.offsetHeight / 2,
-      r:  el.offsetWidth / 2,
-    }));
-  }
-  readBases();
-  window.addEventListener('resize', readBases, { passive: true });
-
-  // ドラッグ処理
-  let dragIdx = -1;
-
-  function pointerPos(e) {
-    const rect = layer.getBoundingClientRect();
-    const src  = e.touches ? e.touches[0] : e;
-    return { x: src.clientX - rect.left, y: src.clientY - rect.top };
-  }
-
-  els.forEach((el, i) => {
-    function onStart(e) {
-      e.preventDefault();
-      dragIdx = i;
-      drag[i].active = true;
-      const p = pointerPos(e);
-      drag[i].px = p.x;
-      drag[i].py = p.y;
-    }
-    el.addEventListener('mousedown',  onStart);
-    el.addEventListener('touchstart', onStart, { passive: false });
-  });
-
-  function onMove(e) {
-    if (dragIdx < 0) return;
-    if (e.cancelable) e.preventDefault();
-    const p = pointerPos(e);
-    drag[dragIdx].px = p.x;
-    drag[dragIdx].py = p.y;
-  }
-  function onEnd() {
-    if (dragIdx < 0) return;
-    const i = dragIdx;
-    // ドラッグオフセットをベース位置に吸収 → その場所を中心に漂い続ける
-    bases[i].cx += drag[i].ox;
-    bases[i].cy += drag[i].oy;
-    drag[i].ox = 0;
-    drag[i].oy = 0;
-    drag[i].active = false;
-    dragIdx = -1;
-  }
-  window.addEventListener('mousemove',  onMove);
-  window.addEventListener('touchmove',  onMove, { passive: false });
-  window.addEventListener('mouseup',    onEnd);
-  window.addEventListener('touchend',   onEnd);
-
-  function tick() {
-    const t = Date.now() * 0.001;
-
-    // sin波オフセット
-    const sw = params.map(p => ({
-      tx: Math.sin(t*p.xFreq+p.xPh)*p.xAmp + Math.sin(t*p.xFreq2+p.xPh2)*p.xAmp2,
-      ty: Math.sin(t*p.yFreq+p.yPh)*p.yAmp + Math.sin(t*p.yFreq2+p.yPh2)*p.yAmp2,
-    }));
-
-    // ドラッグオフセット更新
-    drag.forEach((d, i) => {
-      if (d.active) {
-        // ポインターにバブル中心を合わせるオフセット
-        const targetOx = d.px - bases[i].cx - sw[i].tx;
-        const targetOy = d.py - bases[i].cy - sw[i].ty;
-        d.ox += (targetOx - d.ox) * 0.28;
-        d.oy += (targetOy - d.oy) * 0.28;
+  function showImage(index, withMessage = true) {
+    currentIndex = (index + images.length) % images.length;
+    const img = images[currentIndex];
+    popupImg.src = pickRandom(img.srcs) || '';
+    popupImg.alt = img.title || '';
+    thumbEls.forEach((t, i) => t.classList.toggle('is-active', i === currentIndex));
+    if (withMessage) showBalloon(pickRandom(img.messages));
+    // リンク設定
+    const link = img.link || null;
+    imgWrap.classList.toggle('has-link', !!link);
+    imgWrap.onclick = link ? () => {
+      if (link.startsWith('#')) {
+        document.querySelector(link)?.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.open(link, '_blank', 'noopener');
       }
-    });
+    } : null;
+    // アニメーションリスタート（同じ方向を連続させない）
+    const variants = panVariants.filter(v => v !== lastPan);
+    const next = variants[Math.floor(Math.random() * variants.length)];
+    lastPan = next;
+    popupImg.classList.remove(...panVariants);
+    void popupImg.offsetWidth;
+    popupImg.classList.add(next);
+  }
 
-    // 反発力（ドラッグ中は除外）
-    const tRep = els.map(() => ({ x: 0, y: 0 }));
-    for (let a = 0; a < els.length - 1; a++) {
-      for (let b = a + 1; b < els.length; b++) {
-        if (drag[a].active || drag[b].active) continue;
-        const ax = bases[a].cx + sw[a].tx + drag[a].ox + rep[a].x;
-        const ay = bases[a].cy + sw[a].ty + drag[a].oy + rep[a].y;
-        const bx = bases[b].cx + sw[b].tx + drag[b].ox + rep[b].x;
-        const by = bases[b].cy + sw[b].ty + drag[b].oy + rep[b].y;
-        const dx = ax - bx, dy = ay - by;
-        const dist = Math.sqrt(dx*dx + dy*dy) || 1;
-        const minD = bases[a].r + bases[b].r + 65;
-        if (dist < minD) {
-          const str = ((minD - dist) / minD) * 80;
-          const nx = dx / dist, ny = dy / dist;
-          tRep[a].x += nx * str; tRep[a].y += ny * str;
-          tRep[b].x -= nx * str; tRep[b].y -= ny * str;
+  function restartAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => showImage(currentIndex + 1), 8000);
+  }
+
+  // 期間限定イベントを検索
+  function getActiveEvent() {
+    if (!events || !events.length) return null;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return events.find(e => {
+      const from = new Date(e.from);
+      const to   = new Date(e.to);
+      to.setHours(23, 59, 59, 999);
+      return today >= from && today <= to;
+    }) || null;
+  }
+
+  // 起動シーケンス
+  // 1. まず挨拶
+  showImage(0, false);
+  showBalloon(pickRandom(greetings[getTimeBucket()] || greetings.daytime));
+
+  // 2. 4秒後：イベント → 今月メッセージ の順で表示
+  const activeEvent = getActiveEvent();
+  const monthMsg    = pickRandom(monthly[String(new Date().getMonth() + 1)]);
+
+  setTimeout(() => {
+    if (activeEvent) {
+      showBalloon(activeEvent.message);
+      if (activeEvent.src) { popupImg.src = activeEvent.src; popupImg.alt = activeEvent.title || ''; }
+      // 3a. イベント表示後4秒で月メッセージ or サイクル
+      setTimeout(() => {
+        if (monthMsg) {
+          showBalloon(monthMsg);
+          setTimeout(() => { showImage(0); restartAuto(); }, 4000);
+        } else {
+          showImage(0); restartAuto();
         }
-      }
+      }, 4000);
+    } else {
+      // 3b. イベントなし：月メッセージ or 即サイクル
+      if (monthMsg) showBalloon(monthMsg);
+      setTimeout(() => { showImage(0); restartAuto(); }, monthMsg ? 4000 : 0);
     }
-    rep.forEach((r, i) => {
-      r.x += (tRep[i].x - r.x) * 0.14;
-      r.y += (tRep[i].y - r.y) * 0.14;
-    });
-
-    // 描画
-    els.forEach((el, i) => {
-      const tx = sw[i].tx + drag[i].ox + rep[i].x;
-      const ty = sw[i].ty + drag[i].oy + rep[i].y;
-      el.style.transform = `translate(${tx.toFixed(2)}px,${ty.toFixed(2)}px)`;
-    });
-
-    requestAnimationFrame(tick);
-  }
-  tick();
+  }, 4000);
 })();
+
 
 const siteHeader = document.getElementById('site-header');
 
@@ -220,32 +212,6 @@ function closeMenu() {
     update();
   }, 3500);
 })();
-
-// ── キャラクター吹き出し ──────────────────────
-(async () => {
-  const balloon = document.getElementById('hero-balloon');
-  if (!balloon) return;
-  try {
-    const res = await fetch('data.json?v=' + Date.now());
-    const data = await res.json();
-    const messages = data.messages || (data.message ? [data.message] : []);
-    const msg = messages[Math.floor(Math.random() * messages.length)];
-    if (msg) {
-      balloon.textContent = msg;
-      if (data.post_url) {
-        const a = document.createElement('a');
-        a.href = data.post_url;
-        a.target = '_blank';
-        a.rel = 'noopener';
-        a.textContent = data.post_label || ' →詳細を見る';
-        balloon.appendChild(a);
-      }
-    }
-  } catch {
-    // data.jsonが取得できなければデフォルトのまま
-  }
-})();
-
 
 // ── FAQアコーディオン アニメーション ─────────────
 document.querySelectorAll('.faq-item').forEach(details => {
@@ -367,6 +333,63 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   }, 5000);
 })();
 
+// ── ミツバチ ───────────────────────────────────────
+(function () {
+  // fixed オーバーレイに bee を入れることで body レイアウトに影響しない
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:190;overflow:hidden;';
+  document.body.appendChild(overlay);
+
+  const bee = document.createElement('img');
+  bee.src = 'images/sozai/bee.png';
+  bee.setAttribute('aria-hidden', 'true');
+  bee.style.cssText = 'position:absolute;left:0;top:0;width:26px;height:auto;pointer-events:none;display:none;will-change:transform;';
+  overlay.appendChild(bee);
+
+  function fly() {
+    const W    = window.innerWidth;
+    const H    = window.innerHeight;
+    const ltr  = Math.random() > 0.5;
+    const x0   = ltr ? -70 : W + 70;
+    const x1   = ltr ? W + 70 : -70;
+    const y0   = H * (0.08 + Math.random() * 0.80);
+    const dur  = 5000 + Math.random() * 4000;
+    const wAmp = 18 + Math.random() * 22;
+    const wFreq = 2.5 + Math.random() * 2;
+    // 左向き画像：右から左はそのまま、左から右は反転
+    const flip = ltr ? -1 : 1;
+    let t0 = null;
+
+    bee.style.display = 'block';
+
+    function frame(ts) {
+      if (!t0) t0 = ts;
+      const p = Math.min((ts - t0) / dur, 1);
+
+      const x    = x0 + (x1 - x0) * p;
+      const dy   = Math.sin(p * Math.PI * 2 * wFreq) * wAmp;
+      const y    = y0 + dy;
+      const vy   = Math.cos(p * Math.PI * 2 * wFreq) * wAmp * (Math.PI * 2 * wFreq / dur) * 1000;
+      const vx   = Math.abs((x1 - x0) / dur * 1000);
+      const tilt = Math.atan2(vy, vx) * (180 / Math.PI) * 0.5;
+      const rot  = ltr ? tilt : -tilt;
+
+      bee.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scaleX(${flip}) rotate(${rot.toFixed(2)}deg)`;
+
+      if (p < 1) requestAnimationFrame(frame);
+      else { bee.style.display = 'none'; schedule(); }
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  function schedule() {
+    setTimeout(fly, 12000 + Math.random() * 20000);
+  }
+
+  setTimeout(fly, 3000 + Math.random() * 5000);
+})();
+
 // ── 草・花・どんぐり・きのこ ランダム割り当て（初回のみ）──
 (function () {
   const pool = [
@@ -374,7 +397,6 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     'images/sozai/hana2.png',
     'images/sozai/hana3.png',
     'images/sozai/kusa1.png',
-    'images/sozai/kinoko1.png',
   ];
 
   const slots = ['.hs-kusa1', '.hs-hana1', '.hs-hana2', '.hs-hana3', '.hs-hana4']
