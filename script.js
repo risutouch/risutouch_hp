@@ -2,7 +2,7 @@
    りすたっち — Scroll Site
    ================================================ */
 
-// ── シャボン玉バブル（画像ランダム割り当て）────────────────
+// ── シャボン玉バブル（画像ランダム＋ゆっくり漂う）────────────
 (function () {
   const layer = document.querySelector('.bubble-layer');
   if (!layer) return;
@@ -17,17 +17,37 @@
     'images/products/products07.jpg',
   ];
 
+  // 画像をランダムに割り当て
   const shuffled = [...imgs].sort(() => Math.random() - 0.5);
-  layer.querySelectorAll('.hero-bubble img').forEach((img, i) => {
-    img.src = shuffled[i % shuffled.length];
-  });
-
-  // 手書き風リングを追加
-  layer.querySelectorAll('.hero-bubble').forEach(el => {
+  const els = Array.from(layer.querySelectorAll('.hero-bubble'));
+  els.forEach((el, i) => {
+    el.querySelector('img').src = shuffled[i % shuffled.length];
     const ring = document.createElement('span');
     ring.className = 'bubble-ring';
     el.appendChild(ring);
   });
+
+  // 各バブルにランダムな漂いパラメータ
+  const params = els.map(() => ({
+    xAmp:  8 + Math.random() * 10,
+    yAmp: 10 + Math.random() * 12,
+    xFreq: 0.03 + Math.random() * 0.04,
+    yFreq: 0.025 + Math.random() * 0.035,
+    xPh: Math.random() * Math.PI * 2,
+    yPh: Math.random() * Math.PI * 2,
+  }));
+
+  function tick() {
+    const t = Date.now() * 0.001;
+    els.forEach((el, i) => {
+      const p  = params[i];
+      const tx = Math.sin(t * p.xFreq + p.xPh) * p.xAmp;
+      const ty = Math.sin(t * p.yFreq + p.yPh) * p.yAmp;
+      el.style.transform = `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px)`;
+    });
+    requestAnimationFrame(tick);
+  }
+  tick();
 })();
 
 const siteHeader = document.getElementById('site-header');
