@@ -1653,14 +1653,16 @@ footer {
 }
 
 @media (max-width: 860px) {
+  footer { font-size: 0.74rem; }
   .footer-inner {
-    flex-direction: column;
-    padding: 100px max(24px, calc(50% - 300px)) 40px;
+    padding: 100px max(20px, calc(50% - 300px)) 36px;
     max-width: 100%;
-    gap: 24px;
+    gap: 20px;
+    align-items: flex-start;
   }
-  .footer-left { width: 100%; }
-  .footer-right { align-items: flex-end; width: 100%; }
+  .footer-nav a { font-size: 0.74rem; }
+  .footer-address { font-size: 0.7rem; }
+  .footer-copy { font-size: 0.64rem; }
 }
 
 /* ════════════════════════════════════════════════
