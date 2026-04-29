@@ -24,10 +24,10 @@
 
   <!-- ══ Header ══ -->
   <header id="site-header">
-    <div class="logo">
+    <a href="#top" class="logo">
       <img src="images/logo.png" alt="りすたっち" class="logo-img">
       <span>焼き菓子.りすたっち</span>
-    </div>
+    </a>
     <nav id="main-nav">
       <a href="#shops">購入できるお店</a>
       <a href="#about">商品について</a>
@@ -41,6 +41,11 @@
 
   <div class="mobile-overlay" id="mobile-overlay" onclick="closeMenu()"></div>
   <div class="mobile-nav" id="mobile-nav">
+    <div class="mnav-logo">
+      <img src="images/logo.png" alt="りすたっち" class="mnav-logo-img">
+      <span>焼き菓子.りすたっち</span>
+    </div>
+    <a href="#top" class="mnav-item" onclick="closeMenu()">ホーム</a>
     <a href="#shops" class="mnav-item" onclick="closeMenu()">購入できるお店</a>
     <a href="#about" class="mnav-item" onclick="closeMenu()">商品について</a>
     <a href="#contact" class="mnav-item" onclick="closeMenu()">よくある質問</a>
