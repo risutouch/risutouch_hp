@@ -126,7 +126,7 @@
   showImage(0, false);
   showBalloon(pickRandom(greetings[getTimeBucket()] || greetings.daytime));
 
-  // 2. 4秒後：イベント → 今月メッセージ の順で表示
+  // 2. 8秒後：イベント → 今月メッセージ の順で表示
   const activeEvent = getActiveEvent();
   const monthMsg    = pickRandom(monthly[String(new Date().getMonth() + 1)]);
 
@@ -134,21 +134,21 @@
     if (activeEvent) {
       showBalloon(activeEvent.message);
       if (activeEvent.src) { popupImg.src = activeEvent.src; popupImg.alt = activeEvent.title || ''; }
-      // 3a. イベント表示後4秒で月メッセージ or サイクル
+      // 3a. イベント表示後8秒で月メッセージ or サイクル
       setTimeout(() => {
         if (monthMsg) {
           showBalloon(monthMsg);
-          setTimeout(() => { showImage(0); restartAuto(); }, 4000);
+          setTimeout(() => { showImage(0); restartAuto(); }, 8000);
         } else {
           showImage(0); restartAuto();
         }
-      }, 4000);
+      }, 8000);
     } else {
       // 3b. イベントなし：月メッセージ or 即サイクル
       if (monthMsg) showBalloon(monthMsg);
-      setTimeout(() => { showImage(0); restartAuto(); }, monthMsg ? 4000 : 0);
+      setTimeout(() => { showImage(0); restartAuto(); }, monthMsg ? 8000 : 0);
     }
-  }, 4000);
+  }, 8000);
 })();
 
 
