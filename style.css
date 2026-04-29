@@ -542,20 +542,21 @@ nav a:hover { color: var(--caramel); }
   background: transparent;
   padding: 0;
   cursor: pointer;
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   overflow: hidden;
-  opacity: 0.72;
+  opacity: 0.6;
   transform: translateY(0) scale(1);
   transition:
     opacity 0.25s ease,
     transform 0.25s ease,
-    box-shadow 0.25s ease;
+    box-shadow 0.25s ease,
+    width 0.25s ease,
+    height 0.25s ease;
   box-shadow:
     0 0 0 2.5px var(--white),
-    0 0 0 4.5px rgba(120, 88, 52, 0.45),
-    0 4px 10px rgba(58,42,32,0.15);
+    0 2px 8px rgba(58,42,32,0.18);
 }
 .featured-bubble-thumb img {
   width: 100%;
@@ -565,10 +566,13 @@ nav a:hover { color: var(--caramel); }
 }
 .featured-bubble-thumb.is-active {
   opacity: 1;
-  transform: translateY(-2px) scale(1.08);
+  width: 52px;
+  height: 52px;
+  transform: translateY(-3px) scale(1);
   box-shadow:
-    0 0 0 3px rgba(120, 88, 52, 0.52),
-    0 8px 18px rgba(58,42,32,0.18);
+    0 0 0 3px var(--white),
+    0 0 0 5px rgba(120, 88, 52, 0.5),
+    0 6px 16px rgba(58,42,32,0.22);
 }
 
 @keyframes bubbleBurst {
@@ -619,8 +623,12 @@ nav a:hover { color: var(--caramel); }
     max-width: min(92vw, 340px);
   }
   .featured-bubble-thumb {
-    width: 34px;
-    height: 34px;
+    width: 28px;
+    height: 28px;
+  }
+  .featured-bubble-thumb.is-active {
+    width: 40px;
+    height: 40px;
   }
   .featured-bubble-popup::after {
     inset: -6px;
@@ -900,7 +908,7 @@ nav a:hover { color: var(--caramel); }
 #about           { z-index: 3; }
 #contact         { z-index: 4; }
 #contact-section { z-index: 5; }
-footer           { position: relative; z-index: 6; }
+footer           { position: relative; z-index: 6; margin-top: -80px; overflow: hidden; }
 
 .section-deco {
   position: absolute;
@@ -1580,7 +1588,7 @@ footer {
   align-items: flex-start;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 44px max(60px, calc(50% - 560px));
+  padding: 80px max(60px, calc(50% - 560px)) 44px;
   gap: 40px;
 }
 .footer-left {
