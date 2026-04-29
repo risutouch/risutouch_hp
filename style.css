@@ -1655,13 +1655,12 @@ footer {
 @media (max-width: 860px) {
   .footer-inner {
     flex-direction: column;
-    padding: 40px max(24px, calc(50% - 300px));
+    padding: 100px max(24px, calc(50% - 300px)) 40px;
     max-width: 100%;
     gap: 24px;
   }
   .footer-left { width: 100%; }
-  .footer-right { align-items: flex-start; width: 100%; }
-  .footer-address { text-align: left; }
+  .footer-right { align-items: flex-end; width: 100%; }
 }
 
 /* ════════════════════════════════════════════════
