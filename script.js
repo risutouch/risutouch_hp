@@ -34,7 +34,11 @@
     if (!balloon || !text) return;
     balloon.classList.remove('balloon-pop');
     void balloon.offsetWidth;
-    balloon.textContent = text;
+    const span = document.createElement('span');
+    span.className = 'hero-balloon-content';
+    span.textContent = text;
+    balloon.innerHTML = '';
+    balloon.appendChild(span);
     balloon.classList.add('balloon-pop');
   }
 
