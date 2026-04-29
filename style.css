@@ -593,6 +593,9 @@ nav a:hover { color: var(--caramel); }
 /* モバイル：サイズを縮小 */
 @media (max-width: 860px) {
   .hero-center { top: 38%; }
+  .hero-chara-wrap { top: calc(100% + 40px); }
+  .hero-chara { width: clamp(140px, 38vw, 165px); }
+  .hero-balloon { width: clamp(170px, 46vw, 210px); }
   .featured-bubble-thumbs {
     bottom: 10px;
     top: auto;
@@ -756,7 +759,7 @@ nav a:hover { color: var(--caramel); }
 /* ── キャラクター＋吹き出し（.hero-center 基準で右下に重ねる） ── */
 .hero-chara-wrap {
   position: absolute;
-  top: calc(100% + 24px);
+  top: calc(100% + 30px);
   right: 0;
   display: flex;
   flex-direction: row;
@@ -771,7 +774,7 @@ nav a:hover { color: var(--caramel); }
   100% { transform: translateY(0)    rotate(0deg); }
 }
 .hero-chara {
-  width: clamp(100px, 18vmin, 140px);
+  width: clamp(120px, 22vmin, 165px);
   filter: drop-shadow(0 8px 16px rgba(58,42,32,0.15));
   flex-shrink: 0;
   animation: charaFloat 3.2s ease-in-out infinite;
@@ -793,7 +796,7 @@ nav a:hover { color: var(--caramel); }
   font-size: clamp(0.72rem, 1.8vmin, 0.88rem);
   color: var(--text-mid);
   white-space: normal;
-  width: clamp(130px, 32vmin, 175px);
+  width: clamp(150px, 38vmin, 210px);
   min-height: 0;
   line-height: 1.6;
   text-align: center;
@@ -1406,16 +1409,20 @@ footer           { position: relative; z-index: 6; }
    4. よくある質問
    ════════════════════════════════════════════════ */
 #contact {
-  background: linear-gradient(to bottom, transparent 80px, var(--bg3) 80px);
+  background: linear-gradient(to bottom, rgba(250,247,242,0) 78px, var(--bg3) 80px);
   padding: 160px max(40px, calc(50% - 480px)) 140px;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 /* ════════════════════════════════════════════════
    5. お問い合わせ
    ════════════════════════════════════════════════ */
 #contact-section {
-  background: linear-gradient(to bottom, transparent 80px, var(--bg) 80px);
+  background: linear-gradient(to bottom, rgba(237,228,216,0) 78px, var(--bg) 80px);
   padding: 160px max(40px, calc(50% - 480px)) 140px;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 .contact-intro { max-width: 640px; margin: 0 auto 40px; text-align: center; }
 .contact-lead { color: var(--text-mid); font-size: 0.95rem; line-height: 2; }
