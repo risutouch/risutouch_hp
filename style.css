@@ -23,11 +23,11 @@ body {
   overflow-x: hidden;
   background: var(--bg);
   color: var(--text);
-  font-family: 'Noto Sans JP', sans-serif;
+  font-family: 'Zen Maru Gothic', sans-serif;
   font-size: 16px;
   line-height: 1.8;
 }
-h1, h2, h3 { font-family: 'Noto Serif JP', serif; font-weight: 400; }
+h1, h2, h3 { font-family: 'Zen Maru Gothic', sans-serif; font-weight: 400; }
 img { display: block; width: 100%; }
 a { color: inherit; text-decoration: none; }
 
@@ -262,7 +262,7 @@ nav a:hover { color: var(--caramel); }
   background: var(--white);
   border-radius: 16px;
   padding: 18px 24px;
-  font-family: 'Noto Serif JP', serif;
+  font-family: 'Zen Maru Gothic', sans-serif;
   font-size: 1rem;
   color: var(--text);
   display: flex;
@@ -317,7 +317,7 @@ nav a:hover { color: var(--caramel); }
    ════════════════════════════════════════════════ */
 #top {
   position: relative;
-  min-height: 100vh;
+  min-height: max(100vh, 700px);
   background: var(--bg);
   overflow: hidden;
   display: flex;
@@ -446,19 +446,26 @@ nav a:hover { color: var(--caramel); }
 @keyframes pan-lb { from { transform: scale(1.10) translate( 2%, -1.5%); } to { transform: scale(1.04) translate(-2%,  1.5%); } }
 @keyframes pan-rb { from { transform: scale(1.10) translate(-2%, -1.5%); } to { transform: scale(1.04) translate( 2%,  1.5%); } }
 
-.featured-bubble-popup {
+/* ── ヒーロー中央ラッパー（PC/モバイル共通） ── */
+.hero-center {
   position: absolute;
   left: 50%;
   top: 45%;
-  width:  clamp(270px, 56vw, 660px);
-  height: clamp(270px, min(42vw, 58vh), 500px); /* 幅・高さ両方に追従 */
+  transform: translate(-50%, -50%);
+  z-index: 25;
+}
+
+.featured-bubble-popup {
+  position: relative;
+  width:  clamp(300px, min(78vw, 56vh), 420px);
+  aspect-ratio: 1;
+  height: auto;
   border-radius: 12%;
   background: var(--bg);
   box-shadow: 0 0 0 8px var(--bg), 0 18px 42px rgba(58,42,32,0.24);
-  transform: translate(-50%, -50%) scale(0.94);
-  z-index: 25;
   opacity: 0;
   visibility: hidden;
+  transform: scale(0.94);
   pointer-events: auto;
   transition:
     opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1),
@@ -497,13 +504,14 @@ nav a:hover { color: var(--caramel); }
 .featured-bubble-popup.is-visible {
   opacity: 1;
   visibility: visible;
-  transform: translate(-50%, -50%) scale(1);
+  transform: scale(1);
   transition-delay: 0s;
 }
 .featured-bubble-thumbs {
   position: absolute;
   left: 50%;
-  top: calc(100% + 22px);
+  bottom: 14px;
+  top: auto;
   transform: translateX(-50%);
   display: flex;
   align-items: center;
@@ -529,8 +537,9 @@ nav a:hover { color: var(--caramel); }
     transform 0.25s ease,
     box-shadow 0.25s ease;
   box-shadow:
-    0 0 0 2px rgba(120, 88, 52, 0.36),
-    0 6px 14px rgba(58,42,32,0.12);
+    0 0 0 2.5px var(--white),
+    0 0 0 4.5px rgba(120, 88, 52, 0.45),
+    0 4px 10px rgba(58,42,32,0.15);
 }
 .featured-bubble-thumb img {
   width: 100%;
@@ -573,13 +582,20 @@ nav a:hover { color: var(--caramel); }
 .hb6 { width:108px; height:108px; left:calc(50% + 102px); top:35%; opacity:0.78; }
 .hb7 { width:108px; height:108px; left:calc(50% - 54px);  top:50%; opacity:0.66; }
 
+/* landscape（スマホ横向き・PC）: 横長に */
+@media (min-width: 861px) {
+  .featured-bubble-popup {
+    width:  clamp(240px, min(55vw, 55vh), 520px);
+    aspect-ratio: 1;
+  }
+}
+
 /* モバイル：サイズを縮小 */
 @media (max-width: 860px) {
-  .featured-bubble-popup {
-    top: 40%;
-  }
+  .hero-center { top: 38%; }
   .featured-bubble-thumbs {
-    top: calc(100% + 16px);
+    bottom: 10px;
+    top: auto;
     gap: 8px;
     max-width: min(92vw, 340px);
   }
@@ -737,21 +753,16 @@ nav a:hover { color: var(--caramel); }
 }
 .hero-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* ── キャラクター＋吹き出し ── */
+/* ── キャラクター＋吹き出し（.hero-center 基準で右下に重ねる） ── */
 .hero-chara-wrap {
   position: absolute;
-  bottom: 7%;
-  left: calc(50% + 370px);
-  right: auto;
-  top: auto;
-  transform: translateX(-50%);
-  animation: none;
-  z-index: 40;
+  top: calc(100% + 24px);
+  right: 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
+  gap: 8px;
+  z-index: 5;
   pointer-events: none;
 }
 @keyframes charaFloat {
@@ -760,7 +771,7 @@ nav a:hover { color: var(--caramel); }
   100% { transform: translateY(0)    rotate(0deg); }
 }
 .hero-chara {
-  width: 180px;
+  width: clamp(100px, 18vmin, 140px);
   filter: drop-shadow(0 8px 16px rgba(58,42,32,0.15));
   flex-shrink: 0;
   animation: charaFloat 3.2s ease-in-out infinite;
@@ -772,32 +783,30 @@ nav a:hover { color: var(--caramel); }
   100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 .hero-balloon.balloon-pop {
-  animation: balloonPop 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: balloonPop 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards, charaFloat 3.2s ease-in-out infinite;
 }
 .hero-balloon {
   position: relative;
   background: var(--white);
   border-radius: 16px;
-  padding: 24px 18px;
-  font-size: 0.88rem;
+  padding: 14px 16px;
+  font-size: clamp(0.72rem, 1.8vmin, 0.88rem);
   color: var(--text-mid);
   white-space: normal;
-  width: min(270px, calc(100vw - 80px));
-  max-width: min(270px, calc(100vw - 80px));
+  width: clamp(130px, 32vmin, 175px);
   min-height: 0;
   line-height: 1.6;
   text-align: center;
   box-shadow: 0 4px 16px rgba(58,42,32,0.12);
-  margin-bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: fadeUp 0.8s 2s ease both;
+  animation: fadeUp 0.8s 2s ease both, charaFloat 3.2s ease-in-out infinite;
   pointer-events: auto;
   cursor: default;
 }
 .hero-balloon.is-refreshing {
-  animation: balloonRefresh 0.48s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: balloonRefresh 0.48s cubic-bezier(0.22, 1, 0.36, 1), charaFloat 3.2s ease-in-out infinite;
 }
 .hero-balloon-content {
   display: block;
@@ -820,12 +829,12 @@ nav a:hover { color: var(--caramel); }
 .hero-balloon::after {
   content: '';
   position: absolute;
-  left: 50%;
-  bottom: -8px;
-  transform: translateX(-50%);
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
   border: 8px solid transparent;
-  border-top-color: var(--white);
-  border-bottom: none;
+  border-left-color: var(--white);
+  border-right: none;
 }
 .hero-balloon a {
   color: var(--caramel);
@@ -1028,7 +1037,7 @@ footer           { position: relative; z-index: 6; }
   flex-shrink: 0;
 }
 .shop-card-basic h3 {
-  font-family: 'Noto Serif JP', serif;
+  font-family: 'Zen Maru Gothic', sans-serif;
   font-size: 1rem;
   color: var(--text);
 }
@@ -1095,7 +1104,7 @@ footer           { position: relative; z-index: 6; }
 }
 .sub-heading {
   font-size: 1.3rem;
-  font-family: 'Noto Serif JP', serif;
+  font-family: 'Zen Maru Gothic', sans-serif;
   letter-spacing: 0.08em;
   color: var(--brown);
   margin-top: 56px;
@@ -1131,14 +1140,14 @@ footer           { position: relative; z-index: 6; }
   flex: 1;
 }
 .maker-role {
-  font-family: 'Yomogi', cursive;
+  font-family: 'Zen Maru Gothic', sans-serif;
   font-size: 1rem;
   color: var(--caramel);
   letter-spacing: 0.12em;
   margin-bottom: 12px;
 }
 .maker-quote {
-  font-family: 'Yomogi', cursive;
+  font-family: 'Zen Maru Gothic', sans-serif;
   font-size: 1.55rem;
   line-height: 2.2;
   color: var(--text);
@@ -1222,7 +1231,7 @@ footer           { position: relative; z-index: 6; }
   font-size: 1rem;
   font-weight: 700;
   color: var(--brown);
-  font-family: 'Noto Serif JP', serif;
+  font-family: 'Zen Maru Gothic', sans-serif;
   letter-spacing: 0.04em;
   margin-bottom: 6px;
 }
@@ -1253,7 +1262,7 @@ footer           { position: relative; z-index: 6; }
   font-weight: 700;
   color: var(--brown);
   letter-spacing: 0.1em;
-  font-family: 'Noto Serif JP', serif;
+  font-family: 'Zen Maru Gothic', sans-serif;
   margin-bottom: 20px;
   text-align: center;
 }
@@ -1331,7 +1340,7 @@ footer           { position: relative; z-index: 6; }
   gap: 8px;
   color: var(--caramel);
   text-decoration: none;
-  font-family: 'Noto Serif JP', serif;
+  font-family: 'Zen Maru Gothic', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -1448,7 +1457,7 @@ footer           { position: relative; z-index: 6; }
   fill: currentColor;
 }
 .sns-label {
-  font-family: 'Noto Serif JP', serif;
+  font-family: 'Zen Maru Gothic', sans-serif;
   font-size: 0.88rem;
   letter-spacing: 0.03em;
 }
@@ -1649,48 +1658,10 @@ footer {
   .hero-carousel { height: 360px; }
   .hero-ci { left: 50%; width: 355px; height: 355px; margin-left: -177px; margin-top: -177px; }
   .hero-thumbs { top: calc(80px + 360px + 16px); left: 0; right: 0; transform: none; flex-direction: row; justify-content: center; }
-  .hero-chara-wrap {
-    bottom: 55px;
-    right: 4%;
-    left: auto;
-    transform: none;
-    animation: none;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 0;
-  }
-  .hero-chara {
-    width: 150px;
-  }
-  .hero-balloon {
-    left: auto;
-    right: auto;
-    top: auto;
-    bottom: auto;
-    transform: none;
-    max-width: 176px;
-    font-size: 0.74rem;
-    margin-top: 4px;
-    margin-bottom: 0;
-    margin-right: -10px;
-    padding: 16px 14px;
-  }
   .hero-balloon.is-link::before {
     top: 8px;
     right: 10px;
     font-size: 0.8rem;
-  }
-  .hero-balloon::after {
-    left: auto;
-    bottom: auto;
-    transform: none;
-    right: -8px;
-    top: 48px;
-    border: 8px solid transparent;
-    border-left-color: var(--white);
-    border-right: none;
   }
 
   /* モバイル：シーン素材 縮小・整理 */
@@ -1698,7 +1669,7 @@ footer {
   .hs-kumo2     { height: 38px; top: 5%; right: 17%; }
   .hs-kumo3     { height: 32px; top: 14%; left: 38%; }
   .hs-hero-img-wrap { width: min(78%, 48vh); left: 50%; bottom: auto; top: 44%; transform: translateX(-50%) translateY(-50%); }
-  .hero-chara-wrap  { bottom: 55px; right: 4%; left: auto; }
+
   /* モバイル：草・花をキャラ対称の左側に配置 */
   .hs-hana2, .hs-hana3, .hs-hana4 { display: none; }
   .hs-kusa1 { display: block; height: 38px; left: 18%; bottom: 55px; }
@@ -1739,3 +1710,4 @@ footer {
   .faq-list { width: 100%; margin-left: 0; margin-right: 0; }
 
 }
+
