@@ -595,7 +595,7 @@ nav a:hover { color: var(--caramel); }
   .hero-center { top: 38%; }
   .hero-chara-wrap { top: calc(100% + 40px); }
   .hero-chara { width: clamp(140px, 38vw, 165px); }
-  .hero-balloon { width: clamp(170px, 46vw, 210px); }
+  .hero-balloon { width: clamp(210px, 56vw, 250px); font-size: 0.92rem; }
   .featured-bubble-thumbs {
     bottom: 10px;
     top: auto;
@@ -793,10 +793,10 @@ nav a:hover { color: var(--caramel); }
   background: var(--white);
   border-radius: 16px;
   padding: 14px 16px;
-  font-size: clamp(0.72rem, 1.8vmin, 0.88rem);
+  font-size: clamp(0.78rem, 2vmin, 0.95rem);
   color: var(--text-mid);
   white-space: normal;
-  width: clamp(150px, 38vmin, 210px);
+  width: clamp(165px, 42vmin, 230px);
   min-height: 0;
   line-height: 1.6;
   text-align: center;
@@ -813,7 +813,7 @@ nav a:hover { color: var(--caramel); }
 }
 .hero-balloon-content {
   display: block;
-  animation: balloonTextRefresh 0.56s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: balloonTextRefresh 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .hero-balloon.is-link {
   cursor: pointer;
@@ -858,14 +858,9 @@ nav a:hover { color: var(--caramel); }
 }
 
 @keyframes balloonTextRefresh {
-  0% {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  0%   { opacity: 0; transform: scale(0.7) translateY(4px); }
+  65%  { opacity: 1; transform: scale(1.06) translateY(-1px); }
+  100% { opacity: 1; transform: scale(1)   translateY(0); }
 }
 
 .scroll-line::after {
