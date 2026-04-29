@@ -1118,6 +1118,7 @@ footer           { position: relative; z-index: 6; }
 }
 .sub-heading {
   font-size: 1.3rem;
+  font-weight: 500;
   font-family: 'Zen Maru Gothic', sans-serif;
   letter-spacing: 0.08em;
   color: var(--brown);
@@ -1272,13 +1273,8 @@ footer           { position: relative; z-index: 6; }
   width: 180px;
 }
 .award-photo-label {
-  font-size: 1.3rem;
-  font-weight: 500;
-  color: var(--brown);
-  letter-spacing: 0.1em;
-  font-family: 'Zen Maru Gothic', sans-serif;
+  margin-top: 0;
   margin-bottom: 20px;
-  text-align: center;
 }
 .award-photo img {
   width: 100%;
@@ -1414,6 +1410,16 @@ footer           { position: relative; z-index: 6; }
   font-size: 0.9rem;
   color: var(--text-mid);
   line-height: 1.9;
+}
+.faq-content a {
+  color: var(--caramel);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.faq-content a[target="_blank"]::after {
+  content: '\a0↗';
+  font-size: 0.8em;
+  vertical-align: 0.1em;
 }
 
 /* ════════════════════════════════════════════════
