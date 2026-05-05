@@ -334,12 +334,29 @@ nav a:hover { color: var(--caramel); }
 #top {
   position: relative;
   min-height: max(100vh, 700px);
-  background: var(--bg);
   overflow: hidden;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 100px;
+}
+
+/* ── ヒーロー背景スライド ── */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+}
+.hero-bg-a, .hero-bg-b {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+.hero-bg-a { background-image: url('images/main/main01.png'); }
+.hero-bg-b {
+  background-image: url('images/main/main02.png');
+  animation: heroCrossfade 16s infinite;
+}
+@keyframes heroCrossfade {
+  0%, 37.5%   { opacity: 1; }
+  50%         { opacity: 0; }
+  87.5%, 100% { opacity: 0; }
 }
 
 .hero-content { display: none; }
@@ -379,10 +396,11 @@ nav a:hover { color: var(--caramel); }
   position: absolute;
   bottom: -1px; left: 0;
   width: 100%; height: 80px;
+  overflow: hidden;
   pointer-events: none;
   z-index: 3;
 }
-.hero-wave svg { width: 100%; height: 100%; display: block; }
+.hero-wave svg { width: 200%; height: 100%; display: block; animation: waveFlow 12s linear infinite; }
 
 /* ── シャボン玉バブル ── */
 .bubble-layer {
@@ -950,21 +968,22 @@ footer           { position: relative; z-index: 6; margin-top: -80px; overflow: 
   --deco-rotate-to: 13deg;
   animation-delay: -2.8s;
 }
-.deco-contact-kirikabu {
-  width: 90px;
-  bottom: 110px;
-  right: max(20px, calc(50% - 520px));
-  animation: none;
-  opacity: 0.9;
-}
-
 .wave-top {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 80px;
+  overflow: hidden;
   pointer-events: none;
 }
-.wave-top svg { width: 100%; height: 100%; display: block; }
+.wave-top svg { width: 200%; height: 100%; display: block; animation: waveFlow 10s linear infinite; }
+
+@keyframes waveFlow {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-wave svg, .wave-top svg { animation: none; }
+}
 
 /* ════════════════════════════════════════════════
    2. 販売店
