@@ -367,6 +367,18 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     window.addEventListener('mouseup', onUp);
   });
 
+  // ナビゲーションボタン（PC）
+  const prevBtn = document.querySelector('.carousel-prev');
+  const nextBtn = document.querySelector('.carousel-next');
+  function btnNav(dir) {
+    stopAuto();
+    busy = true;
+    grid.scrollBy({ left: dir * getStep(), behavior: 'smooth' });
+    setTimeout(() => { busy = false; checkLoop(); startAuto(); }, 1200);
+  }
+  if (prevBtn) prevBtn.addEventListener('click', () => btnNav(-1));
+  if (nextBtn) nextBtn.addEventListener('click', () => btnNav(1));
+
   // リサイズ時に位置リセット
   let resizeTimer;
   window.addEventListener('resize', () => {
