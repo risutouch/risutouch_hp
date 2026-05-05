@@ -274,68 +274,104 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   setTimeout(startTimer, Math.random() * 4000);
 });
 
-// ── 商品ギャラリー（ランダム表示 + 定期差し替え） ──
+
+// ── 商品カルーセル（左右無限ループ）─────────────────
 (function () {
-  const gallery = document.getElementById('products-gallery');
-  if (!gallery) return;
+  const grid = document.getElementById('products-carousel');
+  if (!grid) return;
 
-  const all = [
-    'images/products/products01.jpg',
-    'images/products/products02.jpg',
-    'images/products/products03.jpg',
-    'images/products/products04.jpg',
-    'images/products/products05.jpg',
-    'images/products/products06.jpg',
-    'images/products/products07.jpg',
-  ];
+  const origCards = Array.from(grid.querySelectorAll('.product-card'));
+  const n = origCards.length;
+  if (n < 2) return;
 
-  const wraps = Array.from(gallery.querySelectorAll('.gallery-img-wrap'));
-  const SLOTS = wraps.length;
+  // 前後にクローンを追加：[pre1..preN, orig1..origN, app1..appN]
+  // prepend: 逆順で insertBefore → DOM上は正順(pre1, pre2, ... preN)になる
+  origCards.map(c => { const cl = c.cloneNode(true); cl.setAttribute('aria-hidden','true'); return cl; })
+    .reverse().forEach(cl => grid.insertBefore(cl, grid.firstChild));
+  origCards.forEach(c => { const cl = c.cloneNode(true); cl.setAttribute('aria-hidden','true'); grid.appendChild(cl); });
 
-  const pool = [...all].sort(() => Math.random() - 0.5);
-  const shown = pool.slice(0, SLOTS);
-  const reserve = pool.slice(SLOTS);
+  function getStep() {
+    const gap = parseFloat(getComputedStyle(grid).gap) || 24;
+    return grid.querySelector('.product-card').offsetWidth + gap;
+  }
+  function sw() { return getStep() * n; }
 
-  // 最初から position:relative + position:absolute で統一
-  const BASE = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';
-  wraps.forEach((wrap, i) => {
-    wrap.style.position = 'relative';
-    const img = document.createElement('img');
-    img.src = shown[i];
-    img.alt = 'りすたっちの焼き菓子';
-    img.style.cssText = BASE;
-    wrap.appendChild(img);
+  // 初期スクロール位置：orig1 の先頭
+  function initPos() {
+    grid.style.scrollBehavior = 'auto';
+    grid.scrollLeft = sw();
+    requestAnimationFrame(() => { grid.style.scrollBehavior = ''; });
+  }
+  requestAnimationFrame(() => requestAnimationFrame(initPos));
+
+  // ドラッグ中・タッチ中はリセットしない
+  let busy = false;
+  let resetTimer;
+
+  function checkLoop() {
+    if (busy) return;
+    const s = grid.scrollLeft, width = sw();
+    if (s >= 2 * width) {
+      grid.style.scrollBehavior = 'auto';
+      grid.scrollLeft = s - width;
+      requestAnimationFrame(() => { grid.style.scrollBehavior = ''; });
+    } else if (s < width) {
+      grid.style.scrollBehavior = 'auto';
+      grid.scrollLeft = s + width;
+      requestAnimationFrame(() => { grid.style.scrollBehavior = ''; });
+    }
+  }
+
+  grid.addEventListener('scroll', () => {
+    clearTimeout(resetTimer);
+    resetTimer = setTimeout(checkLoop, 150);
+  }, { passive: true });
+
+  // 自動スクロール（前進）
+  let autoTimer = null;
+  function advance() { grid.scrollBy({ left: getStep(), behavior: 'smooth' }); }
+  function startAuto() { clearInterval(autoTimer); autoTimer = setInterval(advance, 3500); }
+  function stopAuto()  { clearInterval(autoTimer); autoTimer = null; }
+
+  startAuto();
+
+  // ホバーで停止（PC）
+  grid.addEventListener('mouseenter', stopAuto);
+  grid.addEventListener('mouseleave', () => { if (!drag) startAuto(); });
+
+  // タッチで停止（スマホ）
+  grid.addEventListener('touchstart', () => { busy = true; stopAuto(); }, { passive: true });
+  grid.addEventListener('touchend',   () => { busy = false; setTimeout(checkLoop, 200); setTimeout(startAuto, 2000); }, { passive: true });
+
+  // マウスドラッグ（PC）
+  let drag = null;
+  function onMove(e) { if (drag) grid.scrollLeft = drag.sl - (e.clientX - drag.x); }
+  function onUp() {
+    if (!drag) return;
+    drag = null; busy = false;
+    grid.classList.remove('is-dragging');
+    grid.style.scrollBehavior = '';
+    window.removeEventListener('mousemove', onMove);
+    window.removeEventListener('mouseup', onUp);
+    setTimeout(checkLoop, 200);
+    setTimeout(startAuto, 1500);
+  }
+  grid.addEventListener('mousedown', e => {
+    drag = { x: e.clientX, sl: grid.scrollLeft };
+    busy = true;
+    grid.classList.add('is-dragging');
+    grid.style.scrollBehavior = 'auto';
+    stopAuto();
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
   });
 
-  if (reserve.length === 0) return;
-
-  setInterval(() => {
-    if (reserve.length === 0) return;
-
-    const slot = Math.floor(Math.random() * SLOTS);
-    const next = reserve.shift();
-    const wrap = wraps[slot];
-    const oldImg = wrap.querySelector('img');
-
-    const newImg = document.createElement('img');
-    newImg.alt = 'りすたっちの焼き菓子';
-    newImg.style.cssText = BASE + 'opacity:0;transition:opacity 3s ease;';
-    wrap.appendChild(newImg);
-
-    newImg.onload = () => {
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        newImg.style.opacity = '1';
-      }));
-    };
-    newImg.src = next;
-
-    setTimeout(() => {
-      if (wrap.contains(oldImg)) wrap.removeChild(oldImg);
-      newImg.style.cssText = BASE;
-      reserve.push(shown[slot]);
-      shown[slot] = next;
-    }, 3500);
-  }, 5000);
+  // リサイズ時に位置リセット
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(initPos, 200);
+  });
 })();
 
 // ── ミツバチ ───────────────────────────────────────
