@@ -54,6 +54,7 @@
   popupThumbs.className = 'featured-bubble-thumbs';
   popup.appendChild(popupThumbs);
   const heroCenter = heroRoot.querySelector('.hero-center');
+  if (!heroCenter) return;
   heroCenter.insertBefore(popup, heroCenter.firstChild);
 
   let currentIndex = 0;
