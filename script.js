@@ -2,6 +2,99 @@
    りすたっち — Scroll Site
    ================================================ */
 
+// ── ヒーロー背景 自動読み込み＆クロスフェード ──────
+(function () {
+  const heroBg = document.querySelector('.hero-bg');
+  if (!heroBg) return;
+
+  function tryLoad(url) {
+    return new Promise(resolve => {
+      const img = new Image();
+      img.onload  = () => resolve(url);
+      img.onerror = () => resolve(null);
+      img.src = url;
+    });
+  }
+
+  async function findImages() {
+    const urls = [];
+    for (let i = 1; i <= 3; i++) {
+      const num = String(i).padStart(2, '0');
+      const exts = ['png', 'jpg', 'jpeg', 'webp'];
+      let found = null;
+      for (const ext of exts) {
+        found = await tryLoad(`images/main/main${num}.${ext}`);
+        if (found) break;
+      }
+      if (found) urls.push(found);
+    }
+    return urls;
+  }
+
+  const KB_PC     = ['hbZoomIn', 'hbPanL', 'hbZoomOut'];
+  const KB_MOBILE = ['hbMobileLR', 'hbMobileRL', 'hbMobileLR'];
+  const isMobile  = window.matchMedia('(max-width: 860px)').matches;
+  const DISPLAY   = isMobile ? 20000 : 10000;
+  const FADE      = 2000;
+  const COL_DELAY = 1500;
+
+  findImages().then(urls => {
+    if (urls.length === 0) return;
+
+    const phrases = Array.from(document.querySelectorAll('.hp-item'));
+
+    const layers = urls.map(url => {
+      const div = document.createElement('div');
+      div.className = 'hero-bg-layer';
+      div.style.backgroundImage = `url('${url}')`;
+      heroBg.appendChild(div);
+      return div;
+    });
+
+    function activate(i) {
+      const l    = layers[i];
+      const anim = (isMobile ? KB_MOBILE : KB_PC)[i % 3];
+      l.style.animation = `${anim} ${DISPLAY + FADE}ms ease-in-out forwards`;
+      l.style.opacity   = '1';
+    }
+    function deactivate(i) {
+      layers[i].style.opacity = '0';
+      setTimeout(() => {
+        layers[i].style.animation = '';
+        void layers[i].offsetWidth;
+      }, FADE + 100);
+    }
+
+    function showPhrase(i) {
+      const item = phrases[i % phrases.length];
+      if (!item) return;
+      item.querySelectorAll('.hp-col').forEach((col, ci) => {
+        setTimeout(() => col.classList.add('is-in'), ci * COL_DELAY);
+      });
+    }
+    function hidePhrase(i) {
+      const item = phrases[i % phrases.length];
+      if (!item) return;
+      item.querySelectorAll('.hp-col').forEach(col => col.classList.remove('is-in'));
+    }
+
+    let current = 0;
+    activate(current);
+    setTimeout(() => showPhrase(current), 1800);
+
+    if (layers.length > 1) {
+      setInterval(() => {
+        const prev = current;
+        current = (current + 1) % layers.length;
+        hidePhrase(prev);
+        deactivate(prev);
+        activate(current);
+        setTimeout(() => showPhrase(current), 800);
+      }, DISPLAY);
+    }
+  });
+})();
+
 // ── ヒーロー画像＋吹き出し ───────────────────────
 (function () {
   const heroRoot = document.getElementById('top');
@@ -291,6 +384,19 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     .reverse().forEach(cl => grid.insertBefore(cl, grid.firstChild));
   origCards.forEach(c => { const cl = c.cloneNode(true); cl.setAttribute('aria-hidden','true'); grid.appendChild(cl); });
 
+  // ドット生成（クローン後に取得したカード配列を使う）
+  const allCards = () => Array.from(grid.querySelectorAll('.product-card'));
+  const dotsWrap = document.createElement('div');
+  dotsWrap.className = 'carousel-dots';
+  for (let i = 0; i < n; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'carousel-dot';
+    dot.setAttribute('aria-label', `商品 ${i + 1}`);
+    dotsWrap.appendChild(dot);
+  }
+  grid.closest('.carousel-outer').after(dotsWrap);
+  const dots = Array.from(dotsWrap.querySelectorAll('.carousel-dot'));
+
   function getStep() {
     const gap = parseFloat(getComputedStyle(grid).gap) || 24;
     return grid.querySelector('.product-card').offsetWidth + gap;
@@ -367,17 +473,51 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     window.addEventListener('mouseup', onUp);
   });
 
-  // ナビゲーションボタン（PC）
-  const prevBtn = document.querySelector('.carousel-prev');
-  const nextBtn = document.querySelector('.carousel-next');
-  function btnNav(dir) {
-    stopAuto();
-    busy = true;
-    grid.scrollBy({ left: dir * getStep(), behavior: 'smooth' });
-    setTimeout(() => { busy = false; checkLoop(); startAuto(); }, 1200);
+  // 中央カードをハイライト＋ドット更新（PC）
+  function updateActiveCard() {
+    const center = grid.scrollLeft + grid.clientWidth / 2;
+    const step = getStep();
+    let closestIdx = 0, closestDist = Infinity;
+    allCards().forEach((card, i) => {
+      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+      const dist = Math.abs(cardCenter - center);
+      card.style.opacity = dist / step < 0.5 ? 1 : dist / step < 1.5 ? 0.6 : 0.3;
+      card.style.cursor = dist / step < 0.5 ? 'default' : 'pointer';
+      if (dist < closestDist) { closestDist = dist; closestIdx = i; }
+    });
+    const origIdx = closestIdx % n;
+    dots.forEach((dot, i) => dot.classList.toggle('is-active', i === origIdx));
   }
-  if (prevBtn) prevBtn.addEventListener('click', () => btnNav(-1));
-  if (nextBtn) nextBtn.addEventListener('click', () => btnNav(1));
+  grid.addEventListener('scroll', updateActiveCard, { passive: true });
+  requestAnimationFrame(() => requestAnimationFrame(updateActiveCard));
+
+  // ドットクリックで対応カードへ
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      const target = allCards()[n + i];
+      if (!target) return;
+      stopAuto(); busy = true;
+      grid.scrollTo({ left: target.offsetLeft - (grid.clientWidth - target.offsetWidth) / 2, behavior: 'smooth' });
+      setTimeout(() => { busy = false; checkLoop(); startAuto(); }, 1200);
+    });
+  });
+
+  // 非中央カードをクリックで中央に（マウス操作時のみ）
+  const isMouse = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (isMouse) {
+    grid.addEventListener('click', e => {
+      if (drag) return;
+      const card = e.target.closest('.product-card');
+      if (!card) return;
+      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+      const gridCenter = grid.scrollLeft + grid.clientWidth / 2;
+      if (Math.abs(cardCenter - gridCenter) < card.offsetWidth / 2) return;
+      stopAuto();
+      busy = true;
+      grid.scrollTo({ left: card.offsetLeft - (grid.clientWidth - card.offsetWidth) / 2, behavior: 'smooth' });
+      setTimeout(() => { busy = false; checkLoop(); startAuto(); }, 1200);
+    });
+  }
 
   // リサイズ時に位置リセット
   let resizeTimer;
@@ -389,15 +529,14 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
 
 // ── ミツバチ ───────────────────────────────────────
 (function () {
-  // fixed オーバーレイに bee を入れることで body レイアウトに影響しない
   const overlay = document.createElement('div');
-  overlay.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:190;overflow:hidden;';
+  overlay.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:7;overflow:hidden;';
   document.body.appendChild(overlay);
 
   const bee = document.createElement('img');
   bee.src = 'images/deco/bee.png';
   bee.setAttribute('aria-hidden', 'true');
-  bee.style.cssText = 'position:absolute;left:0;top:0;width:26px;height:auto;pointer-events:none;display:none;will-change:transform;';
+  bee.style.cssText = 'position:absolute;left:0;top:0;width:42px;height:auto;pointer-events:none;display:none;will-change:transform;';
   overlay.appendChild(bee);
 
   function fly() {
@@ -406,9 +545,16 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     const ltr  = Math.random() > 0.5;
     const x0   = ltr ? -70 : W + 70;
     const x1   = ltr ? W + 70 : -70;
-    const y0   = H * (0.08 + Math.random() * 0.80);
-    const dur  = 5000 + Math.random() * 4000;
-    const wAmp = 18 + Math.random() * 22;
+    // ページ内の現在のスクロール位置を基準にY座標を決める
+    const scrollY = window.scrollY;
+    const topZone = Math.random() > 0.5;
+    const y0   = scrollY + (topZone
+      ? H * (0.08 + Math.random() * 0.14)
+      : H * (0.74 + Math.random() * 0.16));
+    const dist = Math.abs(x1 - x0);
+    const speed = 0.08 + Math.random() * 0.04; // px/ms（画面幅に関わらず一定速度）
+    const dur  = dist / speed;
+    const wAmp = 10 + Math.random() * 14;
     const wFreq = 2.5 + Math.random() * 2;
     // 左向き画像：右から左はそのまま、左から右は反転
     const flip = ltr ? -1 : 1;
@@ -420,15 +566,16 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
       if (!t0) t0 = ts;
       const p = Math.min((ts - t0) / dur, 1);
 
-      const x    = x0 + (x1 - x0) * p;
-      const dy   = Math.sin(p * Math.PI * 2 * wFreq) * wAmp;
-      const y    = y0 + dy;
-      const vy   = Math.cos(p * Math.PI * 2 * wFreq) * wAmp * (Math.PI * 2 * wFreq / dur) * 1000;
-      const vx   = Math.abs((x1 - x0) / dur * 1000);
-      const tilt = Math.atan2(vy, vx) * (180 / Math.PI) * 0.5;
-      const rot  = ltr ? tilt : -tilt;
+      const x        = x0 + (x1 - x0) * p;
+      const dy       = Math.sin(p * Math.PI * 2 * wFreq) * wAmp;
+      const displayY = y0 + dy - window.scrollY;
+      const vy       = Math.cos(p * Math.PI * 2 * wFreq) * wAmp * (Math.PI * 2 * wFreq / dur) * 1000;
+      const vx       = Math.abs((x1 - x0) / dur * 1000);
+      const tilt     = Math.atan2(vy, vx) * (180 / Math.PI) * 0.5;
+      const rot      = ltr ? tilt : -tilt;
 
-      bee.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scaleX(${flip}) rotate(${rot.toFixed(2)}deg)`;
+      bee.style.display = (displayY < -60 || displayY > H + 60) ? 'none' : 'block';
+      bee.style.transform = `translate(${x.toFixed(1)}px,${displayY.toFixed(1)}px) scaleX(${flip}) rotate(${rot.toFixed(2)}deg)`;
 
       if (p < 1) requestAnimationFrame(frame);
       else { bee.style.display = 'none'; schedule(); }
@@ -460,3 +607,34 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   const shuffled = [...pool].sort(() => Math.random() - 0.5);
   slots.forEach((el, i) => { el.src = shuffled[i % pool.length]; });
 })();
+
+// ── お知らせバブル ───────────────────────────────────
+(function () {
+  const bubble = document.getElementById('notice-bubble');
+  const linkEl = document.getElementById('notice-bubble-link');
+  const textEl = document.getElementById('notice-bubble-text');
+  if (!bubble) return;
+
+  const data = window.__noticeData;
+  if (!Array.isArray(data)) return;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const active = data.find(n => {
+    const s = new Date(n.start); s.setHours(0,0,0,0);
+    const e = new Date(n.end);   e.setHours(23,59,59,999);
+    return today >= s && today <= e;
+  });
+  if (!active) return;
+
+  const key = `notice_${active.start}_${active.end}`;
+  if (sessionStorage.getItem(key)) return;
+
+  textEl.textContent = active.content;
+  if (active.link) linkEl.href = active.link;
+
+  bubble.removeAttribute('hidden');
+  setTimeout(() => bubble.classList.add('is-visible'), 8000);
+})();
+
