@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>クイズ問題集管理画面</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    /* 全体の基本スタイル */
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2em;
+    }
+    /* セクションごとのコンテナ */
+    .section {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+    .section h2 {
+      margin-top: 0;
+    }
+    /* フォーム */
+    form label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    form input[type="text"],
+    form input[type="file"] {
+      width: 100%;
+      max-width: 400px;
+      padding: 8px;
+      font-size: 1em;
+      margin-bottom: 10px;
+    }
+    form button {
+      padding: 8px 16px;
+      font-size: 1em;
+      background: #0073e6;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    /* 登録済み問題集一覧（アイコン表示） */
+    #quizSetList {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+    .quizSetItem {
+      width: 120px;
+      border: 1px solid #aaa;
+      border-radius: 8px;
+      padding: 10px;
+      background: #fafafa;
+      text-align: center;
+      position: relative;
+    }
+    .quizSetItem img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 5px;
+    }
+    .quizSetItem .details {
+      font-size: 0.9em;
+    }
+    .quizSetItem .details p {
+      margin: 2px 0;
+    }
+    .quizSetItem button {
+      padding: 4px 8px;
+      font-size: 0.9em;
+      margin-top: 5px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .quizSetItem button.manage {
+      background: #28a745;
+      color: #fff;
+    }
+    .quizSetItem button.delete {
+      background: #dc3545;
+      color: #fff;
+    }
+    /* ナビゲーションボタン */
+    .nav-buttons {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .nav-buttons button {
+      padding: 8px 16px;
+      font-size: 1em;
+      margin: 0 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background: #0073e6;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1>クイズ問題集管理画面</h1>
+  
+  <!-- 新規問題集登録セクション -->
+  <div class="section" id="newQuizSetSection">
+    <h2>新規問題集登録</h2>
+    <form id="quizSetForm" enctype="multipart/form-data" method="post" action="createQuizSet.php">
+      <label>問題集名:
+        <input type="text" name="setName" required>
+      </label>
+      <label>アイコン画像:
+        <input type="file" name="setIcon" accept="image/*" required>
+      </label>
+      <!-- 追加項目：URL -->
+      <label>URL:
+        <input type="text" name="url" required>
+      </label>
+      <button type="submit">問題集を作成</button>
+    </form>
+  </div>
+  
+  <!-- 登録済み問題集一覧セクション -->
+  <div class="section" id="quizSetListSection">
+    <h2>登録済み問題集一覧</h2>
+    <div id="quizSetList">
+      <!-- 問題集一覧はここに表示 -->
+    </div>
+  </div>
+  
+  <!-- ナビゲーション -->
+  <div class="nav-buttons">
+    <button id="goToIndexBtn">クイズを解く画面へ</button>
+  </div>
+  
+  <script>
+    // 画像パスを調整する関数
+    function adjustPath(path) {
+      if (!path) return "";
+      // すでに http, https, / で始まる場合はそのまま返す
+      if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("/")) {
+        return path;
+      }
+      // そうでなければ、"img/"で始まる場合は "../" を追加
+      if (path.startsWith("img/")) {
+        return "../" + path;
+      }
+      return path;
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      // 新規問題集登録フォーム送信処理
+      const quizSetForm = document.getElementById("quizSetForm");
+      quizSetForm.addEventListener("submit", function(e){
+        e.preventDefault();
+        const formData = new FormData(quizSetForm);
+        fetch("createQuizSet.php", { method: "POST", body: formData })
+          .then(response => response.json())
+          .then(data => {
+            if(data.success){
+              alert("問題集が作成されました。");
+              quizSetForm.reset();
+              loadQuizSets();
+            } else {
+              alert("作成エラー: " + data.error);
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            alert("エラーが発生しました。");
+          });
+      });
+      
+      // 登録済み問題集一覧読み込み（キャッシュ対策のためタイムスタンプ付きURL）
+      function loadQuizSets(){
+        const url = "../db/quizSets.json?t=" + new Date().getTime();
+        fetch(url)
+          .then(response => {
+            if(!response.ok) throw new Error("HTTP error " + response.status);
+            return response.json();
+          })
+          .then(data => {
+            const listContainer = document.getElementById("quizSetList");
+            listContainer.innerHTML = "";
+            if(data.length === 0){
+              listContainer.innerHTML = "<p>登録された問題集はありません。</p>";
+              return;
+            }
+            data.forEach(set => {
+              const itemDiv = document.createElement("div");
+              itemDiv.className = "quizSetItem";
+              
+              const img = document.createElement("img");
+              // 読み込む画像パスを調整
+              img.src = adjustPath(set.icon) || "../img/no_image.png";
+              itemDiv.appendChild(img);
+              
+              const detailsDiv = document.createElement("div");
+              detailsDiv.className = "details";
+              // ここでURLリンクを追加（リンクテキストは「URL」、新規タブで開く）
+              detailsDiv.innerHTML = `
+                <p><strong>${set.name}</strong></p>
+                <p>ID: ${set.id}</p>
+                <p><a href="${set.url}" target="_blank">URL</a></p>
+              `;
+              // 問題数の取得（キャッシュ対策付き）
+              fetch("../db/" + set.id + ".json?t=" + new Date().getTime())
+                .then(resp => resp.json())
+                .then(problems => {
+                  let count = Array.isArray(problems) ? problems.length : 0;
+                  detailsDiv.innerHTML += `<p>問題数: ${count}</p>`;
+                })
+                .catch(err => {
+                  console.error(err);
+                });
+              itemDiv.appendChild(detailsDiv);
+              
+              // 【問題管理】ボタン
+              const manageBtn = document.createElement("button");
+              manageBtn.className = "manage";
+              manageBtn.textContent = "問題管理";
+              manageBtn.addEventListener("click", function(){
+                window.location.href = "admin_quiz.html?setId=" + encodeURIComponent(set.id);
+              });
+              itemDiv.appendChild(manageBtn);
+              
+              // 【削除】ボタン
+              const deleteBtn = document.createElement("button");
+              deleteBtn.className = "delete";
+              deleteBtn.textContent = "削除";
+              deleteBtn.addEventListener("click", function(e){
+                e.stopPropagation();
+                if(confirm("この問題集を削除してよろしいですか？")){
+                  const fd = new FormData();
+                  fd.append("setId", set.id);
+                  fetch("deleteQuizSet.php", { method: "POST", body: fd })
+                    .then(resp => resp.json())
+                    .then(result => {
+                      if(result.success){
+                        alert("問題集を削除しました。");
+                        loadQuizSets();
+                      } else {
+                        alert("削除エラー: " + result.error);
+                      }
+                    })
+                    .catch(err => {
+                      console.error(err);
+                      alert("削除中にエラーが発生しました。");
+                    });
+                }
+              });
+              itemDiv.appendChild(deleteBtn);
+              
+              listContainer.appendChild(itemDiv);
+            });
+          })
+          .catch(err => {
+            console.error(err);
+            document.getElementById("quizSetList").innerHTML = "<p>問題集データの読み込みに失敗しました。</p>";
+          });
+      }
+      
+      loadQuizSets();
+      
+      // ナビゲーションボタン：クイズ解答画面へ
+      document.getElementById("goToIndexBtn").addEventListener("click", function(){
+        window.location.href = "../index.html";
+      });
+    });
+  </script>
+</body>
+</html>

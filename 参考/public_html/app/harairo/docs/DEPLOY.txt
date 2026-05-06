@@ -1,0 +1,147 @@
+【ConoHaサーバーへのデプロイ手順】
+
+■ 前提条件
+- ConoHaサーバーでPHP 7.4以上が利用可能
+- FTPまたはSSHでサーバーにアクセス可能
+
+■ 手順1: ローカルでフォルダ構成を調整
+
+1. 現在の構成:
+   C:\apps\harairo\
+   ├── public/          ← この中身を1階層上に移動
+   ├── lib/
+   └── data/
+
+2. public/ の中身を harairo/ 直下に移動:
+   - public/ フォルダの中のすべてのファイル・フォルダを harairo/ 直下にコピー
+   - index.php, login.php, delivery_edit.php などが harairo/ 直下に来るように
+
+3. 調整後の構成:
+   C:\apps\harairo\
+   ├── index.php
+   ├── login.php
+   ├── delivery_edit.php
+   ├── invoice.php
+   ├── settings.php
+   ├── partials/
+   ├── assets/
+   ├── lib/
+   ├── data/
+   ├── .htaccess       ← セキュリティ設定
+   └── backups/
+
+4. public/ フォルダを削除（もう不要）
+
+
+■ 手順2: パスの修正
+
+public/ を削除したので、PHPファイルのパスを修正します。
+
+各PHPファイルの先頭にある:
+require_once __DIR__ . '/../lib/bootstrap.php';
+
+を以下に変更:
+require_once __DIR__ . '/lib/bootstrap.php';
+
+対象ファイル:
+- index.php
+- login.php
+- logout.php
+- delivery_edit.php
+- delivery_action.php
+- invoice.php
+- invoice_action.php
+- invoice_list.php
+- invoice_pdf.php
+- settings.php
+- partials/header.php (もしあれば)
+
+
+■ 手順3: サーバーへアップロード
+
+【FTPの場合】
+1. FTPクライアント（FileZilla等）でサーバーに接続
+2. /home/username/public_html/harairo/ を作成
+3. harairo フォルダの中身を全てアップロード
+   - lib/
+   - data/
+   - assets/
+   - *.php
+   - .htaccess
+   など全て
+
+【SSHの場合】
+1. harairo フォルダを zip 圧縮
+   cd C:\apps
+   zip -r harairo.zip harairo
+
+2. サーバーにアップロード
+   scp harairo.zip ユーザー名@サーバーIP:/home/username/
+
+3. サーバーで解凍
+   ssh ユーザー名@サーバーIP
+   cd /home/username/
+   unzip harairo.zip
+   mv harairo public_html/
+
+
+■ 手順4: パーミッション設定（SSH）
+
+ssh ユーザー名@サーバーIP
+cd /home/username/public_html/harairo
+
+# データディレクトリを書き込み可能に
+chmod 755 data
+chmod 644 data/*.json
+
+# バックアップディレクトリを作成・書き込み可能に
+mkdir -p backups
+chmod 755 backups
+
+# backup.sh に実行権限
+chmod +x backup.sh
+
+
+■ 手順5: 動作確認
+
+1. ブラウザでアクセス:
+   https://yourserver.com/harairo/
+
+2. ログイン画面が表示されればOK
+
+3. セキュリティ確認:
+   以下にアクセスして403エラー（アクセス禁止）になることを確認:
+   - https://yourserver.com/harairo/data/settings.json
+   - https://yourserver.com/harairo/lib/bootstrap.php
+
+
+■ 手順6: バックアップ設定（CONOHA_BACKUP_SETUP.txt 参照）
+
+1. backup.sh のパスを修正:
+   APP_DIR="/home/username/public_html/harairo"
+
+2. cron設定:
+   crontab -e
+   0 2 * * * /home/username/public_html/harairo/backup.sh >> /home/username/public_html/harairo/backups/backup.log 2>&1
+
+
+■ トラブルシューティング
+
+【500エラーが出る】
+- PHP のバージョンを確認（7.4以上必要）
+- data/ のパーミッションを確認
+- エラーログを確認
+
+【ログインできない】
+- data/users.json が正しくアップロードされているか確認
+- data/ のパーミッションを確認
+
+【.htaccess が効かない】
+- サーバーが .htaccess をサポートしているか確認
+- Apache の場合、AllowOverride が有効か確認
+
+
+■ 注意事項
+- 本番環境では、data/debug_products.txt は削除推奨
+- 定期的にバックアップをローカルにもダウンロード推奨
+- SSL証明書を設定し、HTTPS でアクセスすることを強く推奨

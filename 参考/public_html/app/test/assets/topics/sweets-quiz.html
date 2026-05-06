@@ -1,0 +1,316 @@
+<h2>あなたにピッタリのお菓子診断</h2>
+
+<div class="quiz-container">
+    <div class="quiz-intro">
+        <p>今の気分や用途に合わせた質問に答えて、あなたにぴったりの焼き菓子を見つけましょう！</p>
+        <p>シフォンケーキ、マフィン、クッキー、詰め合わせなど、豊富なラインナップの中からおすすめの一品をご紹介します。</p>
+    </div>
+
+    <div class="quiz-questions" id="quiz-questions" style="display: none;">
+        <div class="question" id="question-text">
+            質問がここに表示されます
+        </div>
+        
+        <div class="answers" id="answers-container">
+            <!-- 回答選択肢がここに動的に生成されます -->
+        </div>
+    </div>
+
+    <div class="quiz-result" id="quiz-result" style="display: none;">
+        <h3>🎉 診断結果</h3>
+        <div class="result-content" id="result-content">
+            <!-- 結果がここに表示されます -->
+        </div>
+        <div class="result-actions">
+            <button onclick="restartQuiz()" class="restart-btn">もう一度診断する</button>
+        </div>
+    </div>
+
+    <div id="start-btn-container" style="text-align: center;">
+        <button onclick="startQuiz()" class="start-btn" id="start-btn">診断を始める</button>
+    </div>
+</div>
+
+<style>
+.quiz-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.quiz-intro {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.question {
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--primary-color, #4a3c2a);
+}
+
+.answers {
+    display: grid;
+    gap: 1rem;
+}
+
+.answer-btn {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.answer-btn:hover {
+    border-color: var(--primary-color, #4a3c2a);
+    background: #f8f8f8;
+}
+
+.start-btn, .restart-btn {
+    background: var(--primary-color, #4a3c2a);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin: 1rem 0.5rem;
+    transition: background-color 0.3s ease;
+}
+
+.start-btn:hover, .restart-btn:hover {
+    background: var(--secondary-color, #6b5548);
+}
+
+.result-actions {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.result-content {
+    background: #f8f8f8;
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+.result-sweets {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color, #4a3c2a);
+    margin-bottom: 1rem;
+}
+
+.result-description {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.result-note {
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+</style>
+
+<script>
+let quizData = null;
+let currentQuestion = null;
+
+// 診断データを読み込み
+async function loadQuizData() {
+    try {
+        const quizResponse = await fetch('/assets/data/sweets-quiz.json');
+        quizData = await quizResponse.json();
+        
+        console.log('診断データを読み込みました');
+    } catch (error) {
+        console.error('データの読み込みに失敗しました:', error);
+    }
+}
+
+function startQuiz() {
+    if (!quizData) {
+        alert('診断データを読み込み中です。しばらくお待ちください。');
+        return;
+    }
+    
+    document.getElementById('start-btn-container').style.display = 'none';
+    document.querySelector('.quiz-intro').style.display = 'none';
+    document.getElementById('quiz-questions').style.display = 'block';
+    
+    showQuestion('q1');
+}
+
+function showQuestion(questionId) {
+    const question = quizData.quiz.questions.find(q => q.id === questionId);
+    if (!question) {
+        console.error('質問が見つかりません:', questionId);
+        return;
+    }
+
+    currentQuestion = question;
+    
+    document.getElementById('question-text').textContent = question.question;
+    
+    const answersContainer = document.getElementById('answers-container');
+    answersContainer.innerHTML = '';
+    
+    question.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.className = 'answer-btn';
+        button.textContent = option.text;
+        button.onclick = () => handleAnswer(option.next || '', option.result || '');
+        answersContainer.appendChild(button);
+    });
+}
+
+function handleAnswer(nextQuestionId, resultProducts) {
+    if (resultProducts) {
+        showResult(resultProducts);
+    } else if (nextQuestionId) {
+        setTimeout(() => {
+            showQuestion(nextQuestionId);
+        }, 300);
+    }
+}
+
+function showResult(products) {
+    document.getElementById('quiz-questions').style.display = 'none';
+    document.getElementById('quiz-result').style.display = 'block';
+    
+    // 単一商品か複数商品かを判定
+    const productList = Array.isArray(products) ? products : [products];
+    
+    // 商品リストの表示を作成（箇条書き形式）
+    const productListHtml = productList.map(product => 
+        `<li style="margin: 8px 0; font-size: 1.1rem; color: #4a3c2a;">${product}</li>`
+    ).join('');
+    
+    const resultContent = document.getElementById('result-content');
+    resultContent.innerHTML = `
+        <div class="result-sweets" style="font-size: 1.5rem; font-weight: bold; color: #4a3c2a; margin-bottom: 20px; text-align: center;">
+            あなたにおすすめの焼き菓子
+        </div>
+        <ul class="result-products" style="list-style-type: disc; padding-left: 20px; text-align: left; max-width: 400px; margin: 0 auto;">
+            ${productListHtml}
+        </ul>
+    `;
+}
+
+function analyzeProductCharacteristics(product) {
+    const characteristics = [];
+    const name = product.name;
+    const description = product.description || '';
+
+    // 商品タイプから特徴を抽出
+    if (name.includes('クッキー')) characteristics.push('サクサク食感');
+    if (name.includes('シフォン')) characteristics.push('ふわふわ食感');
+    if (name.includes('マフィン')) characteristics.push('しっとり食感');
+    if (name.includes('ケーキ')) characteristics.push('濃厚な味わい');
+    if (name.includes('パウンドケーキ')) characteristics.push('上品な仕上がり');
+    if (name.includes('フィナンシェ')) characteristics.push('エレガント');
+    if (name.includes('カントリーケーキ')) characteristics.push('素朴な味わい');
+    if (name.includes('カヌレ')) characteristics.push('フランス伝統');
+    
+    // フレーバーから特徴を抽出
+    if (name.includes('チョコ') || name.includes('ココア')) characteristics.push('チョコレート');
+    if (name.includes('アーモンド')) characteristics.push('香ばしいナッツ');
+    if (name.includes('ヘーゼルナッツ')) characteristics.push('上品なナッツ');
+    if (name.includes('ブルーベリー')) characteristics.push('甘酸っぱさ');
+    if (name.includes('レモン')) characteristics.push('爽やかな酸味');
+    if (name.includes('金柑')) characteristics.push('大人の味');
+    if (name.includes('りんご') || name.includes('アップル')) characteristics.push('りんごの風味');
+    if (name.includes('バナナ')) characteristics.push('自然な甘さ');
+    if (name.includes('栗')) characteristics.push('秋の味覚');
+    if (name.includes('ローズマリー')) characteristics.push('ハーブの香り');
+    if (name.includes('シナモン')) characteristics.push('スパイスの温かさ');
+    if (name.includes('コリアンダー')) characteristics.push('個性的な味');
+    if (name.includes('ジンジャー')) characteristics.push('生姜の風味');
+    if (name.includes('どんぐり')) characteristics.push('可愛い形');
+
+    // 説明文から特徴を抽出
+    if (description.includes('季節')) characteristics.push('季節限定');
+    if (description.includes('しっとり')) characteristics.push('しっとり食感');
+    if (description.includes('ふわふわ')) characteristics.push('ふわふわ食感');
+    if (description.includes('香ばしい')) characteristics.push('香ばしさ');
+    if (description.includes('優しい')) characteristics.push('優しい味');
+    if (description.includes('濃厚')) characteristics.push('濃厚な味わい');
+
+    return characteristics.slice(0, 4); // 最大4つまで
+}
+
+function getRecommendationText(product) {
+    const recommendations = {
+        // aaa.txtの商品に基づく推奨文
+        // チョコ系
+        'チョコチップクッキー': 'サクサクとした食感にチョコチップの甘さが絶妙。コーヒーや紅茶との相性も抜群です。',
+        'どんぐりケーキチョコ': '可愛いどんぐりの形が印象的。チョコレートの濃厚な味わいを楽しめる一品です。',
+        '栗のパウンドケーキ': '秋の味覚、栗をたっぷり使用した濃厚なケーキ。特別な日のデザートにふさわしい一品です。',
+        'ヘーゼルナッツチョコパウンドケーキ': 'ヘーゼルナッツの上品な香りとチョコレートの濃厚さが楽しめる、贅沢なパウンドケーキです。',
+        
+        // フルーツ系
+        'アップルクランブルマフィン': 'りんごの自然な甘さとクランブルのサクサク感が楽しい、食べ応えのある一品です。',
+        'ブルーベリーシフォンケーキ': 'ふわふわの食感にブルーベリーの甘酸っぱさが爽やか。見た目も美しく、贈り物にも喜ばれます。',
+        '金柑マフィン': '金柑の大人の味わいが楽しめる、しっとりとしたマフィン。お茶との相性が抜群です。',
+        
+        // ナッツ系
+        'アーモンドココアクッキー': 'アーモンドの香ばしさとココアの風味が絶妙にマッチした、大人のクッキーです。',
+        'アーモンドロココアクッキー': 'アーモンドの香ばしさとココアの風味が絶妙にマッチした、大人のクッキーです。',
+        'どんぐりケーキアーモンド': '可愛いどんぐりの形にアーモンドの香ばしさが加わった、見た目も味も楽しい一品です。',
+        
+        // スパイス系
+        'ローズマリークッキー': 'ローズマリーの爽やかな香りが印象的。ハーブティーとの相性が特に良いクッキーです。',
+        'シナモンクッキー': 'シナモンの温かみのある香りが心地よい、寒い季節にぴったりのクッキーです。',
+        'ジンジャーパウンドケーキ': '生姜の温かみのある風味が特徴的。体を温めてくれる、寒い季節にぴったりのケーキです。',
+        
+        // 素朴系
+        'プレーンパウンドケーキ': 'シンプルながら奥深い味わい。バターの風味が楽しめる、どなたにも愛される定番です。',
+        'バタークッキー': 'シンプルながらバターの豊かな風味が楽しめる定番中の定番。安心できる美味しさです。',
+        '紅茶シフォンケーキ': '紅茶の繊細な風味が上品に香る、エレガントなケーキ。特別なティータイムにぴったり。',
+        
+        // 特別系
+        'フィナンシェ': 'バターの香りが豊かな、フランス伝統の上品な焼き菓子。特別なティータイムにぴったりです。',
+        'カントリーケーキ': '素朴で温かみのある味わいが魅力。季節のフルーツを使った優しい甘さのケーキです。',
+        'カヌレ': 'フランス・ボルドー地方の伝統菓子。外はカリッと中はもっちりとした独特の食感が魅力です。',
+        
+        // 贈り物系
+        '詰め合わせ袋': 'いろんな味を少しずつ楽しめる詰め合わせ。大切な方への贈り物や、みんなでシェアするのに最適です。',
+        'アソートクッキー': 'ピーナッツバターとアーモンドココアの２種入り。香ばしさとほどよい甘みが楽しめます。',
+        'おつまみクッキー': '黒こしょうを効かせたクッキーと長門ゆずきち‐ゆずこしょうを使用したクッキーの２種入り。パルメザンチーズ使用。',
+        
+        // 基本カテゴリ
+        'クッキー': 'サクサクとした食感が楽しめる定番の焼き菓子。いろんな味をご用意しています。',
+        'どんぐりケーキ': '可愛いどんぐりの形をした人気のパウンドケーキ。見た目も味も楽しめます。',
+        'マフィン': 'しっとりした食感で季節の味を楽しめる、手軽に食べられる焼き菓子です。'
+    };
+
+    return recommendations[product.name] || 'りすたっちの心を込めて作った焼き菓子をぜひお楽しみください。';
+}
+
+function restartQuiz() {
+    document.getElementById('quiz-result').style.display = 'none';
+    document.querySelector('.quiz-intro').style.display = 'block';
+    document.getElementById('start-btn-container').style.display = 'block';
+}
+
+
+// 診断の初期化関数
+function initSweetsQuiz() {
+    loadQuizData();
+}
+
+// ページ読み込み時に初期化
+if (typeof window !== 'undefined') {
+    window.addEventListener('load', initSweetsQuiz);
+}
+</script>

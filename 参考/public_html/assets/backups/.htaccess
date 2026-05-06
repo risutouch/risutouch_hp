@@ -1,0 +1,7 @@
+# バックアップディレクトリの保護
+Order deny,allow
+Deny from all
+
+# 管理者のみアクセス許可（必要に応じて調整）
+# Allow from 127.0.0.1
+# Allow from ::1

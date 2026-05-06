@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Restricted Area"
+AuthUserFile /home/c6276796/public_html/risutouch.com/app/q/admin/pass/.htpasswd
+Require valid-user

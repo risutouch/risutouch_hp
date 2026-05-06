@@ -1,0 +1,76 @@
+{
+    "shops": [
+        {
+            "id": "001",
+            "name": "すずやっち",
+            "address": "山口県長門市",
+            "hours": "水曜日 10:00-17:00",
+            "closed": "月・火・木・金・土・日曜日",
+            "description": "手作りの生姜糖、りすたっちの焼き菓子、ハンドメイドのバッグなど販売しております。",
+            "logo": "assets\/images\/shops\/suzuyatch-1.jpg",
+            "shopImages": [
+                "assets\/images\/shops\/51ee37ba_suzuyatch-2.jpg",
+                "assets\/images\/shops\/684e0e80_suzuyatch-3.jpg"
+            ],
+            "social": {
+                "instagram": "suzuyatti"
+            },
+            "visible": true,
+            "order": 0
+        },
+        {
+            "id": "002",
+            "name": "engawa YUMOTO",
+            "address": "山口県長門市湯本",
+            "hours": "火・土・日曜日 10:00-16:00",
+            "closed": "月・水・木・金曜日",
+            "description": "築70年以上の倉庫をリノベーションしたカフェ兼レンタルスペースで、地元の焼き物や雑貨、焼き菓子などが楽しめる心やすらぐ場所です。",
+            "logo": "assets\/images\/shops\/engawa-1.jpg",
+            "shopImages": [
+                "assets\/images\/shops\/0ac9a091_engawa-3.jpg",
+                "assets\/images\/shops\/fa9ce177_engawa-2.jpg"
+            ],
+            "social": {
+                "instagram": "engawayumoto"
+            },
+            "visible": true,
+            "order": 1
+        },
+        {
+            "id": "003",
+            "name": "センザキッチン",
+            "address": "山口県長門市仙崎",
+            "hours": "9:00-18:00",
+            "closed": "第2木曜日",
+            "description": "新鮮な地魚や野菜など地元食材が並ぶ直売所と海を望むグリルハウス、レストラン、観光案内に加え、木のおもちゃで遊べる「長門おもちゃ美術館」などを併設する複合施設です。",
+            "logo": "assets\/images\/shops\/senzakitchen-1.jpg",
+            "shopImages": [
+                "assets\/images\/shops\/42a36a5e_senzakichen-3.jpg",
+                "assets\/images\/shops\/963042c3_senzakichen-2.jpg"
+            ],
+            "social": {
+                "instagram": "senzakitchen"
+            },
+            "visible": true,
+            "order": 2
+        },
+        {
+            "id": "004",
+            "name": "yuzuri",
+            "address": "山口県長門市",
+            "hours": "11:00-17:00",
+            "closed": "不定休",
+            "description": "オーダーメイド刺繍雑貨や県内外作家の手作り雑貨を販売しつつ、季節のソフトクリームやリキュールをかけた「大人のソフト」、シェイク、生ビールなども販売してます。",
+            "logo": "assets\/images\/shops\/yuzuri-1.jpg",
+            "shopImages": [
+                "assets\/images\/shops\/yuzuri-2.jpg",
+                "assets\/images\/shops\/yuzuri-3.jpg"
+            ],
+            "social": {
+                "instagram": "yuzuri_nagato_shop"
+            },
+            "visible": true,
+            "order": 3
+        }
+    ]
+}

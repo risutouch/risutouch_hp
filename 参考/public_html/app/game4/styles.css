@@ -1,0 +1,307 @@
+/* リセット */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* スクロール禁止 + 全画面 */
+html, body {
+    width: 100%;
+    height: 100%;
+    background-color: #222;
+    color: #fff; /* デフォルトのテキスト色を白に設定 */
+    font-family: Arial, sans-serif;
+    overscroll-behavior: none; /* iOS等で余分なスクロールを止める */
+    touch-action: none;        /* スワイプでのスクロールを無効化 */
+    overflow: hidden;          /* スクロールバーを出さない */
+
+    display: flex;
+    flex-direction: column;    /* 縦配置 */
+    justify-content: center;   /* 縦中央寄せ */
+    align-items: center;       /* 横中央寄せ */
+
+    /* 文字を少し大きめに */
+    font-size: 18px;
+}
+
+/* ゲームコンテナ */
+#game-container {
+    position: relative;
+}
+
+/* キャンバス */
+#game-canvas {
+    background-color: #444;
+    display: block;
+    border: 2px solid #fff;
+    border-radius: 8px;
+}
+
+/* スワイプエリアをキャンバス上に重ねる */
+#swipe-area {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* メッセージボックス */
+#message-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+    background-color: rgba(0, 0, 0, 0.85);
+    padding: 20px 30px;
+    border-radius: 10px;
+    max-width: 80%;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+
+    /* 少し文字を大きめに */
+    font-size: 1.2em;
+}
+
+/* 非表示 */
+.hidden {
+    display: none !important;
+}
+
+/* 暗証番号入力モーダル */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1002;
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 90%;
+}
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.modal-content h2 {
+    margin-bottom: 15px;
+    font-size: 1.4em; /* 大きめフォント */
+}
+#code-input {
+    padding: 10px;
+    font-size: 1.4em; /* 16px以上にして強制拡大を防ぐ */
+    width: 80%;
+    max-width: 250px;
+    margin-bottom: 20px;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+}
+#code-input:focus {
+    outline: none;
+    border-color: #0f0;
+}
+
+/* ボタン共通 */
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #555;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+button:hover {
+    background-color: #777;
+}
+#submit-code {
+    background-color: #28a745;
+}
+#submit-code:hover {
+    background-color: #218838;
+}
+#cancel-code {
+    background-color: #dc3545;
+}
+#cancel-code:hover {
+    background-color: #c82333;
+}
+
+/* Board / TVオーバーレイ (全画面) */
+.overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1003;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* スクロールバーを表示しない */
+}
+
+/* 画像が大きくても画面内に収まるようリサイズ */
+.overlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 5px;
+}
+
+/* Confirm Modalのスタイル */
+.confirm-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1004; /* 他のオーバーレイより上 */
+}
+
+.confirm-modal-content {
+    background: white;
+    color: #000; /* 追加: テキスト色を黒に設定 */
+    padding: 20px 30px;
+    border-radius: 8px;
+    text-align: center;
+    width: 80%;
+    max-width: 300px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.confirm-modal-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.confirm-modal-buttons button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#confirm-yes {
+    background-color: #28a745;
+    color: #fff;
+}
+#confirm-yes:hover {
+    background-color: #218838;
+}
+#confirm-no {
+    background-color: #dc3545;
+    color: #fff;
+}
+#confirm-no:hover {
+    background-color: #c82333;
+}
+
+/* エンドロール全体のスタイル */
+.endroll {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    color: white;
+    z-index: 9999;
+    display: none; /* 初期状態では非表示 */
+    overflow: hidden;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* エンドロールの文字 */
+#endroll-text {
+    position: absolute;
+    bottom: -100%; /* 画面の下から開始 */
+    width: 100%;
+    text-align: center;
+    font-size: 1.5em;
+    white-space: pre-wrap; /* 改行を反映 */
+    animation: moveToCenter 10s ease-out forwards; /* アニメーションを適用 */
+}
+
+/* アニメーション定義 */
+@keyframes moveToCenter {
+    from {
+        bottom: -100%; /* 初期位置は画面外の下 */
+    }
+    to {
+        bottom: 50%; /* 画面中央で停止 */
+        transform: translateY(50%); /* 完全な中央位置に調整 */
+    }
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+    #message-box {
+        padding: 15px;
+        font-size: 1.1em;
+    }
+    .modal-content h2 {
+        font-size: 1.2em;
+    }
+    #code-input {
+        font-size: 1.2em;
+    }
+    #endroll-text {
+        font-size: 1.2em;
+    }
+    .confirm-modal-content {
+        padding: 15px 20px;
+    }
+    .confirm-modal-buttons button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
+/* 全画面共通スタイル */
+.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+/* タイトル画面のGIF画像 */
+#title-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    cursor: pointer; /* タップできることを示す */
+}
+
+/* ゲーム画面は初期状態で非表示 */
+#game-container.hidden {
+    display: none !important;
+}

@@ -1,0 +1,123 @@
+# りすたっち Webサイト設定
+# ===== ファイルキャッシュ設定 =====
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Favicon
+    ExpiresByType image/x-icon "access plus 1 month"
+    ExpiresByType image/vnd.microsoft.icon "access plus 1 month"
+    
+    # 画像ファイル
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    
+    # CSS・JavaScript
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+    ExpiresByType text/javascript "access plus 1 week"
+    
+    # フォント
+    ExpiresByType font/woff2 "access plus 1 month"
+    ExpiresByType font/woff "access plus 1 month"
+    ExpiresByType font/ttf "access plus 1 month"
+    ExpiresByType font/otf "access plus 1 month"
+</IfModule>
+# ===== GZIP圧縮 =====
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/atom+xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+# ===== セキュリティヘッダー =====
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options SAMEORIGIN
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Content Security Policy（完全に無効化）
+    Header unset Content-Security-Policy
+    Header always unset Content-Security-Policy
+</IfModule>
+# ===== エラーページ =====
+ErrorDocument 404 /index.php
+ErrorDocument 403 /index.php
+# ===== デフォルトページ設定 =====
+DirectoryIndex index.php index.html
+# ===== URL リライト =====
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # HTTPS強制（本番環境）
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    
+    # wwwなしに統一（必要に応じて）
+    # RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+    # RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+</IfModule>
+# ===== ファイル保護 =====
+# 機密性の高いJSONファイルのみ保護、フロントエンド用JSONは許可
+<Files "site_config.json">
+    Order allow,deny
+    Deny from all
+</Files>
+<Files "admin_*.json">
+    Order allow,deny
+    Deny from all
+</Files>
+<Files "backup_*.json">
+    Order allow,deny
+    Deny from all
+</Files>
+# フロントエンド用JSONファイルは許可
+# products.json, shops.json, menu.json, topics_config.json, manifest.json など
+# フロントエンド用JSONファイルを明示的に許可
+<Files "products.json">
+    Order allow,deny
+    Allow from all
+</Files>
+<Files "shops.json">
+    Order allow,deny
+    Allow from all
+</Files>
+<Files "menu.json">
+    Order allow,deny
+    Allow from all
+</Files>
+<Files "topics_config.json">
+    Order allow,deny
+    Allow from all
+</Files>
+<Files "news.json">
+    Order allow,deny
+    Allow from all
+</Files>
+<Files "sweets-quiz.json">
+    Order allow,deny
+    Allow from all
+</Files>
+# manifest.jsonは特に許可
+<Files "manifest.json">
+    Order allow,deny
+    Allow from all
+</Files>
+<Files "*.log">
+    Order allow,deny  
+    Deny from all
+</Files>
+# ===== ディレクトリリスティング無効化 =====
+Options -Indexes
+SetEnvIf Request_URI ".*" Ngx_Cache_NoCacheMode=off
+SetEnvIf Request_URI ".*" Ngx_Cache_StaticMode
+RewriteCond %{HTTPS} !on
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]

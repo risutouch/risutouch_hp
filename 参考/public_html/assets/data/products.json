@@ -1,0 +1,114 @@
+{
+    "products": [
+        {
+            "name": "どんぐりケーキ",
+            "description": "どんぐりの形をした可愛らしいパウンドケーキ。しっとりとした生地に自然な甘さが広がります。",
+            "images": [
+                "assets\/images\/products\/donguri-cake.jpg"
+            ],
+            "seasonal": false,
+            "visible": true,
+            "order": 0
+        },
+        {
+            "name": "はちみつクッキー",
+            "description": "長門三隅産のはちみつを使用した優しい甘さのクッキー。地元の恵みを存分に味わえます。",
+            "images": [
+                "assets\/images\/products\/honey-cookie.jpg"
+            ],
+            "seasonal": false,
+            "visible": true,
+            "order": 1
+        },
+        {
+            "name": "はちみつ入りフロランタン",
+            "description": "カラメルにくるみとアーモンドを加えた香ばしいフロランタン。はちみつの自然な甘さが特徴です。",
+            "images": [
+                "assets\/images\/products\/honey-florentine.jpg"
+            ],
+            "seasonal": false,
+            "visible": true,
+            "order": 2
+        },
+        {
+            "name": "スノーボール",
+            "description": "アーモンド入りの生地を丸く焼き上げ、粉糖をまぶした甘めのクッキー",
+            "images": [
+                "assets\/images\/products\/e1d5d796_DE0270E6-3919-44A1-89BA-C29C99D8B32B.jpg"
+            ],
+            "seasonal": false,
+            "visible": true,
+            "order": 3
+        },
+        {
+            "name": "アソートクッキー",
+            "description": "ピーナッツバターとアーモンドココアの２種入り。香ばしさとほどよい甘み。",
+            "images": [
+                "assets\/images\/products\/cbe77532_4DD8F3F9-BAF3-4CC3-8CFF-F4B016DB4349.jpg"
+            ],
+            "seasonal": false,
+            "visible": true,
+            "order": 4
+        },
+        {
+            "name": "シフォンケーキ",
+            "description": "ふわふわ食感が自慢のシフォンケーキ。季節に応じてバナナ、バニラ、金柑などのフレーバーをご用意。",
+            "images": [
+                "assets\/images\/products\/3314bb41_F365E20F-BDC1-4372-98BF-2DEF3FBDF6FF.jpg"
+            ],
+            "seasonal": false,
+            "visible": true,
+            "order": 5
+        },
+        {
+            "name": "マフィン",
+            "description": "季節限定フレーバーのマフィン。その時期の旬の食材を使用し、素材の美味しさを活かしています。",
+            "images": [
+                "assets\/images\/products\/df8321c0_FE170951-A4EB-4D29-A7B4-F7DCB3DF59FF.jpg"
+            ],
+            "seasonal": false,
+            "visible": true,
+            "order": 6
+        },
+        {
+            "name": "おつまみクッキー",
+            "description": "黒こしょうを効かせたクッキーと長門ゆずきち‐ゆずこしょうを使用したクッキーの２種入り。パルメザンチーズ使用",
+            "images": [
+                "assets\/images\/products\/47586ba5_E733AC79-A274-46A9-A44D-00B3626F8971.jpg"
+            ],
+            "seasonal": false,
+            "visible": true,
+            "order": 7
+        },
+        {
+            "name": "アーモンドチュイール",
+            "description": "卵白の生地にアーモンドスライスをたっぷり合わせた薄く香ばしいクッキー",
+            "images": [
+                "assets\/images\/products\/c370013c_8A75BD7D-CCB4-4003-83BB-4A4153155024.jpg"
+            ],
+            "seasonal": false,
+            "visible": true,
+            "order": 8
+        },
+        {
+            "name": "コリアンダークッキー",
+            "description": "コリアンダーを使用し、百姓の塩で塩味を加えたクッキー",
+            "images": [
+                "assets\/images\/products\/498233b0_S__29196323.jpg"
+            ],
+            "seasonal": false,
+            "visible": true,
+            "order": 9
+        },
+        {
+            "name": "栗ケーキ",
+            "description": "秋の味覚、栗をたっぷり使用し、ラム酒と合わせた大人のしっとり濃厚栗ケーキ",
+            "images": [
+                "assets\/images\/products\/9809a220_D6081202-3C48-4500-A653-5B00EB90F91E.jpg"
+            ],
+            "seasonal": true,
+            "visible": true,
+            "order": 10
+        }
+    ]
+}

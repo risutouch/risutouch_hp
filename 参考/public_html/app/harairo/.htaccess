@@ -1,0 +1,17 @@
+# data/ ディレクトリへのアクセスを禁止
+<Files ~ "^(data|lib|backups|docs)/">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# .json ファイルへの直接アクセスを禁止
+<FilesMatch "\.json$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# .txt, .sh, .bat ファイルへの直接アクセスを禁止
+<FilesMatch "\.(txt|sh|bat)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

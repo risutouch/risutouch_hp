@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>りすたっち管理画面</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-container">
+            <h1>りすたっち管理画面</h1>
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="password">パスワード</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">ログイン</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Admin Panel -->
+    <div id="admin-panel" class="admin-panel hidden">
+        <header class="admin-header">
+            <h1>りすたっち管理画面</h1>
+            <button id="logout-btn" class="btn btn-secondary">ログアウト</button>
+        </header>
+
+        <nav class="admin-nav">
+            <button class="nav-btn active" data-tab="products">焼き菓子管理</button>
+            <button class="nav-btn" data-tab="shops">販売店管理</button>
+            <button class="nav-btn" data-tab="news">お知らせ管理</button>
+        </nav>
+
+        <main class="admin-main">
+            <!-- Products Tab -->
+            <div id="products-tab" class="tab-content active">
+                <div class="tab-header">
+                    <h2>焼き菓子管理</h2>
+                    <button id="add-product-btn" class="btn btn-primary">新しい商品を追加</button>
+                </div>
+                <div class="products-list" id="products-list">
+                    <!-- Products will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Shops Tab -->
+            <div id="shops-tab" class="tab-content">
+                <div class="tab-header">
+                    <h2>販売店管理</h2>
+                    <button id="add-shop-btn" class="btn btn-primary">新しい店舗を追加</button>
+                </div>
+                <div class="shops-list" id="shops-list">
+                    <!-- Shops will be loaded here -->
+                </div>
+            </div>
+
+            <!-- News Tab -->
+            <div id="news-tab" class="tab-content">
+                <div class="tab-header">
+                    <h2>お知らせ管理</h2>
+                    <button id="fetch-instagram-btn" class="btn btn-primary">Instagram投稿を取得</button>
+                </div>
+                <div class="news-list" id="news-list">
+                    <!-- News will be loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="product-modal-title">商品を追加</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="product-form" class="modal-form">
+                <div class="form-group">
+                    <label for="product-name">商品名</label>
+                    <input type="text" id="product-name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-description">説明</label>
+                    <textarea id="product-description" name="description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="product-price">価格</label>
+                    <input type="text" id="product-price" name="price" placeholder="例: 350円">
+                </div>
+                <div class="form-group">
+                    <label for="product-category">カテゴリー</label>
+                    <select id="product-category" name="category">
+                        <option value="クッキー">クッキー</option>
+                        <option value="どんぐりケーキ">どんぐりケーキ</option>
+                        <option value="カヌレ">カヌレ</option>
+                        <option value="パウンドケーキ">パウンドケーキ</option>
+                        <option value="マフィン">マフィン</option>
+                        <option value="シフォンケーキ">シフォンケーキ</option>
+                        <option value="ボトルクッキー">ボトルクッキー</option>
+                        <option value="詰め合わせ">詰め合わせ</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="product-image">商品画像</label>
+                    <input type="file" id="product-image" name="image" accept="image/*">
+                    <div class="image-preview" id="product-image-preview"></div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="product-seasonal" name="seasonal">
+                        季節限定商品
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="product-available" name="available" checked>
+                        販売中
+                    </label>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary modal-cancel">キャンセル</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Shop Modal -->
+    <div id="shop-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="shop-modal-title">店舗を追加</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="shop-form" class="modal-form">
+                <div class="form-group">
+                    <label for="shop-name">店舗名</label>
+                    <input type="text" id="shop-name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="shop-address">住所</label>
+                    <input type="text" id="shop-address" name="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="shop-phone">電話番号</label>
+                    <input type="tel" id="shop-phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="shop-hours">営業時間</label>
+                    <input type="text" id="shop-hours" name="hours" placeholder="例: 10:00-17:00">
+                </div>
+                <div class="form-group">
+                    <label for="shop-closed">定休日</label>
+                    <input type="text" id="shop-closed" name="closed" placeholder="例: 月曜日">
+                </div>
+                <div class="form-group">
+                    <label for="shop-description">説明</label>
+                    <textarea id="shop-description" name="description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="shop-logo">ロゴ（絵文字）</label>
+                    <input type="text" id="shop-logo" name="logo" placeholder="例: 🏪">
+                </div>
+                <div class="form-group">
+                    <label for="shop-website">ウェブサイト</label>
+                    <input type="url" id="shop-website" name="website" placeholder="https://">
+                </div>
+                <div class="form-group">
+                    <label for="shop-images">店舗画像（複数可）</label>
+                    <input type="file" id="shop-images" name="images" accept="image/*" multiple>
+                    <div class="image-preview" id="shop-images-preview"></div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary modal-cancel">キャンセル</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Instagram Posts Modal -->
+    <div id="instagram-modal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>Instagram投稿を選択</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="instagram-fetch">
+                <div class="form-group">
+                    <label for="instagram-url">Instagram URL</label>
+                    <input type="url" id="instagram-url" placeholder="https://www.instagram.com/risutouch/" value="https://www.instagram.com/risutouch/">
+                </div>
+                <button id="fetch-posts-btn" class="btn btn-primary">投稿を取得</button>
+            </div>
+            <div class="instagram-posts" id="instagram-posts">
+                <!-- Instagram posts will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

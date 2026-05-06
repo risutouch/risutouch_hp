@@ -1,0 +1,202 @@
+/* 全体の配置を調整するためにbodyにフレックスボックスを適用 */
+body {
+  display: flex;
+  flex-direction: column; /* 縦方向に配置 */
+  align-items: center; /* 横中央に配置 */
+  margin: 0;
+  padding: 10px 0; /* 上下の余白を調整 */
+  background-image: url('background.png'); /* 背景画像を設定 */
+  background-size: cover;
+  background-position: center;
+  overflow: hidden; /* スクロールを防止 */
+  -webkit-user-select: none; /* テキスト選択を無効化（iOS向け） */
+  -ms-user-select: none;
+  user-select: none;
+}
+
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* タップ時のハイライトを無効化 */
+}
+
+html, body {
+  touch-action: manipulation; /* ダブルタップズームを防止 */
+}
+
+@media (pointer: coarse) {
+  html, body {
+    overscroll-behavior: none; /* スクロールやズームの挙動を制御 */
+  }
+}
+
+/* カメラタイトル */
+#camera-title {
+  color: #fff;
+  font-size: 4vw;
+  max-font-size: 16px;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明の背景 */
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-bottom: 10px; /* カメラコンテナとの間隔 */
+  text-align: center; /* 中央寄せ */
+  max-width: 90vw;
+}
+
+/* カメラ映像のコンテナ */
+#camera-container {
+  position: relative;
+  width: 90vw; /* スマホ幅の90%に設定 */
+  max-width: 480px; /* 最大幅を480pxに制限 */
+  aspect-ratio: 1 / 1; /* 正方形を維持 */
+  margin: 0 auto; /* 横中央寄せ */
+  overflow: hidden; /* はみ出し防止 */
+  background-color: #000; /* 背景を黒に設定 */
+}
+
+/* カメラ映像 */
+#camera {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%; /* コンテナの幅に合わせる */
+  height: 100%; /* コンテナの高さに合わせる */
+  object-fit: cover; /* 映像を正方形内に均等に収める */
+}
+
+/* フレームCanvas */
+#frame-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%; /* コンテナの幅に合わせる */
+  height: 100%; /* コンテナの高さに合わせる */
+  pointer-events: none; /* フレームをクリック対象外にする */
+}
+
+/* プレビュー画面 */
+#preview-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* 半透明の背景 */
+  display: none;
+  flex-direction: column; /* 上下に並べる */
+  align-items: center; /* 横中央寄せ */
+  justify-content: center; /* 縦中央寄せ */
+  z-index: 1000;
+}
+
+#preview {
+  width: 90vw; /* スマホ幅の90%に設定 */
+  max-width: 480px; /* 最大幅を480pxに制限 */
+  aspect-ratio: 1 / 1; /* 正方形を維持 */
+  border: 2px solid #fff;
+  border-radius: 5px;
+  background: #000;
+}
+
+/* コントロールエリア */
+#controls {
+  display: flex;
+  justify-content: center; /* 中央に配置 */
+  align-items: center;
+  flex-wrap: nowrap; /* 折り返さない */
+  gap: 2vw; /* ボタン間の余白を調整 */
+  width: 100%;
+  max-width: 480px;
+  margin: 10px auto;
+  padding: 0 5px; /* 左右の余白を調整 */
+  box-sizing: border-box;
+}
+
+/* 各ボタンとラベルのコンテナ */
+.control-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 1; /* スクリーン幅に応じて縮小 */
+}
+
+/* シャッターボタン */
+#shutter-button {
+  width: 15vw;
+  height: 15vw;
+  max-width: 60px;
+  max-height: 60px;
+  min-width: 50px;
+  min-height: 50px;
+  background-color: white;
+  border-radius: 50%;
+  border: 3px solid rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+#shutter-button:active {
+  transform: scale(0.95); /* 押下時に縮小表示 */
+}
+
+/* アイコンボタン */
+.icon-button {
+  width: 12vw;
+  height: 12vw;
+  max-width: 50px;
+  max-height: 50px;
+  min-width: 40px;
+  min-height: 40px;
+  background-color: white;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.icon-button:active {
+  transform: scale(0.95); /* 押下時に縮小表示 */
+}
+
+.icon-button i {
+  font-size: 4vw;
+  max-font-size: 24px;
+  color: #333;
+}
+
+/* ボタンのラベル */
+.button-label {
+  font-size: 2.5vw;
+  max-font-size: 12px;
+  color: #fff;
+  margin-top: 2px;
+  background-color: rgba(0, 0, 0, 0.5); /* ラベルの背景を半透明に設定 */
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+/* プレビュー画面のボタン */
+#preview-controls {
+  display: flex;
+  justify-content: center; /* 中央寄せ */
+  align-items: center;
+  gap: 20px; /* ボタン間の余白 */
+  width: 100%;
+  max-width: 480px;
+  margin-top: 15px;
+}
+
+.preview-icon {
+  font-size: 28px;
+  background-color: #fff;
+  color: #333;
+}
+
+/* ボタンラベルの調整 */
+#preview-controls .button-label {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5); /* ラベルの背景を半透明に設定 */
+  padding: 2px 6px;
+  border-radius: 4px;
+}

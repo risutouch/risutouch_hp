@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://risutouch.com/sitemap.xml
+
+# Google Search Console verification
+# Verification file will be added when configured through admin panel

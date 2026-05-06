@@ -1,0 +1,44 @@
+[
+    {
+        "name": "\u30ab\u30cc\u30ec",
+        "quantity": 10,
+        "materials": [
+            {
+                "material": "\u725b\u4e73",
+                "quantity": 430
+            },
+            {
+                "material": "\u30d0\u30cb\u30e9\u30da\u30fc\u30b9\u30c8",
+                "quantity": 4
+            },
+            {
+                "material": "\u5f37\u529b\u7c89",
+                "quantity": 53
+            },
+            {
+                "material": "\u8584\u529b\u7c89",
+                "quantity": 64
+            },
+            {
+                "material": "\u30b0\u30e9\u30cb\u30e5\u30fc\u7cd6",
+                "quantity": 150
+            },
+            {
+                "material": "\u304d\u3073\u7cd6",
+                "quantity": 53
+            },
+            {
+                "material": "\u5375",
+                "quantity": 60
+            },
+            {
+                "material": "\u30e9\u30e0\u9152",
+                "quantity": 43
+            },
+            {
+                "material": "\u30d0\u30bf\u30fc",
+                "quantity": 32
+            }
+        ]
+    }
+]

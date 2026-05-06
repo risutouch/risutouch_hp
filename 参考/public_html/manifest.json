@@ -1,0 +1,21 @@
+{
+    "name": "焼き菓子.りすたっち",
+    "short_name": "りすたっち",
+    "description": "旬の素材を使った季節の焼き菓子を心を込めて手作り。委託販売・ギフト対応も承ります。",
+    "start_url": "\/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#4a3c2a",
+    "icons": [
+        {
+            "src": "assets\/favicons\/favicon.png",
+            "sizes": "any",
+            "type": "image\/png"
+        },
+        {
+            "src": "assets\/favicons\/apple-touch-icon.png",
+            "sizes": "180x180",
+            "type": "image\/png"
+        }
+    ]
+}

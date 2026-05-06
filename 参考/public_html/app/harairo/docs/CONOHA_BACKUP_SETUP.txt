@@ -1,0 +1,88 @@
+【ConoHaサーバーでのバックアップ設定手順】
+
+■ 前提条件
+- ConoHaサーバーにSSHでログインできること
+- harairoアプリがサーバー上にデプロイされていること
+
+■ 手順
+
+1. サーバーにSSHでログイン
+   ssh ユーザー名@サーバーIPアドレス
+
+2. backup.shをサーバーにアップロード
+   ローカルPCから以下のコマンドを実行（SSH接続前）：
+   scp C:\apps\harairo\backup.sh ユーザー名@サーバーIPアドレス:/path/to/harairo/
+
+   または、サーバー上で直接作成：
+   nano /path/to/harairo/backup.sh
+   （backup.shの内容を貼り付け）
+
+3. backup.shのパスを修正
+   サーバー上で：
+   nano /path/to/harairo/backup.sh
+
+   1行目の以下を修正：
+   APP_DIR="/path/to/harairo"  # ← 実際のパスに変更
+
+   例: APP_DIR="/home/username/public_html/harairo"
+
+4. backup.shに実行権限を付与
+   chmod +x /path/to/harairo/backup.sh
+
+5. 手動でテスト実行
+   /path/to/harairo/backup.sh
+
+   成功すると以下が表示されます：
+   Backup completed: /path/to/harairo/backups/backup_YYYYMMDD_HHMMSS
+
+6. cronの設定
+   crontab -e
+
+   以下の行を追加（毎日深夜2時に実行）：
+   0 2 * * * /path/to/harairo/backup.sh >> /path/to/harairo/backups/backup.log 2>&1
+
+   保存して終了（vi の場合: ESC → :wq → Enter）
+
+7. cron設定の確認
+   crontab -l
+
+   設定した内容が表示されればOK
+
+
+■ cron設定の例
+
+# 毎日深夜2時
+0 2 * * * /path/to/harairo/backup.sh >> /path/to/harairo/backups/backup.log 2>&1
+
+# 毎日午前3時
+0 3 * * * /path/to/harairo/backup.sh >> /path/to/harairo/backups/backup.log 2>&1
+
+# 6時間ごと（0時、6時、12時、18時）
+0 */6 * * * /path/to/harairo/backup.sh >> /path/to/harairo/backups/backup.log 2>&1
+
+# 1時間ごと
+0 * * * * /path/to/harairo/backup.sh >> /path/to/harairo/backups/backup.log 2>&1
+
+
+■ バックアップログの確認
+cat /path/to/harairo/backups/backup.log
+
+
+■ バックアップからの復元
+1. サーバー上で復元したいバックアップを確認
+   ls -la /path/to/harairo/backups/
+
+2. データを復元
+   cp -r /path/to/harairo/backups/backup_YYYYMMDD_HHMMSS/data/* /path/to/harairo/data/
+
+
+■ 注意事項
+- バックアップは30日間保持され、それ以降は自動削除されます
+- 保持期間を変更する場合は、backup.sh の「-mtime +30」の数値を変更
+- ディスク容量に注意してください
+- 重要なデータは定期的にローカルPCにもダウンロードすることをお勧めします
+
+
+■ ローカルPCへのバックアップダウンロード（任意）
+サーバーのバックアップをローカルPCにダウンロード：
+scp -r ユーザー名@サーバーIPアドレス:/path/to/harairo/backups/backup_YYYYMMDD_HHMMSS ./

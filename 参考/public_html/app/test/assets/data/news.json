@@ -1,0 +1,34 @@
+{
+    "news": [
+        {
+            "id": "bc947bb8",
+            "title": "新作のシフォンケーキができました！ふわふわで美味しいです 🍰...",
+            "description": "新作のシフォンケーキができました！ふわふわで美味しいです 🍰",
+            "image": "https:\/\/picsum.photos\/400\/400?random=1",
+            "date": "2025-07-19",
+            "published": true,
+            "source": "instagram",
+            "sourceUrl": "https:\/\/www.instagram.com\/risutouch\/\/p\/example1"
+        },
+        {
+            "id": "news001",
+            "title": "新作シフォンケーキのご案内",
+            "description": "季節限定の新作シフォンケーキができました！ふわふわで美味しいです。ぜひお試しください。",
+            "image": "https:\/\/picsum.photos\/400\/300?random=1",
+            "date": "2024-01-15",
+            "published": true,
+            "source": "instagram",
+            "sourceUrl": "https:\/\/www.instagram.com\/risutouch\/p\/example1"
+        },
+        {
+            "id": "news002",
+            "title": "はちみつクッキーが人気です",
+            "description": "長門三隅産のはちみつを使用したクッキーが大変好評をいただいております。地元の恵みを存分に味わえる一品です。",
+            "image": "https:\/\/picsum.photos\/400\/300?random=2",
+            "date": "2024-01-10",
+            "published": true,
+            "source": "instagram",
+            "sourceUrl": "https:\/\/www.instagram.com\/risutouch\/p\/example2"
+        }
+    ]
+}
