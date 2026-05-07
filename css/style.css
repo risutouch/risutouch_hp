@@ -6,23 +6,16 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 [hidden] { display: none !important; }
 
-/* ── iPhone セーフエリア色（上：クリーム / 下：フッター茶） ── */
-body::before, body::after {
+/* ── iPhone セーフエリア色（上：ステータスバー背面をクリームで塗り） ── */
+body::before {
   content: '';
   position: fixed;
-  left: 0; right: 0;
-  z-index: 9999;
-  pointer-events: none;
-}
-body::before {
   top: 0;
+  left: 0; right: 0;
   height: var(--safe-top);
   background: #FAF7F2;
-}
-body::after {
-  bottom: 0;
-  height: var(--safe-bottom);
-  background: #4A3828;
+  z-index: 9999;
+  pointer-events: none;
 }
 
 :root {
