@@ -1042,8 +1042,8 @@ footer           { position: relative; z-index: 6; margin-top: -80px; overflow: 
 }
 .wave-top {
   position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 80px;
+  top: -2px; left: 0; right: 0;
+  height: calc(80px + 2px);
   overflow: hidden;
   pointer-events: none;
 }
@@ -1954,6 +1954,7 @@ footer {
   font-size: 0.82rem;
   line-height: 1.8;
   padding-top: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 .footer-inner {
   display: flex;
@@ -2109,7 +2110,7 @@ footer {
 
   #shops, #products, #about, #faq, #contact, #contact-section { padding: 64px max(30px, calc(50% - 300px)) 80px; }
 
-  .wave-top { height: 44px; }
+  .wave-top { height: calc(44px + 2px); }
   .hero-wave { height: 44px; }
   #shops, #about, #contact, #contact-section { margin-top: -44px; }
   footer { margin-top: -44px; }
