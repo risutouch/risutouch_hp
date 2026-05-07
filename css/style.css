@@ -47,6 +47,7 @@ html {
   background: #4A3828;
 }
 body {
+  min-height: 100vh;
   overflow-x: hidden;
   background: var(--bg);
   color: var(--text);
@@ -1988,7 +1989,7 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 80px max(40px, calc(50% - 480px)) calc(44px + var(--safe-bottom));
+  padding: 80px max(40px, calc(50% - 480px)) calc(56px + var(--safe-bottom));
   gap: 40px;
 }
 .footer-left {
@@ -2053,7 +2054,7 @@ footer {
 @media (max-width: 860px) {
   footer { font-size: 0.74rem; }
   .footer-inner {
-    padding: 100px max(30px, calc(50% - 300px)) calc(36px + var(--safe-bottom));
+    padding: 100px max(30px, calc(50% - 300px)) calc(48px + var(--safe-bottom));
     gap: 20px;
     align-items: flex-start;
   }
