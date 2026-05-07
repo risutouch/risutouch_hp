@@ -2130,6 +2130,8 @@ footer {
 
   .wave-top { height: 44px; }
   .hero-wave { height: 44px; }
+  .wave-top svg { animation-duration: 20s; }
+  .hero-wave svg { animation-duration: 20s; }
   #shops, #about, #contact, #contact-section { margin-top: -44px; }
   footer { margin-top: -44px; }
   #shops    { background: linear-gradient(to bottom, transparent 44px, var(--bg3) 44px); }
