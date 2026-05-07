@@ -2,6 +2,144 @@
    りすたっち — Scroll Site
    ================================================ */
 
+const C = window.__siteConfig;
+
+// ── SVGアイコン定数 ───────────────────────────────
+const SVG_INSTAGRAM = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>';
+const SVG_WEB       = '<svg style="fill:none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>';
+
+// ── メインビジュアル フレーズ描画 ─────────────────
+(function () {
+  const data = window.__phrasesData;
+  if (!Array.isArray(data)) return;
+  const top = document.getElementById('top');
+  if (!top) return;
+  const anchor = top.querySelector('.scroll-indicator');
+  data.forEach(phrase => {
+    const div = document.createElement('div');
+    div.className = `hp-item hp-item--${phrase.position}`;
+    phrase.cols.forEach(text => {
+      const span = document.createElement('span');
+      span.className = 'hp-col';
+      span.textContent = text;
+      div.appendChild(span);
+    });
+    top.insertBefore(div, anchor);
+  });
+})();
+
+// ── お店一覧 描画 ────────────────────────────────
+(function () {
+  const data = window.__shopsData;
+  if (!Array.isArray(data)) return;
+  const grid = document.getElementById('shops-grid');
+  if (!grid) return;
+
+  data.forEach(shop => {
+    const card = document.createElement('div');
+    card.className = 'shop-card reveal';
+
+    // 写真スライド
+    const photos = document.createElement('div');
+    photos.className = 'shop-card-photos';
+    shop.photos.forEach((src, i) => {
+      const img = document.createElement('img');
+      img.src = src; img.alt = shop.name;
+      img.className = 'shop-slide' + (i === 0 ? ' active' : '');
+      photos.appendChild(img);
+    });
+    const dotsDiv = document.createElement('div');
+    dotsDiv.className = 'shop-dots';
+    shop.photos.forEach((_, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'shop-dot' + (i === 0 ? ' active' : '');
+      btn.dataset.index = i;
+      dotsDiv.appendChild(btn);
+    });
+    photos.appendChild(dotsDiv);
+    card.appendChild(photos);
+
+    // 基本情報
+    const basic = document.createElement('div');
+    basic.className = 'shop-card-basic';
+
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'shop-card-name';
+    const logo = document.createElement('img');
+    logo.src = shop.logo; logo.alt = shop.name; logo.className = 'shop-logo';
+    const h3 = document.createElement('h3');
+    h3.textContent = shop.name;
+    nameDiv.appendChild(logo); nameDiv.appendChild(h3);
+    basic.appendChild(nameDiv);
+
+    ['area', 'hours', 'closed'].forEach(key => {
+      const p = document.createElement('p');
+      p.className = 'shop-' + key;
+      p.textContent = shop[key];
+      basic.appendChild(p);
+    });
+
+    // リンク
+    if (shop.links && shop.links.length) {
+      const linksDiv = document.createElement('div');
+      linksDiv.className = 'shop-links';
+      shop.links.forEach(link => {
+        const a = document.createElement('a');
+        a.href = link.url; a.className = 'shop-ig';
+        a.target = '_blank'; a.rel = 'noopener';
+        a.setAttribute('aria-label', link.type === 'instagram' ? 'Instagram' : 'ホームページ');
+        a.innerHTML = link.type === 'instagram' ? SVG_INSTAGRAM : SVG_WEB;
+        linksDiv.appendChild(a);
+      });
+      basic.appendChild(linksDiv);
+    }
+
+    const desc = document.createElement('p');
+    desc.className = 'shop-desc'; desc.textContent = shop.desc;
+    basic.appendChild(desc);
+
+    card.appendChild(basic);
+    grid.appendChild(card);
+  });
+})();
+
+// ── 商品カルーセル 描画 ───────────────────────────
+(function () {
+  const data = window.__productsData;
+  if (!Array.isArray(data)) return;
+  const grid = document.getElementById('products-carousel');
+  if (!grid) return;
+
+  data.forEach(product => {
+    const card = document.createElement('div');
+    card.className = 'product-card' + (product.seasonal ? ' is-seasonal' : '');
+
+    const imgWrap = document.createElement('div');
+    imgWrap.className = 'product-img-wrap';
+    const img = document.createElement('img');
+    img.src = product.image; img.alt = product.name; img.loading = 'lazy';
+    imgWrap.appendChild(img);
+    if (product.seasonal) {
+      const badge = document.createElement('span');
+      badge.className = 'product-seasonal-badge';
+      badge.textContent = '季節限定';
+      imgWrap.appendChild(badge);
+    }
+    card.appendChild(imgWrap);
+
+    const info = document.createElement('div');
+    info.className = 'product-info';
+    const h3 = document.createElement('h3');
+    h3.className = 'product-name'; h3.textContent = product.name;
+    const p = document.createElement('p');
+    p.className = 'product-desc'; p.textContent = product.desc;
+    info.appendChild(h3); info.appendChild(p);
+    card.appendChild(info);
+
+    grid.appendChild(card);
+  });
+})();
+
 // ── ヒーロー背景 自動読み込み＆クロスフェード ──────
 (function () {
   const heroBg = document.querySelector('.hero-bg');
@@ -34,9 +172,9 @@
   const KB_PC     = ['hbZoomIn', 'hbPanL', 'hbZoomOut'];
   const KB_MOBILE = ['hbMobileLR', 'hbMobileRL', 'hbMobileLR'];
   const isMobile  = window.matchMedia('(max-width: 860px)').matches;
-  const DISPLAY   = isMobile ? 20000 : 10000;
-  const FADE      = 2000;
-  const COL_DELAY = 1500;
+  const DISPLAY   = C.hero.displayMs;
+  const FADE      = C.hero.fadeMs;
+  const COL_DELAY = C.hero.colDelayMs;
 
   findImages().then(urls => {
     if (urls.length === 0) return;
@@ -65,31 +203,34 @@
       }, FADE + 100);
     }
 
+    const phraseTimers = [];
+    function cancelPhraseTimers() {
+      phraseTimers.splice(0).forEach(id => clearTimeout(id));
+    }
+    function hideAllPhrases() {
+      phrases.forEach(p => p.querySelectorAll('.hp-col').forEach(col => col.classList.remove('is-in')));
+    }
     function showPhrase(i) {
       const item = phrases[i % phrases.length];
       if (!item) return;
       item.querySelectorAll('.hp-col').forEach((col, ci) => {
-        setTimeout(() => col.classList.add('is-in'), ci * COL_DELAY);
+        phraseTimers.push(setTimeout(() => col.classList.add('is-in'), ci * COL_DELAY));
       });
-    }
-    function hidePhrase(i) {
-      const item = phrases[i % phrases.length];
-      if (!item) return;
-      item.querySelectorAll('.hp-col').forEach(col => col.classList.remove('is-in'));
     }
 
     let current = 0;
     activate(current);
-    setTimeout(() => showPhrase(current), 1800);
+    phraseTimers.push(setTimeout(() => showPhrase(current), 1800));
 
     if (layers.length > 1) {
       setInterval(() => {
         const prev = current;
         current = (current + 1) % layers.length;
-        hidePhrase(prev);
+        cancelPhraseTimers();
+        hideAllPhrases();
         deactivate(prev);
         activate(current);
-        setTimeout(() => showPhrase(current), 800);
+        phraseTimers.push(setTimeout(() => showPhrase(current), 800));
       }, DISPLAY);
     }
   });
@@ -101,14 +242,12 @@
   const balloon  = document.getElementById('hero-balloon');
   if (!heroRoot) return;
 
-  // データ読み込み（hero_data.js のグローバル変数を使用）
   const data = window.__heroData;
   if (!data) return;
 
   const { greetings, monthly, images, events } = data;
   if (!images || !images.length) return;
 
-  // 時間帯判定
   function getTimeBucket() {
     const h = new Date().getHours();
     if (h >= 5  && h <= 9)  return 'morning';
@@ -135,7 +274,6 @@
     balloon.classList.add('balloon-pop');
   }
 
-  // ポップアップ UI 構築
   const popup = document.createElement('div');
   popup.className = 'featured-bubble-popup is-visible';
   const imgWrap = document.createElement('div');
@@ -167,7 +305,6 @@
     return thumb;
   });
 
-  // ケンバーンズ方向パターン（ランダム選択）
   const panVariants = ['pan-lt', 'pan-rt', 'pan-lb', 'pan-rb'];
   let lastPan = '';
 
@@ -178,7 +315,6 @@
     popupImg.alt = img.title || '';
     thumbEls.forEach((t, i) => t.classList.toggle('is-active', i === currentIndex));
     if (withMessage) showBalloon(pickRandom(img.messages));
-    // リンク設定
     const link = img.link || null;
     imgWrap.classList.toggle('has-link', !!link);
     imgWrap.onclick = link ? () => {
@@ -188,7 +324,6 @@
         window.open(link, '_blank', 'noopener');
       }
     } : null;
-    // アニメーションリスタート（同じ方向を連続させない）
     const variants = panVariants.filter(v => v !== lastPan);
     const next = variants[Math.floor(Math.random() * variants.length)];
     lastPan = next;
@@ -199,10 +334,9 @@
 
   function restartAuto() {
     clearInterval(autoTimer);
-    autoTimer = setInterval(() => showImage(currentIndex + 1), 8000);
+    autoTimer = setInterval(() => showImage(currentIndex + 1), C.heroBalloon.cycleMs);
   }
 
-  // 期間限定イベントを検索
   function getActiveEvent() {
     if (!events || !events.length) return null;
     const today = new Date();
@@ -215,12 +349,11 @@
     }) || null;
   }
 
-  // 起動シーケンス
-  // 1. まず挨拶
+  const CYCLE = C.heroBalloon.cycleMs;
+
   showImage(0, false);
   showBalloon(pickRandom(greetings[getTimeBucket()] || greetings.daytime));
 
-  // 2. 8秒後：イベント → 今月メッセージ の順で表示
   const activeEvent = getActiveEvent();
   const monthMsg    = pickRandom(monthly[String(new Date().getMonth() + 1)]);
 
@@ -228,21 +361,19 @@
     if (activeEvent) {
       showBalloon(activeEvent.message);
       if (activeEvent.src) { popupImg.src = activeEvent.src; popupImg.alt = activeEvent.title || ''; }
-      // 3a. イベント表示後8秒で月メッセージ or サイクル
       setTimeout(() => {
         if (monthMsg) {
           showBalloon(monthMsg);
-          setTimeout(() => { showImage(0); restartAuto(); }, 8000);
+          setTimeout(() => { showImage(0); restartAuto(); }, CYCLE);
         } else {
           showImage(0); restartAuto();
         }
-      }, 8000);
+      }, CYCLE);
     } else {
-      // 3b. イベントなし：月メッセージ or 即サイクル
       if (monthMsg) showBalloon(monthMsg);
-      setTimeout(() => { showImage(0); restartAuto(); }, monthMsg ? 8000 : 0);
+      setTimeout(() => { showImage(0); restartAuto(); }, monthMsg ? CYCLE : 0);
     }
-  }, 8000);
+  }, CYCLE);
 })();
 
 
@@ -312,6 +443,17 @@ function closeMenu() {
   }, 3500);
 })();
 
+// ── FAQ レンダリング ─────────────────────────────
+(()=>{
+  const list = document.getElementById('faq-list');
+  if (!list || !window.__faqData) return;
+  list.innerHTML = window.__faqData.map(item => `
+    <details class="faq-item">
+      <summary>${item.q}</summary>
+      <div class="faq-content">${item.a}</div>
+    </details>`).join('');
+})();
+
 // ── FAQアコーディオン アニメーション ─────────────
 document.querySelectorAll('.faq-item').forEach(details => {
   const summary = details.querySelector('summary');
@@ -353,7 +495,7 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   }
 
   function startTimer() {
-    timer = setInterval(() => goTo((current + 1) % slides.length), 6000);
+    timer = setInterval(() => goTo((current + 1) % slides.length), C.shopSlide.intervalMs);
   }
 
   dots.forEach((dot, i) => {
@@ -364,7 +506,6 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     });
   });
 
-  // 店舗ごとにランダムな初期遅延（0〜4秒）
   setTimeout(startTimer, Math.random() * 4000);
 });
 
@@ -378,13 +519,10 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   const n = origCards.length;
   if (n < 2) return;
 
-  // 前後にクローンを追加：[pre1..preN, orig1..origN, app1..appN]
-  // prepend: 逆順で insertBefore → DOM上は正順(pre1, pre2, ... preN)になる
   origCards.map(c => { const cl = c.cloneNode(true); cl.setAttribute('aria-hidden','true'); return cl; })
     .reverse().forEach(cl => grid.insertBefore(cl, grid.firstChild));
   origCards.forEach(c => { const cl = c.cloneNode(true); cl.setAttribute('aria-hidden','true'); grid.appendChild(cl); });
 
-  // ドット生成（クローン後に取得したカード配列を使う）
   const allCards = () => Array.from(grid.querySelectorAll('.product-card'));
   const dotsWrap = document.createElement('div');
   dotsWrap.className = 'carousel-dots';
@@ -403,7 +541,6 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   }
   function sw() { return getStep() * n; }
 
-  // 初期スクロール位置：orig1 の先頭
   function initPos() {
     grid.style.scrollBehavior = 'auto';
     grid.scrollLeft = sw();
@@ -411,7 +548,6 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   }
   requestAnimationFrame(() => requestAnimationFrame(initPos));
 
-  // ドラッグ中・タッチ中はリセットしない
   let busy = false;
   let resetTimer;
 
@@ -434,23 +570,19 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     resetTimer = setTimeout(checkLoop, 150);
   }, { passive: true });
 
-  // 自動スクロール（前進）
   let autoTimer = null;
   function advance() { grid.scrollBy({ left: getStep(), behavior: 'smooth' }); }
-  function startAuto() { clearInterval(autoTimer); autoTimer = setInterval(advance, 3500); }
+  function startAuto() { clearInterval(autoTimer); autoTimer = setInterval(advance, C.productCarousel.autoMs); }
   function stopAuto()  { clearInterval(autoTimer); autoTimer = null; }
 
   startAuto();
 
-  // ホバーで停止（PC）
   grid.addEventListener('mouseenter', stopAuto);
   grid.addEventListener('mouseleave', () => { if (!drag) startAuto(); });
 
-  // タッチで停止（スマホ）
   grid.addEventListener('touchstart', () => { busy = true; stopAuto(); }, { passive: true });
   grid.addEventListener('touchend',   () => { busy = false; setTimeout(checkLoop, 200); setTimeout(startAuto, 2000); }, { passive: true });
 
-  // マウスドラッグ（PC）
   let drag = null;
   function onMove(e) { if (drag) grid.scrollLeft = drag.sl - (e.clientX - drag.x); }
   function onUp() {
@@ -473,7 +605,6 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     window.addEventListener('mouseup', onUp);
   });
 
-  // 中央カードをハイライト＋ドット更新（PC）
   function updateActiveCard() {
     const center = grid.scrollLeft + grid.clientWidth / 2;
     const step = getStep();
@@ -491,7 +622,6 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   grid.addEventListener('scroll', updateActiveCard, { passive: true });
   requestAnimationFrame(() => requestAnimationFrame(updateActiveCard));
 
-  // ドットクリックで対応カードへ
   dots.forEach((dot, i) => {
     dot.addEventListener('click', () => {
       const target = allCards()[n + i];
@@ -502,7 +632,6 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     });
   });
 
-  // 非中央カードをクリックで中央に（マウス操作時のみ）
   const isMouse = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   if (isMouse) {
     grid.addEventListener('click', e => {
@@ -519,7 +648,6 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     });
   }
 
-  // リサイズ時に位置リセット
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
@@ -536,59 +664,88 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   const bee = document.createElement('img');
   bee.src = 'images/deco/bee.png';
   bee.setAttribute('aria-hidden', 'true');
-  bee.style.cssText = 'position:absolute;left:0;top:0;width:42px;height:auto;pointer-events:none;display:none;will-change:transform;';
+  bee.style.cssText = 'position:absolute;left:0;top:0;width:42px;height:auto;pointer-events:auto;cursor:pointer;display:none;will-change:transform;';
   overlay.appendChild(bee);
 
+  let curX = 0, curDisplayY = 0, curLtr = true;
+  let active = false, shouldFlee = false;
+
+  bee.addEventListener('click', () => { if (active) shouldFlee = true; });
+  bee.addEventListener('touchstart', () => { if (active) shouldFlee = true; }, { passive: true });
+
+  function flee() {
+    active = false;
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    const fleeX1   = curLtr ? -70 : W + 70;
+    const fleeFlip = curLtr ? 1 : -1;
+    const fleeDur  = Math.abs(fleeX1 - curX) / C.bee.fleeSpeed;
+    const startX   = curX;
+    const startY   = curDisplayY;
+    let t0 = null;
+
+    bee.style.display = 'block';
+    function fleeFrame(ts) {
+      if (!t0) t0 = ts;
+      const p        = Math.min((ts - t0) / fleeDur, 1);
+      const x        = startX + (fleeX1 - startX) * p;
+      const displayY = startY + Math.sin(p * Math.PI * 8) * 5;
+      bee.style.display = (displayY < -60 || displayY > H + 60) ? 'none' : 'block';
+      bee.style.transform = `translate(${x.toFixed(1)}px,${displayY.toFixed(1)}px) scaleX(${fleeFlip}) rotate(0deg)`;
+      if (p < 1) requestAnimationFrame(fleeFrame);
+      else { bee.style.display = 'none'; schedule(); }
+    }
+    requestAnimationFrame(fleeFrame);
+  }
+
   function fly() {
+    const heroEl = document.getElementById('top');
+    if (heroEl && heroEl.getBoundingClientRect().bottom > 0) { schedule(); return; }
+
     const W    = window.innerWidth;
     const H    = window.innerHeight;
     const ltr  = Math.random() > 0.5;
     const x0   = ltr ? -70 : W + 70;
     const x1   = ltr ? W + 70 : -70;
-    // ページ内の現在のスクロール位置を基準にY座標を決める
     const scrollY = window.scrollY;
     const topZone = Math.random() > 0.5;
     const y0   = scrollY + (topZone
       ? H * (0.08 + Math.random() * 0.14)
       : H * (0.74 + Math.random() * 0.16));
-    const dist = Math.abs(x1 - x0);
-    const speed = 0.08 + Math.random() * 0.04; // px/ms（画面幅に関わらず一定速度）
-    const dur  = dist / speed;
+    const dur  = Math.abs(x1 - x0) / (C.bee.speedMin + Math.random() * C.bee.speedRange);
     const wAmp = 10 + Math.random() * 14;
     const wFreq = 2.5 + Math.random() * 2;
-    // 左向き画像：右から左はそのまま、左から右は反転
     const flip = ltr ? -1 : 1;
     let t0 = null;
 
+    curLtr = ltr;
+    active = true;
+    shouldFlee = false;
     bee.style.display = 'block';
 
     function frame(ts) {
       if (!t0) t0 = ts;
-      const p = Math.min((ts - t0) / dur, 1);
-
+      if (shouldFlee) { shouldFlee = false; flee(); return; }
+      const p        = Math.min((ts - t0) / dur, 1);
       const x        = x0 + (x1 - x0) * p;
       const dy       = Math.sin(p * Math.PI * 2 * wFreq) * wAmp;
       const displayY = y0 + dy - window.scrollY;
       const vy       = Math.cos(p * Math.PI * 2 * wFreq) * wAmp * (Math.PI * 2 * wFreq / dur) * 1000;
-      const vx       = Math.abs((x1 - x0) / dur * 1000);
-      const tilt     = Math.atan2(vy, vx) * (180 / Math.PI) * 0.5;
-      const rot      = ltr ? tilt : -tilt;
-
+      const tilt     = Math.atan2(vy, Math.abs((x1 - x0) / dur * 1000)) * (180 / Math.PI) * 0.5;
+      curX = x; curDisplayY = displayY;
       bee.style.display = (displayY < -60 || displayY > H + 60) ? 'none' : 'block';
-      bee.style.transform = `translate(${x.toFixed(1)}px,${displayY.toFixed(1)}px) scaleX(${flip}) rotate(${rot.toFixed(2)}deg)`;
-
+      bee.style.transform = `translate(${x.toFixed(1)}px,${displayY.toFixed(1)}px) scaleX(${flip}) rotate(${(ltr ? tilt : -tilt).toFixed(2)}deg)`;
       if (p < 1) requestAnimationFrame(frame);
-      else { bee.style.display = 'none'; schedule(); }
+      else { bee.style.display = 'none'; active = false; schedule(); }
     }
-
     requestAnimationFrame(frame);
   }
 
   function schedule() {
-    setTimeout(fly, 12000 + Math.random() * 20000);
+    setTimeout(fly, C.bee.intervalMin + Math.random() * C.bee.intervalRange);
   }
 
-  setTimeout(fly, 3000 + Math.random() * 5000);
+  setTimeout(fly, C.bee.firstDelayMin + Math.random() * C.bee.firstDelayRange);
 })();
 
 // ── 草・花・どんぐり・きのこ ランダム割り当て（初回のみ）──
@@ -608,12 +765,19 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   slots.forEach((el, i) => { el.src = shuffled[i % pool.length]; });
 })();
 
-// ── お知らせバブル ───────────────────────────────────
+// ── お知らせバブル ＆ モーダル ────────────────────────
 (function () {
-  const bubble = document.getElementById('notice-bubble');
-  const linkEl = document.getElementById('notice-bubble-link');
-  const textEl = document.getElementById('notice-bubble-text');
-  if (!bubble) return;
+  const bubble  = document.getElementById('notice-bubble');
+  const btn     = document.getElementById('notice-bubble-btn');
+  const textEl  = document.getElementById('notice-bubble-text');
+  const modal   = document.getElementById('notice-modal');
+  const overlay = document.getElementById('notice-modal-overlay');
+  const closeBtn= document.getElementById('notice-modal-close');
+  const photosEl = document.getElementById('notice-modal-photos');
+  const titleEl  = document.getElementById('notice-modal-title');
+  const bodyEl   = document.getElementById('notice-modal-body');
+  const linkEl   = document.getElementById('notice-modal-link');
+  if (!bubble || !modal) return;
 
   const data = window.__noticeData;
   if (!Array.isArray(data)) return;
@@ -622,8 +786,8 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   today.setHours(0, 0, 0, 0);
 
   const active = data.find(n => {
-    const s = new Date(n.start); s.setHours(0,0,0,0);
-    const e = new Date(n.end);   e.setHours(23,59,59,999);
+    const s = new Date(n.start); s.setHours(0, 0, 0, 0);
+    const e = new Date(n.end);   e.setHours(23, 59, 59, 999);
     return today >= s && today <= e;
   });
   if (!active) return;
@@ -632,9 +796,63 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   if (sessionStorage.getItem(key)) return;
 
   textEl.textContent = active.content;
-  if (active.link) linkEl.href = active.link;
+
+  titleEl.textContent = active.title || active.content;
+  bodyEl.textContent  = active.body  || '';
+
+  const imgs = Array.isArray(active.images) ? active.images.filter(Boolean) : [];
+  if (imgs.length > 0) {
+    photosEl.innerHTML = imgs.map((src, i) =>
+      `<img class="notice-slide${i === 0 ? ' active' : ''}" src="${src}" alt="">`
+    ).join('');
+    if (imgs.length > 1) {
+      photosEl.insertAdjacentHTML('beforeend',
+        `<div class="notice-dots">${imgs.map((_, i) =>
+          `<button class="notice-dot${i === 0 ? ' active' : ''}" aria-label="${i+1}枚目"></button>`
+        ).join('')}</div>`
+      );
+      const slides = photosEl.querySelectorAll('.notice-slide');
+      const dots   = photosEl.querySelectorAll('.notice-dot');
+      let cur = 0, slideTimer;
+      function noticGoTo(idx) {
+        slides[cur].classList.remove('active'); dots[cur].classList.remove('active');
+        cur = idx;
+        slides[cur].classList.add('active'); dots[cur].classList.add('active');
+      }
+      function noticeStartTimer() {
+        slideTimer = setInterval(() => noticGoTo((cur + 1) % slides.length), C.shopSlide.intervalMs);
+      }
+      dots.forEach((d, i) => d.addEventListener('click', () => {
+        clearInterval(slideTimer); noticGoTo(i); noticeStartTimer();
+      }));
+      noticeStartTimer();
+    }
+    photosEl.removeAttribute('hidden');
+  }
+
+  if (active.link) {
+    linkEl.href = active.link;
+    linkEl.removeAttribute('hidden');
+  }
+
+  function openModal() {
+    modal.removeAttribute('hidden');
+    requestAnimationFrame(() => requestAnimationFrame(() => modal.classList.add('is-open')));
+    document.addEventListener('keydown', onKeyDown);
+  }
+
+  function closeModal() {
+    modal.classList.remove('is-open');
+    modal.addEventListener('transitionend', () => modal.setAttribute('hidden', ''), { once: true });
+    document.removeEventListener('keydown', onKeyDown);
+  }
+
+  function onKeyDown(e) { if (e.key === 'Escape') closeModal(); }
+
+  btn.addEventListener('click', openModal);
+  overlay.addEventListener('click', closeModal);
+  closeBtn.addEventListener('click', closeModal);
 
   bubble.removeAttribute('hidden');
-  setTimeout(() => bubble.classList.add('is-visible'), 8000);
+  setTimeout(() => bubble.classList.add('is-visible'), C.notice.showDelayMs);
 })();
-

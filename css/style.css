@@ -4,6 +4,7 @@
 
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
 
 :root {
   --bg:       #FAF7F2;
@@ -123,7 +124,7 @@ header {
   z-index: 200;
   width: calc(100% - 80px);
   max-width: 1100px;
-  background: rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.70);
   backdrop-filter: blur(18px);
   border-radius: 0 0 40px 40px;
   box-shadow: 0 4px 32px rgba(122,96,80,0.12), 0 0 0 1px rgba(122,96,80,0.07);
@@ -381,8 +382,8 @@ nav a:hover { color: var(--caramel); }
 @keyframes hbZoomOut { from { transform: scale(1.08); } to { transform: scale(1);    } }
 @keyframes hbPanL    { from { transform: scale(1.05) translateX(1.5%); } to { transform: scale(1.05) translateX(-1.5%); } }
 /* スマホ: 横パン（background-positionで全体を見渡す） */
-@keyframes hbMobileLR { from { background-position: 10% center; } to { background-position: 90% center; } }
-@keyframes hbMobileRL { from { background-position: 90% center; } to { background-position: 10% center; } }
+@keyframes hbMobileLR { from { background-position: 30% center; } to { background-position: 70% center; } }
+@keyframes hbMobileRL { from { background-position: 70% center; } to { background-position: 30% center; } }
 @media (prefers-reduced-motion: reduce) {
   .hero-bg-layer { animation: none !important; }
 }
@@ -409,7 +410,7 @@ nav a:hover { color: var(--caramel); }
   isolation: isolate;
   font-family: 'Noto Serif JP', serif;
   font-weight: 600;
-  font-size: 1.85rem;
+  font-size: 1.65rem;
   line-height: 2.15;
   color: rgba(58, 42, 32, 0.58);
   letter-spacing: 0.42em;
@@ -430,6 +431,7 @@ nav a:hover { color: var(--caramel); }
 }
 .hp-col + .hp-col {
   margin-right: 20px;
+  margin-top: 24px;
 }
 
 .hero-content { display: none; }
@@ -452,7 +454,7 @@ nav a:hover { color: var(--caramel); }
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  animation: fadeUp 1.2s 5s ease both, scrollBreath 2.8s 6.2s ease-in-out infinite;
+  animation: fadeUp 1.2s 4s ease both, scrollBreath 2.8s 5.2s ease-in-out infinite;
 }
 .scroll-indicator span {
   font-size: 0.78rem;
@@ -1206,6 +1208,12 @@ footer           { position: relative; z-index: 6; margin-top: -80px; overflow: 
   line-height: 2.1;
   margin-bottom: 32px;
 }
+.about-products-ig-link {
+  color: var(--caramel);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.about-products-ig-link:hover { opacity: 0.7; }
 
 /* ── サブ見出し（作り手経歴・受賞歴など） ── */
 .section-divider {
@@ -1776,7 +1784,10 @@ footer           { position: relative; z-index: 6; margin-top: -80px; overflow: 
   align-items: center;
   gap: 6px;
   padding: 10px 14px 10px 16px;
-  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
   transition: opacity 0.2s;
 }
 .notice-bubble-link:hover { opacity: 0.75; }
@@ -1808,6 +1819,129 @@ footer           { position: relative; z-index: 6; margin-top: -80px; overflow: 
   .notice-bubble-icon {
     width: 12px;
     height: 12px;
+  }
+}
+
+/* ── お知らせモーダル ── */
+.notice-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.notice-modal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.notice-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(58, 42, 32, 0.45);
+}
+.notice-modal-card {
+  position: relative;
+  background: var(--cream, #fdf6ee);
+  border-radius: 20px;
+  padding: 44px 36px 36px;
+  max-width: 480px;
+  width: calc(100% - 48px);
+  max-height: 82vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 64px rgba(58, 42, 32, 0.22);
+  transform: translateY(12px);
+  transition: transform 0.3s ease;
+}
+.notice-modal.is-open .notice-modal-card {
+  transform: translateY(0);
+}
+.notice-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--text-light, #999);
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.2s;
+}
+.notice-modal-close:hover { color: var(--brown, #6b4c38); }
+.notice-modal-photos {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.notice-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 2.8s ease;
+}
+.notice-slide.active { opacity: 1; }
+.notice-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+  z-index: 5;
+}
+.notice-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.45);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.3s;
+}
+.notice-dot.active { background: rgba(255,255,255,0.95); }
+.notice-modal-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--brown, #6b4c38);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+.notice-modal-body {
+  font-size: 0.88rem;
+  line-height: 1.85;
+  color: var(--text, #4a3728);
+  white-space: pre-line;
+  margin-bottom: 24px;
+}
+.notice-modal-link {
+  display: inline-block;
+  background: var(--caramel, #c08b5c);
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 28px;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.notice-modal-link:hover { background: var(--brown, #6b4c38); }
+@media (max-width: 860px) {
+  .notice-modal-card {
+    padding: 40px 24px 28px;
+    border-radius: 16px;
   }
 }
 
@@ -1906,7 +2040,7 @@ footer {
   header {
     width: 100%; left: 0; right: 0; transform: none;
     top: 0;
-    background: rgba(255,255,255,0.60);
+    background: rgba(255,255,255,0.70);
     backdrop-filter: blur(12px);
     border-radius: 0;
     box-shadow: 0 2px 16px rgba(122,96,80,0.1);
@@ -1936,12 +2070,17 @@ footer {
   .scroll-indicator { left: 24px; transform: none; bottom: 80px; }
   #top { padding-top: 56px; }
 
-  .hp-item--right,
-  .hp-item--left {
-    right: auto;
-    left: 50%;
+  .hp-item--right {
+    right: 20%;
+    left: auto;
     top: 42%;
-    transform: translate(-50%, -50%);
+    transform: translateY(-50%);
+  }
+  .hp-item--left {
+    left: 20%;
+    right: auto;
+    top: 42%;
+    transform: translateY(-50%);
   }
   .hp-col {
     font-size: 1.45rem;
