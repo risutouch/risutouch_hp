@@ -6,6 +6,25 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 [hidden] { display: none !important; }
 
+/* ── iPhone セーフエリア色（上：クリーム / 下：フッター茶） ── */
+body::before, body::after {
+  content: '';
+  position: fixed;
+  left: 0; right: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+body::before {
+  top: 0;
+  height: env(safe-area-inset-top, 0px);
+  background: #FAF7F2;
+}
+body::after {
+  bottom: 0;
+  height: env(safe-area-inset-bottom, 0px);
+  background: #4A3828;
+}
+
 :root {
   --bg:       #FAF7F2;
   --bg2:      #F3EDE3;
@@ -1042,12 +1061,12 @@ footer           { position: relative; z-index: 6; margin-top: -80px; overflow: 
 }
 .wave-top {
   position: absolute;
-  top: -2px; left: 0; right: 0;
-  height: calc(80px + 2px);
+  top: 0; left: 0; right: 0;
+  height: 80px;
   overflow: hidden;
   pointer-events: none;
 }
-.wave-top svg { width: 200%; height: 100%; display: block; animation: waveFlow 10s linear infinite; }
+.wave-top svg { width: 200%; height: calc(100% + 3px); display: block; animation: waveFlow 10s linear infinite; }
 
 @keyframes waveFlow {
   from { transform: translateX(0); }
@@ -1954,7 +1973,6 @@ footer {
   font-size: 0.82rem;
   line-height: 1.8;
   padding-top: 0;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 .footer-inner {
   display: flex;
@@ -2110,15 +2128,17 @@ footer {
 
   #shops, #products, #about, #faq, #contact, #contact-section { padding: 64px max(30px, calc(50% - 300px)) 80px; }
 
-  .wave-top { height: calc(44px + 2px); }
-  .hero-wave { height: 44px; }
-  #shops, #about, #contact, #contact-section { margin-top: -44px; }
-  footer { margin-top: -44px; }
-  #shops    { background: linear-gradient(to bottom, transparent 44px, var(--bg3) 44px); }
-  #about    { background: linear-gradient(to bottom, transparent 44px, var(--bg) 44px); }
-  #contact  { background: linear-gradient(to bottom, rgba(250,247,242,0) 44px, var(--bg3) 44px); }
-  #contact-section { background: linear-gradient(to bottom, rgba(237,228,216,0) 44px, var(--bg) 44px); }
-  footer    { background: linear-gradient(to bottom, rgba(74,56,40,0) 44px, #4A3828 44px); }
+  .wave-top { height: 30px; }
+  .hero-wave { height: 30px; }
+  .wave-top svg { animation-duration: 20s; }
+  .hero-wave svg { animation-duration: 20s; }
+  #shops, #about, #contact, #contact-section { margin-top: -30px; }
+  footer { margin-top: -30px; }
+  #shops    { background: linear-gradient(to bottom, transparent 30px, var(--bg3) 30px); }
+  #about    { background: linear-gradient(to bottom, transparent 30px, var(--bg) 30px); }
+  #contact  { background: linear-gradient(to bottom, rgba(250,247,242,0) 30px, var(--bg3) 30px); }
+  #contact-section { background: linear-gradient(to bottom, rgba(237,228,216,0) 30px, var(--bg) 30px); }
+  footer    { background: linear-gradient(to bottom, rgba(74,56,40,0) 30px, #4A3828 30px); }
 
   .section-deco { opacity: 1; }
   .deco-shops-flower,
