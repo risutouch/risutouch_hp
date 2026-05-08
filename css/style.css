@@ -129,7 +129,7 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: 0.04em;
 }
 .section-lead {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--text-mid);
   line-height: 2.1;
   margin-bottom: 40px;
@@ -429,10 +429,9 @@ nav a:hover { color: var(--caramel); }
 .hp-col {
   display: block;
   position: relative;
-  isolation: isolate;
   font-family: 'Noto Serif JP', serif;
-  font-weight: 600;
-  font-size: 1.65rem;
+  font-weight: 500;
+  font-size: 1.5rem;
   line-height: 2.15;
   color: rgba(58, 42, 32, 0.58);
   letter-spacing: 0.42em;
@@ -1658,8 +1657,8 @@ footer           { position: relative; z-index: 6; margin-top: -80px; overflow: 
   transform: translateZ(0);
 }
 .contact-intro { max-width: 640px; margin: 0 auto 40px; text-align: center; }
-.contact-lead { color: var(--text-mid); font-size: 0.95rem; line-height: 2; }
-.contact-sub  { color: var(--text-mid); font-size: 0.85rem; line-height: 1.8; text-align: center; padding-bottom: 60px; }
+.contact-lead { color: var(--text-mid); font-size: 1rem; line-height: 2; }
+.contact-sub  { color: var(--text-mid); font-size: 0.9rem; line-height: 1.8; text-align: center; padding-bottom: 60px; }
 
 /* ── SNS リンク ── */
 .contact-links {
@@ -1805,7 +1804,7 @@ footer           { position: relative; z-index: 6; margin-top: -80px; overflow: 
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 10px 14px 10px 16px;
+  padding: 12px 18px 12px 20px;
   background: none;
   border: none;
   cursor: pointer;
@@ -1814,15 +1813,15 @@ footer           { position: relative; z-index: 6; margin-top: -80px; overflow: 
 }
 .notice-bubble-link:hover { opacity: 0.75; }
 .notice-bubble-text {
-  font-size: 0.8rem;
+  font-size: 0.88rem;
   line-height: 1.4;
   color: var(--text);
   font-weight: 500;
   white-space: nowrap;
 }
 .notice-bubble-icon {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
   color: var(--caramel);
 }
@@ -1832,15 +1831,15 @@ footer           { position: relative; z-index: 6; margin-top: -80px; overflow: 
     right: 16px;
   }
   .notice-bubble-link {
-    padding: 8px 12px 8px 14px;
-    gap: 4px;
+    padding: 10px 14px 10px 16px;
+    gap: 5px;
   }
   .notice-bubble-text {
-    font-size: 0.72rem;
+    font-size: 0.8rem;
   }
   .notice-bubble-icon {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
   }
 }
 
@@ -2106,7 +2105,7 @@ footer {
     transform: translateY(-50%);
   }
   .hp-col {
-    font-size: 1.45rem;
+    font-size: 1.2rem;
     letter-spacing: 0.2em;
     line-height: 2.1;
   }
