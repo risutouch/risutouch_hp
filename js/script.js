@@ -657,6 +657,7 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
 
 // ── ミツバチ ───────────────────────────────────────
 (function () {
+  const isMobile = window.matchMedia('(max-width: 860px)').matches;
   const overlay = document.createElement('div');
   overlay.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:7;overflow:hidden;';
   document.body.appendChild(overlay);
@@ -712,7 +713,10 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
     const y0   = scrollY + (topZone
       ? H * (0.08 + Math.random() * 0.14)
       : H * (0.74 + Math.random() * 0.16));
-    const dur  = Math.abs(x1 - x0) / (C.bee.speedMin + Math.random() * C.bee.speedRange);
+    const spd  = isMobile
+      ? (C.bee.speedMinMobile + Math.random() * C.bee.speedRangeMobile)
+      : (C.bee.speedMin + Math.random() * C.bee.speedRange);
+    const dur  = Math.abs(x1 - x0) / spd;
     const wAmp = 5 + Math.random() * 7;
     const wFreq = 2.5 + Math.random() * 2;
     const flip = ltr ? -1 : 1;

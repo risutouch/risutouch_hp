@@ -35,6 +35,8 @@ window.__siteConfig = {
     intervalRange:   20000,  // 次回登場のランダム幅（ms）
     speedMin:         0.08,  // 飛行速度の最小値（px/ms）
     speedRange:       0.04,  // 飛行速度のランダム幅（px/ms）
+    speedMinMobile:   0.05,  // モバイル飛行速度の最小値（px/ms）
+    speedRangeMobile: 0.02,  // モバイル飛行速度のランダム幅（px/ms）
     fleeSpeed:        0.28,  // 逃走速度（px/ms）
   },
 
