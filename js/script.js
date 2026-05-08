@@ -664,7 +664,7 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   const bee = document.createElement('img');
   bee.src = 'images/deco/bee.png';
   bee.setAttribute('aria-hidden', 'true');
-  bee.style.cssText = 'position:absolute;left:0;top:0;width:42px;height:auto;pointer-events:auto;cursor:pointer;display:none;will-change:transform;';
+  bee.style.cssText = 'position:absolute;left:0;top:0;width:34px;height:auto;pointer-events:auto;cursor:pointer;display:none;will-change:transform;';
   overlay.appendChild(bee);
 
   let curX = 0, curDisplayY = 0, curLtr = true;
@@ -713,7 +713,7 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
       ? H * (0.08 + Math.random() * 0.14)
       : H * (0.74 + Math.random() * 0.16));
     const dur  = Math.abs(x1 - x0) / (C.bee.speedMin + Math.random() * C.bee.speedRange);
-    const wAmp = 10 + Math.random() * 14;
+    const wAmp = 5 + Math.random() * 7;
     const wFreq = 2.5 + Math.random() * 2;
     const flip = ltr ? -1 : 1;
     let t0 = null;
