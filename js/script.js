@@ -785,66 +785,112 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const active = data.find(n => {
+  const activeNotices = data.filter(n => {
     const s = new Date(n.start); s.setHours(0, 0, 0, 0);
     const e = new Date(n.end);   e.setHours(23, 59, 59, 999);
     return today >= s && today <= e;
   });
-  if (!active) return;
+  if (activeNotices.length === 0) return;
 
-  const key = `notice_${active.start}_${active.end}`;
-  if (sessionStorage.getItem(key)) return;
+  let current = 0;
+  let noticeTimer;
+  let slideTimer;
+  textEl.textContent = activeNotices[current].content;
 
-  textEl.textContent = active.content;
+  function renderModal(notice) {
+    clearInterval(slideTimer);
+    photosEl.innerHTML = '';
+    photosEl.setAttribute('hidden', '');
+    linkEl.setAttribute('hidden', '');
+    linkEl.removeAttribute('href');
 
-  titleEl.textContent = active.title || active.content;
-  bodyEl.textContent  = active.body  || '';
+    titleEl.textContent = notice.title || notice.content;
+    bodyEl.textContent  = notice.body || '';
 
-  const imgs = Array.isArray(active.images) ? active.images.filter(Boolean) : [];
-  if (imgs.length > 0) {
-    photosEl.innerHTML = imgs.map((src, i) =>
-      `<img class="notice-slide${i === 0 ? ' active' : ''}" src="${src}" alt="">`
-    ).join('');
-    if (imgs.length > 1) {
-      photosEl.insertAdjacentHTML('beforeend',
-        `<div class="notice-dots">${imgs.map((_, i) =>
-          `<button class="notice-dot${i === 0 ? ' active' : ''}" aria-label="${i+1}枚目"></button>`
-        ).join('')}</div>`
-      );
-      const slides = photosEl.querySelectorAll('.notice-slide');
-      const dots   = photosEl.querySelectorAll('.notice-dot');
-      let cur = 0, slideTimer;
-      function noticGoTo(idx) {
-        slides[cur].classList.remove('active'); dots[cur].classList.remove('active');
-        cur = idx;
-        slides[cur].classList.add('active'); dots[cur].classList.add('active');
+    const imgs = Array.isArray(notice.images) ? notice.images.filter(Boolean) : [];
+    if (imgs.length > 0) {
+      const slides = imgs.map((src, i) => {
+        const img = document.createElement('img');
+        img.className = `notice-slide${i === 0 ? ' active' : ''}`;
+        img.src = src;
+        img.alt = '';
+        photosEl.appendChild(img);
+        return img;
+      });
+
+      if (imgs.length > 1) {
+        const dotsWrap = document.createElement('div');
+        dotsWrap.className = 'notice-dots';
+        const dots = imgs.map((_, i) => {
+          const dot = document.createElement('button');
+          dot.className = `notice-dot${i === 0 ? ' active' : ''}`;
+          dot.type = 'button';
+          dot.setAttribute('aria-label', `${i + 1}枚目`);
+          dotsWrap.appendChild(dot);
+          return dot;
+        });
+        photosEl.appendChild(dotsWrap);
+
+        let cur = 0;
+        function noticeGoTo(idx) {
+          slides[cur].classList.remove('active');
+          dots[cur].classList.remove('active');
+          cur = idx;
+          slides[cur].classList.add('active');
+          dots[cur].classList.add('active');
+        }
+        function startSlideTimer() {
+          slideTimer = setInterval(() => noticeGoTo((cur + 1) % slides.length), C.shopSlide.intervalMs);
+        }
+        dots.forEach((dot, i) => dot.addEventListener('click', () => {
+          clearInterval(slideTimer);
+          noticeGoTo(i);
+          startSlideTimer();
+        }));
+        startSlideTimer();
       }
-      function noticeStartTimer() {
-        slideTimer = setInterval(() => noticGoTo((cur + 1) % slides.length), C.shopSlide.intervalMs);
-      }
-      dots.forEach((d, i) => d.addEventListener('click', () => {
-        clearInterval(slideTimer); noticGoTo(i); noticeStartTimer();
-      }));
-      noticeStartTimer();
+      photosEl.removeAttribute('hidden');
     }
-    photosEl.removeAttribute('hidden');
+
+    if (notice.link) {
+      linkEl.href = notice.link;
+      linkEl.removeAttribute('hidden');
+    }
   }
 
-  if (active.link) {
-    linkEl.href = active.link;
-    linkEl.removeAttribute('hidden');
+  function switchNotice() {
+    if (activeNotices.length < 2) return;
+    textEl.classList.remove('is-switching');
+    void textEl.offsetWidth;
+    textEl.classList.add('is-switching');
+    setTimeout(() => {
+      current = (current + 1) % activeNotices.length;
+      textEl.textContent = activeNotices[current].content;
+    }, 250);
+  }
+
+  function startNoticeTimer() {
+    if (activeNotices.length > 1) {
+      clearInterval(noticeTimer);
+      noticeTimer = setInterval(switchNotice, C.notice.cycleMs);
+    }
   }
 
   function openModal() {
+    clearInterval(noticeTimer);
+    textEl.classList.remove('is-switching');
+    renderModal(activeNotices[current]);
     modal.removeAttribute('hidden');
     requestAnimationFrame(() => requestAnimationFrame(() => modal.classList.add('is-open')));
     document.addEventListener('keydown', onKeyDown);
   }
 
   function closeModal() {
+    clearInterval(slideTimer);
     modal.classList.remove('is-open');
     modal.addEventListener('transitionend', () => modal.setAttribute('hidden', ''), { once: true });
     document.removeEventListener('keydown', onKeyDown);
+    startNoticeTimer();
   }
 
   function onKeyDown(e) { if (e.key === 'Escape') closeModal(); }
@@ -854,5 +900,8 @@ document.querySelectorAll('.shop-card-photos').forEach(photos => {
   closeBtn.addEventListener('click', closeModal);
 
   bubble.removeAttribute('hidden');
-  setTimeout(() => bubble.classList.add('is-visible'), C.notice.showDelayMs);
+  setTimeout(() => {
+    bubble.classList.add('is-visible');
+    startNoticeTimer();
+  }, C.notice.showDelayMs);
 })();

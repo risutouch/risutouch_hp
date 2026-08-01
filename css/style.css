@@ -1819,11 +1819,23 @@ footer           { position: relative; z-index: 6; margin-top: -80px; overflow: 
   font-weight: 500;
   white-space: nowrap;
 }
+.notice-bubble-text.is-switching {
+  animation: noticeTextSwitch 0.5s ease both;
+}
+@keyframes noticeTextSwitch {
+  0%   { opacity: 1; transform: translateY(0); }
+  48%  { opacity: 0; transform: translateY(-6px); }
+  52%  { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
 .notice-bubble-icon {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
   color: var(--caramel);
+}
+@media (prefers-reduced-motion: reduce) {
+  .notice-bubble-text.is-switching { animation: none; }
 }
 @media (max-width: 860px) {
   .notice-bubble {
